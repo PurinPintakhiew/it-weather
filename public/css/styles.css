@@ -1,0 +1,70 @@
+.weather {
+    text-align: center;
+}
+/* temp */
+img.temp-img {
+    height: 10%;
+    padding: 10px;
+}
+p#tamp {
+    padding: 10px;
+    font-size: 24px;
+}
+span.temp-symbol {
+    font-size: 20px;
+    margin-top: 16px;
+}
+/* pm */
+img.pm-img {
+    width: 30%;
+    padding: 10px;
+}
+p#pm {
+    padding: 10px;
+    margin-bottom: auto;
+    align-items: end;
+    margin-top: auto;
+    font-size: 60px;
+}
+span.pm-symbol {
+    margin-top: 75px;
+    font-size: 25px;
+}
+/* hum */
+p#hum {
+    padding: 10px;
+    font-size: 24px;
+}
+img.hum-img {
+    height: 10%;
+    padding: 10px;
+}
+span.hum-symbol {
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+.PM.col-6 {
+    border: 1px solid rgb(0 0 0/5%);
+    border-radius: 20px;
+    background: #87CEFA;
+    color:white;
+}
+.t-h.col-6 {
+    background: rgb(0 0 0/90%);
+    color: white;
+    border: 1px solid;
+    border-radius: 25px;
+}
+
+.bar-1.container-fluid {
+    margin-bottom: 35px;
+}
+/* img.bru-img {
+    width: 15%;
+    height: 60%;
+}
+img.it-img {
+    width: 15%;
+    height: 60%;
+} */
