@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Bootstrap 4 css -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- css -->
   <link rel="stylesheet" type="text/css" href="{{ url('/css/styles.css') }}" />
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- My Js -->
   <script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
+  <!-- Jquery -->
   <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
+  <!-- Google Chart -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
-  <script>
+<script type="text/javascript">
+  // get data from Mqtt
 client = new Paho.MQTT.Client("10.133.1.0", Number(9001),"c");
 if(!client){
   console.log("not connect");
@@ -37,79 +40,55 @@ function onConnectionLost(responseObject) {
   }
 }
 
-var data = {
-  temp:0,
-  hum:0,
-  pm:0
-};
-
-$(document).ready(function(){
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  
-  // setInterval(() => {
-  //   $.ajax({
-  //       url: "/temp-add",
-  //       type:"POST",
-  //       data: data,
-  //       success:function(data){
-  //           alert(data);
-  //       },error:function(){ 
-  //           alert("error!!!!");
-  //       }
-  //   });
-  // }, 60000);
-
-  // setInterval(() => {
-  //   $.ajax({
-  //       type: "GET",
-  //       url: "/temp-save",
-  //       success: function (response) {
-  //           console.log(response);
-  //       }
-  //   });     
-  // }, 60000);
-});    
-
 function onMessageArrived(message) {
   if(message.destinationName == "TEST/MQTT"){
     console.log("Temp:" + message.payloadString);
     document.getElementById("tamp").innerHTML = message.payloadString;
-    data['temp'] = message.payloadString;
 
   } else if(message.destinationName == "TEST/PM"){
     console.log("PM:" + message.payloadString);
     document.getElementById("pm").innerHTML = message.payloadString;
-    data['pm'] = message.payloadString;
 
   } else if(message.destinationName == "TEST/HUM"){
     console.log("Humidity:" + message.payloadString);
     document.getElementById("hum").innerHTML = message.payloadString;
-    data['hum'] = message.payloadString;
 
   }
 }
+// end
+// Chart
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(<?php echo $dataDay ?>);
+
+        var options = {
+          title: 'ค่าเฉลี่ย PM 2.5 ราย 24 ชั่วโมง ',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+        chart.draw(data, options);
+      }
 
   </script>
 </head>
-<body class="">
 
-  <div class="bar-1 container-fluid">
-    <div class="row">
-      <div class="d-flex flex-row col-6">
-        <!-- <img class="bru-img" src="{{url('/images/bru.png')}}">
-        <p>มหาวิทยาลัยราชภัฎบุรีรัมย์</p> -->
-        <img class="it-img" src="{{url('/images/LogoHead-1.png')}}">
-        <!-- <p>สาขาวิชาเทคโนโลยีสารสนเทศ</p> -->
-      </div>
-      <div class="d-flex flex-row col-6">
-          <div id="display-connect"></div>
-      </div>
-    </div>
-  </div>
+<body >
+
+<!-- Image and text -->
+<nav class="navbar navbar-light bar-1">
+  <a class="navbar-brand">
+    <img src="{{url('/images/bru.png')}}" class="bru-img" >
+    <img src="{{url('/images/LogoHead-1.png')}}" class="it-img" >
+  </a>
+  <a class="navbar-brand">
+    <a href="/chartPm">สถิตค่าฝุ่นละอองรายวัน</a>
+  </a>
+</nav>
 
   <!-- display data from sensor -->
   <div class="container">
@@ -145,14 +124,12 @@ function onMessageArrived(message) {
     </div>
   </div>
 
-  <!-- <div>
-    <form method = "get" action="{{route('save')}}" enctype="multipart/form-data">
-    @csrf
-      <input type="text" name="t">
-      <button type="submit">send</button>
-    </form>
-  </div> -->
-
+  <div class="col-md-12 pmDay" id="pm1">
+      <h1>ค่าสถิติ PM 2.5 รายวัน</h1>
+        <div id="chart" style="width: 1200px; height: 600px;"></div>
+        <p><?php?>
+        </p>
+    </div>
 
 </body>
 </html>

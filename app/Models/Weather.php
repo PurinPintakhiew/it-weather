@@ -9,5 +9,5 @@ class Weather extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $table = 'test';
+    protected $table = 'datapm';
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Weather;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 
 class SensorController extends Controller
@@ -62,7 +63,21 @@ class SensorController extends Controller
         return 'Comple';
     }
 
+    public function chart(){
+        
+        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR  ");
+        $dataDay[] = ['Time','Average'];
+        foreach($sql as $key => $value){
+            $dataDay[++$key] = [$value->datetime,$value->pm2_5];
+        }
+        $dataDay = json_encode($dataDay);
+        return $dataDay;
+      }
+
     public function show(){
-        return view('temp');
+        $dataDay = $this->chart();
+        return view('weather',compact('dataDay'));
     }
+
+
 }

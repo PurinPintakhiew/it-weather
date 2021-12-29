@@ -1,11 +1,26 @@
+/* day */
 div#chart {
     margin-left: auto;
     margin-right: auto;
 }
-.col-md-12.pm {
+.pmDay {
     text-align: center;
     margin-top: 35px;
 }
-.pm h1 {
+.pmDay h1 {
+    margin-bottom: 25px;
+}
+
+/* week */
+div#chart2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+.pmWeek {
+    text-align: center;
+    margin-top: 35px;
+    display: none;
+}
+.pmWeek h1 {
     margin-bottom: 25px;
 }
