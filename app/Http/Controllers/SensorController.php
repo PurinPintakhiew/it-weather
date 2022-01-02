@@ -65,18 +65,29 @@ class SensorController extends Controller
 
     public function chart(){
         
-        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR  ");
+        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
         $dataDay[] = ['Time','Average'];
         foreach($sql as $key => $value){
-            $dataDay[++$key] = [$value->datetime,$value->pm2_5];
+            $time = date("d-m-Y H:i", strtotime($value->datetime));
+            $dataDay[++$key] = [$time,$value->pm2_5];
         }
         $dataDay = json_encode($dataDay);
         return $dataDay;
       }
 
+      public function pmAvg(){  
+        $sql = DB::select("SELECT AVG(pm2_5) as pmavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
+        foreach($sql as $value){
+            $pmavg = $value->pmavg;
+        }
+        $pmavg = round($pmavg,3);
+        return $pmavg ;
+      }
+
     public function show(){
         $dataDay = $this->chart();
-        return view('weather',compact('dataDay'));
+        $pmavg = $this->pmAvg();
+        return view('weather',compact('dataDay','pmavg'));
     }
 
 

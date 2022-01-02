@@ -18,12 +18,11 @@ use App\Http\Controllers\HomeController;
 Route::get('/weather',[SensorController::class,'show']);
 Route::post('weather-add',[SensorController::class,'writeData'])->name('add');
 Route::get('weather-save',[SensorController::class,'saveData'])->name('save');
+Route::get('weather-pm24',[SensorController::class,'pmAvg'])->name('avg');
 
 Route::get('chartPm',[ChartController::class,'chartData']);
-
-Route::get('chart',function(){
-    return view('chartAvg');
-});
+Route::get('chartData',[ChartController::class,'chartSelect']);
+Route::post('chartData',[ChartController::class,'dataSelect'])->name('see');
 
 Route::post('test', function()
 {

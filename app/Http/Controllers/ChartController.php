@@ -68,5 +68,25 @@ class ChartController extends Controller
 
       }
 
+      public function dataSelect(Request $request){
+        $date1 = date("Y-m-d", strtotime($request->date1));
+        $date2 = date("Y-m-d", strtotime($request->date2));
+        $time1 = $request->time1;
+        $time2 = $request->time2;
+        $data1 = $date1." ".$time1;
+        $data2 = $date2." ".$time2;
+
+        $sql = DB::select("select datetime,pm2_5 from datapm where datetime between '$date1' and '$date2'  ");
+        
+        // return redirect()->route('chartSelect', $sql)->with('stuff');
+      }
+
+      public function chartSelect(){
+
+        return view('chartSelect');
+      }
+
+
+
 }
 

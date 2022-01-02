@@ -57,6 +57,37 @@ span.hum-symbol {
     border-radius: 25px;
 }
 
+/* pm24 */
+.card-pm24 {
+    margin-top: 20px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 3px 6px rgb(0 0 0 / 60%);
+}
+.head-pm24 {
+    border-bottom: 1px solid;
+    padding: 10px 10px 5px;
+}
+.body-pm24.row {
+    padding: 20px;
+}
+div#color-level-pm24 {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+}
+div#value-pm24 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+div#level-pm24 {
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 /*----------------- bar-1 ----------------------*/
 .bar-1 {
     margin-bottom: 50px;
@@ -77,4 +108,23 @@ div#pm1 {
 div#chart {
     margin-left: auto;
     margin-right: auto;
+}
+
+/* ----------------- chartSelect --------------- */
+.col-md-12.col-lg-1.part2 {
+    text-align: center;
+    margin-top: 35px;
+}
+
+/* details table */
+.details-level {
+    margin-top: 35px;
+}
+table.table.table-bordered.t-1 {
+    text-align: center;
+}
+.circle_table {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
 }
