@@ -15,7 +15,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/weather',[SensorController::class,'show']);
+Route::get('/',[SensorController::class,'show']);
 Route::post('weather-add',[SensorController::class,'writeData'])->name('add');
 Route::get('weather-save',[SensorController::class,'saveData'])->name('save');
 Route::get('weather-pm24',[SensorController::class,'pmAvg'])->name('avg');
@@ -28,7 +28,11 @@ Route::post('test', function()
 {
     return 'Success! ajax in laravel 5';
 });
+Route::get('getData', function()
+{
+    return view('getMqtt');
+});
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('is_admin');
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('is_admin');
 

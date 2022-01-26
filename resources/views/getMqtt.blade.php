@@ -2,8 +2,9 @@
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
   
-  <script>
-client = new Paho.MQTT.Client("10.133.1.0", Number(9001),"c");
+<script>
+const id = Math.random().toString(36).substring(2);
+client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
 if(!client){
   console.log("not connect");
 }
@@ -21,7 +22,7 @@ function onConnect() {
 
 function onConnectionLost(responseObject) {
   if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:"+responseObject.errorMessage);
+    console.log("onConnectionLost:" + responseObject.errorMessage);
   } else {
     console.log("connect");
   }
@@ -80,5 +81,4 @@ function onMessageArrived(message) {
 
   }
 }
-
   </script>

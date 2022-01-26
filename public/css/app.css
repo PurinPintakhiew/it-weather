@@ -11286,3 +11286,140 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+
+/* button on off */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/* end */
+/* card control */
+.card-control {
+  padding: 20px;
+  background-color: #c5c5c5;
+  border-radius: 10px;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+.status-p {
+  text-align: end;
+}
+#status {
+  color: white;
+  background-color: #50dc00;
+  padding: 6px;
+  border-radius: 15px;
+  font-size: 18px;
+}
+.col.mac {
+  display: flex;
+  flex-direction: column;
+}
+input.input-m {
+  border-radius: 15px;
+}
+.col.pm-box {
+  background-color: #22e389;
+  margin: 10px;
+  border-radius: 5px;
+}
+.col.temp-box {
+  background-color: #aacfff;
+  margin: 10px;
+  border-radius: 5px;
+}
+.col.hum-box {
+  background-color: #dff2cb;
+  margin: 10px;
+  border-radius: 5px;
+}
+h1#pm {
+  font-size: 72px;
+}
+h1#temp {
+  font-size: 72px;
+}
+h1#hum {
+  font-size: 72px;
+}
+
+/* table machine */
+thead.table-h {
+  background: black;
+  color: white;
+  text-align: center;
+}
+tbody.table-b {
+  text-align: center;
+}
+div#dialog-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+div#dialog-background {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 11999;
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Weather;
+use App\Models\Machine;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -63,8 +64,18 @@ class SensorController extends Controller
         return 'Comple';
     }
 
+    public function DateThai($date){
+        // date_default_timezone_set('Asia/Bangkok');
+        $year = (date("Y",strtotime($date)) + 543);
+        $month = (date("m",strtotime($date)) + 0);
+        $day = date("d",strtotime($date));
+        $monthArray =  array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กฎกราคม",
+                            "สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
+        $monthThai = $monthArray[$month] ?? null;
+        return "$day $monthThai $year";
+    }
+
     public function chart(){
-        
         $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
         $dataDay[] = ['Time','Average'];
         foreach($sql as $key => $value){
@@ -75,19 +86,41 @@ class SensorController extends Controller
         return $dataDay;
       }
 
-      public function pmAvg(){  
+    public function chartWeek(){
+        $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
+            WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
+    
+        $dataWeek[] = ['Time','Average'];
+        foreach($sql as $key => $value){
+            $date = $value->DateOnly;
+            $time = $this->DateThai($date);
+            $dataWeek[++$key] = [$time,$value->avg];
+        }
+        $dataWeek = json_encode($dataWeek);
+    
+        return $dataWeek;
+    }
+
+    public function pmAvg(){  
         $sql = DB::select("SELECT AVG(pm2_5) as pmavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
         foreach($sql as $value){
             $pmavg = $value->pmavg;
         }
         $pmavg = round($pmavg,3);
-        return $pmavg ;
+        return $pmavg;
       }
+
+    public function machineLocation(){
+        $sql = DB::select("SELECT * FROM machine_location");
+        return $sql;
+    }
 
     public function show(){
         $dataDay = $this->chart();
+        $dataWeek = $this->chartWeek();
         $pmavg = $this->pmAvg();
-        return view('weather',compact('dataDay','pmavg'));
+        $location = $this->machineLocation();
+        return view('weather',compact('dataDay','pmavg','location','dataWeek'));
     }
 
 

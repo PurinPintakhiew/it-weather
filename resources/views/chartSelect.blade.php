@@ -11,7 +11,7 @@
     <title>ข้อมูลย้อนหลัง</title>
 </head>
 <body>
-    <div class="container fluid">
+<div class="container fluid">
         <h1>ข้อมูลย้อนหลัง</h1>
 
         <form action="{{ route('see') }}" method="POST" enctype="multipart/form-data">
@@ -111,6 +111,6 @@
         </table>
     </div>
 
-    </div>
+</div>
 </body>
 </html>

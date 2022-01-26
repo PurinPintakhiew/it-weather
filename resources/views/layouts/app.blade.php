@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -79,5 +80,79 @@
             @yield('content')
         </main>
     </div>
+
+<!-- Mqtt -->
+<script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
+<script type="text/javascript">
+
+const id = Math.random().toString(36).substring(2);
+client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+var msg = "off";
+    if(!client){
+        console.log("not connect");
+    }
+        
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+client.connect({onSuccess:onConnect});
+
+function onConnect() {
+    console.log("onConnect");
+    document.getElementById("status").innerHTML = "Connect";
+    client.subscribe("TEST/MQTT");
+    client.subscribe("TEST/PM");
+    client.subscribe("TEST/HUM");
+    message = new Paho.MQTT.Message(msg);
+    message.destinationName = "TEST/MQTT";
+    client.send(message);
+}
+
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:" + responseObject.errorMessage);
+  } else {
+    console.log("connect");
+  }
+}
+
+function onMessageArrived(message) {
+  if(message.destinationName == "TEST/PM"){
+    console.log("PM 2.5:" + message.payloadString);
+    document.getElementById("pm").innerHTML = message.payloadString;
+  } else if(message.destinationName == "TEST/MQTT"){
+    console.log("Temperature:" + message.payloadString);
+    document.getElementById("temp").innerHTML = message.payloadString;
+  } else if(message.destinationName == "TEST/HUM"){
+    console.log("Humidity:" + message.payloadString);
+    document.getElementById("hum").innerHTML = message.payloadString;
+  }
+}
+
+function showAdd(){
+    document.getElementById("dialog-background").style.display = "block";
+}
+function clossAdd(){
+    document.getElementById("dialog-background").style.display = "none";
+}
+function setCheckbox(){
+    var checkBox = document.getElementById("checkbox_on").checked;
+    if(checkBox == true){
+        document.getElementById("toru").innerHTML = "on";
+        msg = "on";
+        message = new Paho.MQTT.Message(msg);
+        message.destinationName = "TEST/MQTT";
+        client.send(message);
+    }else{
+        document.getElementById("toru").innerHTML = "off";
+        msg = "off";
+        message = new Paho.MQTT.Message(msg);
+        message.destinationName = "TEST/MQTT";
+        client.send(message);
+    }
+}
+
+</script>
+
 </body>
 </html>

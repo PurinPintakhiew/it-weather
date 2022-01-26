@@ -67,6 +67,8 @@ span.hum-symbol {
 .head-pm24 {
     border-bottom: 1px solid;
     padding: 10px 10px 5px;
+    display: flex;
+    justify-content: space-between;
 }
 .body-pm24.row {
     padding: 20px;
@@ -104,6 +106,7 @@ img.it-img {
 div#pm1 {
     text-align: center;
     margin-top: 100px;
+    margin-bottom: 50px;
 }
 div#chart {
     margin-left: auto;
@@ -117,7 +120,7 @@ div#chart {
 }
 
 /* details table */
-.details-level {
+#details-level {
     margin-top: 35px;
 }
 table.table.table-bordered.t-1 {
@@ -127,4 +130,11 @@ table.table.table-bordered.t-1 {
     width: 30px;
     height: 30px;
     border-radius: 15px;
+}
+/* map */
+div#Machinlocat {
+    margin-bottom: 50px;
+}
+div#map {
+    height: 400px;
 }

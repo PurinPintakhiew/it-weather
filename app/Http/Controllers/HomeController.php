@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Machine;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $sqls=$this->machine();
+        return view('home',compact('sqls'));
     }
+
+    public function machine(){
+        $sql = DB::table('machine_location')->get();
+        return $sql;
+    }
+
 }
