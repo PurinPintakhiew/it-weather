@@ -26,7 +26,6 @@
                 <a class="navbar-brand" href="">
                     IT Weather
                 </a>
-                <a href="/weather">ดูค่าฝุ่น</a>
             </div>
         </nav>
 

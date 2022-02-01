@@ -7,10 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <form action="">
-            <label for="" class="form-label"></label>
-        </form>
-    </div>
+    <h1>r</h1>
 </body>
 </html>

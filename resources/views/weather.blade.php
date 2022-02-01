@@ -20,7 +20,7 @@
 <script type="text/javascript">
   // get data from Mqtt
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+client = new Paho.MQTT.Client("10.133.0.131", Number(9001),id);
 if(!client){
   console.log("not connect");
 }
@@ -31,9 +31,9 @@ client.connect({onSuccess:onConnect});
 
 function onConnect() {
   console.log("onConnect");
-  client.subscribe("TEST/MQTT");
-  client.subscribe("TEST/PM");
-  client.subscribe("TEST/HUM");
+  client.subscribe("it_bru/project/pm");
+  client.subscribe("it_bru/project/temp");
+  client.subscribe("it_bru/project/hum");
 }
 
 function onConnectionLost(responseObject) {
@@ -44,28 +44,33 @@ function onConnectionLost(responseObject) {
   }
 }
 
+var pmt;
+
 function onMessageArrived(message) {
-  if(message.destinationName == "TEST/MQTT"){
+  if(message.destinationName == "it_bru/project/temp"){
     console.log("Temp:" + message.payloadString);
     document.getElementById("tamp").innerHTML = message.payloadString;
 
-  } else if(message.destinationName == "TEST/PM"){
+  } else if(message.destinationName == "it_bru/project/pm"){
     console.log("PM:" + message.payloadString);
     document.getElementById("pm").innerHTML = message.payloadString;
-
-  } else if(message.destinationName == "TEST/HUM"){
+    pmt = message.payloadString;
+    init(pmt);
+  } else if(message.destinationName == "it_bru/project/hum"){
     console.log("Humidity:" + message.payloadString);
     document.getElementById("hum").innerHTML = message.payloadString;
 
   }
 }
 // Chart
+var dateDay = <?php echo json_encode($dataDay) ?>;
+var dateWeek = <?php echo json_encode($dataWeek) ?>;
   function Graph() {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     
     function drawChart(){
-      var data = google.visualization.arrayToDataTable(<?php echo $dataDay ?>);
+      var data = google.visualization.arrayToDataTable(dateDay);
       var options = {
         title: 'ค่า PM 2.5 ราย 24 ชั่วโมง ',
         curveType: 'function',
@@ -81,7 +86,7 @@ function onMessageArrived(message) {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-      var data = google.visualization.arrayToDataTable(<?php echo $dataWeek ?>);
+      var data = google.visualization.arrayToDataTable(dateWeek);
       var options = {
         title: 'ค่า PM 2.5 รายสัปดาห์',
         curveType: 'function',
@@ -94,27 +99,31 @@ function onMessageArrived(message) {
   }
 
 // map
-  const locations = [];
-  locations.push(<?php echo json_encode($location) ?>);
-  var latitude =  locations[0][0].latitude;
-  var longitude = locations[0][0].longitude;
-  var machinID = locations[0][0].machine_id;
- 
-  function init() {
-    var popup = new longdo.Popup({ lon: longitude, lat: latitude },
-    {
-      title: machinID,
-      detail: longitude + "," + latitude,
-      closable: false
-    });
-    var marker = new longdo.Marker({ lon: longitude, lat: latitude }); 
+  function init(data) {
+    // if(data >= 10 ){
+    //   document.getElementById("iconmap").style.backgroundColor = "red"
+    // }
+    var marker = new longdo.Marker({lon: 103.101157, lat: 14.990443 },
+      {
+        title: 'Custom Marker',
+        icon: {
+          html: `<div class="icon-map-box">
+                    <div id="iconmap"></div>
+                    <strong class="mappm">${data}</strong>
+                  </div>`,
+          offset: { x: 18, y: 21 }
+        },
+        popup: {
+          html: '<div style="background: #eeeeff;">popup</div>'
+        }
+      });
     var map = new longdo.Map({
         placeholder: document.getElementById('map')
     });
     map.Overlays.add(marker);
-    map.Overlays.add(popup);
   }
 // ajax 
+var dataRequest;
 $(document).ready(()=>{
   Graph();
   $.ajaxSetup({
@@ -127,7 +136,10 @@ $(document).ready(()=>{
     url: "/weather-pm24",
     success: (response) => {
       if(response){
+        dataRequest = response;
         setDataPM(response);
+        // init(response);
+        console.log(dataRequest);
       }
     } 
   });
@@ -137,9 +149,16 @@ $(document).ready(()=>{
         url: "/weather-pm24",
         success: (response) => {
           if(response){
-            setDataPM(response);
+            if(response != dataRequest){
+              setDataPM(response);
+              // init(response);
+              dataRequest = response;
+              console.log("data update " + "res = " + response + " , data old = " + dataRequest);
+            } else{
+              console.log("data not update " + "res = " + response + " , data old = " + dataRequest);
+            }
           } else {
-            console.log("Not havel response");
+            console.log("Not have response");
           }
         }
     });

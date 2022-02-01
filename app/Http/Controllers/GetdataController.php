@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class GetdataController extends Controller
 {
     public function connectMqtt(){
-        $server  = "192.168.80.1"; 
+        $server  = "10.133.0.179"; 
         $port  = 1883;
         $username = "e";
         $password = "e";  

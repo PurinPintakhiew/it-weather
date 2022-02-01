@@ -11423,3 +11423,17 @@ div#dialog-background {
   left: 0;
   z-index: 11999;
 }
+a#it-brand {
+    font-size: 20px;
+    font-weight: 600;
+}
+div#dialog-delete {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 11999;
+}

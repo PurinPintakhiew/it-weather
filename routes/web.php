@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SensorController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MachineController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,15 +20,24 @@ Route::get('/',[SensorController::class,'show']);
 Route::post('weather-add',[SensorController::class,'writeData'])->name('add');
 Route::get('weather-save',[SensorController::class,'saveData'])->name('save');
 Route::get('weather-pm24',[SensorController::class,'pmAvg'])->name('avg');
+Route::get('weather-chartDay',[SensorController::class,'chart'])->name('chart');
 
 Route::get('chartPm',[ChartController::class,'chartData']);
 Route::get('chartData',[ChartController::class,'chartSelect']);
 Route::post('chartData',[ChartController::class,'dataSelect'])->name('see');
 
-Route::post('test', function()
-{
-    return 'Success! ajax in laravel 5';
-});
+Route::get('edit/{id}',[MachineController::class,'showEdit']);
+Route::post('addMachine',[MachineController::class,'addMachine'])->name('saveMac');
+Route::GET('delMachine/{id}',[MachineController::class,'deleteMachine']);
+
+// Route::post('test', function()
+// {
+//     return 'Success! ajax in laravel 5';
+// });
+// Route::get('test', function()
+// {
+//     return view('test');
+// });
 Route::get('getData', function()
 {
     return view('getMqtt');

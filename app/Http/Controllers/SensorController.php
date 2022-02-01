@@ -76,13 +76,13 @@ class SensorController extends Controller
     }
 
     public function chart(){
-        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
+        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
         $dataDay[] = ['Time','Average'];
         foreach($sql as $key => $value){
             $time = date("d-m-Y H:i", strtotime($value->datetime));
             $dataDay[++$key] = [$time,$value->pm2_5];
         }
-        $dataDay = json_encode($dataDay);
+        // $dataDay = json_encode($dataDay);
         return $dataDay;
       }
 
@@ -96,7 +96,7 @@ class SensorController extends Controller
             $time = $this->DateThai($date);
             $dataWeek[++$key] = [$time,$value->avg];
         }
-        $dataWeek = json_encode($dataWeek);
+        // $dataWeek = json_encode($dataWeek);
     
         return $dataWeek;
     }
@@ -106,7 +106,7 @@ class SensorController extends Controller
         foreach($sql as $value){
             $pmavg = $value->pmavg;
         }
-        $pmavg = round($pmavg,3);
+        $pmavg = round($pmavg);
         return $pmavg;
       }
 

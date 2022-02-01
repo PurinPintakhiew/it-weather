@@ -14,16 +14,18 @@
             </label>
         </div>
         <div class="machine row">
-            @foreach($sqls as $sql)
-            <div class="col mac">
+            <div class="col-6 mac">
                 <label class="label-m">Machine ID</label>
-                <input type="text" class="input-m form-control" value="{{$sql->machine_id}}" disabled>
+                <select class="form-select" id="select-topic">
+                    @foreach($sqls as $sql)
+                    <option value="{{$sql->machine_name}}">{{$sql->machine_name}}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col mac">
-            <label class="label-m">Location</label>
-                <input type="text" class="input-m form-control" value="{{$sql->latitude}},{{$sql->longitude}}" disabled>
-            </div>
-            @endforeach
+            <!-- <div class="col mac">
+                <label class="label-m">Location</label>
+                <input type="text" class="input-m form-control"  disabled>
+            </div> -->
         </div>
         <div class="row">
 
@@ -68,8 +70,8 @@
                 <td  class="table-d">{{$sql->latitude}}</td>
                 <td  class="table-d">{{$sql->longitude}}</td>
                 <td style="text-align:center">
-                    <button class="btn btn-warning">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <a class="btn btn-warning" href="/edit/{{$sql->machine_id}}">Edit</a>
+                    <button class="btn btn-danger" onclick="showDelete({{$sql->machine_id}})">Delete</button>
                 </td>
             </tr>
             @endforeach
@@ -86,22 +88,28 @@
                 <h5 style="text-align:center">Add Machine Location</h5>
             </div>
             <div class="card-body">
-                <form>
+            @if(Session::has('Machine_add'))
+                <div class="alert alert-success" role="alert">
+                    {{Session::get('Book_add')}}
+                </div>
+            @endif
+                <form  action="{{route('saveMac')}}" method="POST" enctype="multipart/form-data">
+                @csrf
                     <div class="mb-3">
-                        <label for="" class="form-label">Machine ID</label>
-                        <input type="text" class="form-control" id="set_id">
+                        <label for="" class="form-label">Machine name</label>
+                        <input type="text" class="form-control" name="set_name">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Latitude</label>
-                        <input type="text" class="form-control" id="set_lat">
+                        <input type="text" class="form-control" name="set_lat">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Longitude</label>
-                        <input type="text" class="form-control" id="set_long">
+                        <input type="text" class="form-control" name="set_long">
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="button" class="btn btn-danger" onclick="clossAdd()">Cancle</button>
+                        <button type="button" class="btn btn-danger" onclick="closs()">Cancle</button>
                     </div>
                 </form>
             </div>
@@ -109,31 +117,17 @@
     </div>
 </div>
 
-<div id="edit-background">
-    <div id="edit-form" class="col-5">
+<div id="dialog-delete">
+    <div id="dialog-form" class="col-md-2 col-sm-5">
         <div class="card">
-            <div class="card-header">
-                <h5 style="text-align:center">Edit Machine Location</h5>
+            <div class="card-header" style="text-align:center">
+               <p>You confirm to delete</p>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Machine ID</label>
-                        <input type="text" class="form-control" value="{{$sql->machine_id}}" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Latitude</label>
-                        <input type="text" class="form-control" value="{{$sql->latitude}}" id="edit_lat">
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Longitude</label>
-                        <input type="text" class="form-control" value="{{$sql->longitude}}" id="edit_long">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-danger" onclick="clossAdd()">Cancle</button>
-                    </div>
-                </form>
+                <div class="d-flex justify-content-evenly">
+                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
+                    <button class="btn btn-danger" onclick="closs()">No</button>
+                </div>
             </div>
         </div>
     </div>
@@ -141,4 +135,6 @@
 
 <div id="toru"></div>
 </div>
+
+
 @endsection
