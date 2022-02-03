@@ -120,7 +120,8 @@ class SensorController extends Controller
         $dataWeek = $this->chartWeek();
         $pmavg = $this->pmAvg();
         $location = $this->machineLocation();
-        return view('weather',compact('dataDay','pmavg','location','dataWeek'));
+        $dateNow = $this->DateThai(date("Y-m-d"));
+        return view('weather',compact('dataDay','pmavg','location','dataWeek','dateNow'));
     }
 
 

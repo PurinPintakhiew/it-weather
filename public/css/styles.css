@@ -1,3 +1,10 @@
+/* font */
+body{
+    font-family: 'Prompt', sans-serif;
+}
+
+
+/* ------------- old -------------- */
 .weather {
     text-align: center;
 }
@@ -155,4 +162,69 @@ div#iconmap{
 }
 .icon-map-box{
     position: absolute;
+}
+/* -----------------end------------------------ */
+
+/* ----------------- UI minimal --------------- */
+/*--------- left bar --------- */
+.logo-home {
+    padding: 15px;
+    text-align:center;
+    border-bottom: 2px solid snow;
+}
+.logo-home a img {
+    width: 100%;
+}
+.it-list-box ul {
+    margin-left: 0;
+    padding: 0;
+}
+.it-list-box ul li {
+    padding: 10px;
+    font-size: 26px;
+    font-weight: 800;
+    color: snow;
+    list-style: none;
+    margin-top: 10px;
+}
+.it-list-box ul li img {
+    margin-bottom: 12px;
+    margin-right: 8px;
+}
+/* .it-left-top {
+    position: fixed;
+    top: 0;
+} */
+.it-session {
+    position: fixed;
+    bottom: 0;
+}
+.it-list-box ul li:hover {
+    background: blueviolet;
+}
+
+/*--------- right bar ----------*/
+/* sesor-realtime */
+.sesor-realtime {
+    background-image: url('/images/weather-wallpaper.jpg');
+    /* background-repeat: no-repeat; */
+    /* background-size: 100%; */
+    background-position: center;
+    /* background-color: #8F00FF; */
+    color: white;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+.location-pm {
+    margin-bottom: auto;
+}
+.graph-pm {
+    margin-top: 35px;
+}
+
+@media only screen and (max-width: 1366px) {
+    .it-list-box ul li {
+        font-size: 16px;
+    }
 }

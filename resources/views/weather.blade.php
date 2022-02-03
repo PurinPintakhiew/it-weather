@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Scripts -->
+  <script src="{{ asset('js/app.js') }}" defer></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
+  <!-- Styles -->
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <!-- Bootstrap 4 css -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- css -->
@@ -12,7 +20,8 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
+  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+  
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>IT Weather</title>
@@ -44,8 +53,6 @@ function onConnectionLost(responseObject) {
   }
 }
 
-var pmt;
-
 function onMessageArrived(message) {
   if(message.destinationName == "it_bru/project/temp"){
     console.log("Temp:" + message.payloadString);
@@ -54,8 +61,7 @@ function onMessageArrived(message) {
   } else if(message.destinationName == "it_bru/project/pm"){
     console.log("PM:" + message.payloadString);
     document.getElementById("pm").innerHTML = message.payloadString;
-    pmt = message.payloadString;
-    init(pmt);
+
   } else if(message.destinationName == "it_bru/project/hum"){
     console.log("Humidity:" + message.payloadString);
     document.getElementById("hum").innerHTML = message.payloadString;
@@ -81,7 +87,6 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
       chart.draw(data, options);
     }
   }
-
   function Graph2(){
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
@@ -98,30 +103,6 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
     }
   }
 
-// map
-  function init(data) {
-    // if(data >= 10 ){
-    //   document.getElementById("iconmap").style.backgroundColor = "red"
-    // }
-    var marker = new longdo.Marker({lon: 103.101157, lat: 14.990443 },
-      {
-        title: 'Custom Marker',
-        icon: {
-          html: `<div class="icon-map-box">
-                    <div id="iconmap"></div>
-                    <strong class="mappm">${data}</strong>
-                  </div>`,
-          offset: { x: 18, y: 21 }
-        },
-        popup: {
-          html: '<div style="background: #eeeeff;">popup</div>'
-        }
-      });
-    var map = new longdo.Map({
-        placeholder: document.getElementById('map')
-    });
-    map.Overlays.add(marker);
-  }
 // ajax 
 var dataRequest;
 $(document).ready(()=>{
@@ -137,8 +118,8 @@ $(document).ready(()=>{
     success: (response) => {
       if(response){
         dataRequest = response;
+        init(response);
         setDataPM(response);
-        // init(response);
         console.log(dataRequest);
       }
     } 
@@ -150,12 +131,12 @@ $(document).ready(()=>{
         success: (response) => {
           if(response){
             if(response != dataRequest){
+              init(response);
               setDataPM(response);
-              // init(response);
               dataRequest = response;
-              console.log("data update " + "res = " + response + " , data old = " + dataRequest);
+              console.log("data updated");
             } else{
-              console.log("data not update " + "res = " + response + " , data old = " + dataRequest);
+              console.log("data not update");
             }
           } else {
             console.log("Not have response");
@@ -165,24 +146,85 @@ $(document).ready(()=>{
   }, 60 * 1000);
 });
 
+// map
+async function init(data){
+   map(data);
+
+}
+
+
+function map(data) {
+
+  var locationList = <?php echo json_encode($location) ?> ;
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   console.log(locationList[i].longitude + "," + locationList[i].latitude);
+    // }
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //       {
+    //         title: 'Custom Marker',
+    //         icon: {
+    //           html:  `<div class="icon-map-box">
+    //                     <div id="iconmap"></div>
+    //                     <strong class="mappm">${data}</strong>
+    //                 </div>`,
+    //           offset: { x: 18, y: 21 }
+    //           },
+    //         popup: {
+    //           html: '<div style="background: #eeeeff;">popup</div>'
+    //           }
+    //   }));
+    // }
+    // setTimeout(() => {
+    //   if(data >= 0){
+    //       document.getElementById("iconmap").style.backgroundColor = "red" ;
+    //     }
+    // }, 1000);
+  }
+  const changeColor = (data) => {
+      if(data >= 0){
+          document.getElementById("iconmap").style.backgroundColor = "red" ;
+      }
+    }
+
   </script>
 </head>
 
-<body onload="init();">
+<body>
 
-<!-- Image and text -->
-  <nav class="navbar navbar-light bar-1">
-    <a class="navbar-brand">
-      <img src="{{url('/images/bru.png')}}" class="bru-img" >
-      <img src="{{url('/images/LogoHead-1.png')}}" class="it-img" >
-    </a>
-    <a class="navbar-brand">
-      <a href="/chartPm">ข้อมูลย้อนหลัง</a>
-    </a>
-  </nav>
+<div class="container-fluid">
+    <div class="row g-0">
+
+      <div class="col-sm-2 col-md-2" style="background-color:#6165f8;">
+        <div class="" style="">
+          <div class="it-left-top">
+            <div class="logo-home">
+                <a href="/">
+                  <img src="{{url('/images/it-weather2.png')}}" >
+                </a>
+              </div>
+              <div class="it-list-box">
+                  <ul>
+                    <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
+                    <li><img src="{{url('/images/analysis.png')}}">Graph</li>
+                    <li><img src="{{url('/images/map.png')}}">Map</li>
+                  </ul>
+              </div>
+          </div>
+          <div class="it-session">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-10 col-md-10">
+          <div class="container-fluid">
 
 <!-- display data from sensor -->
-  <div class="container">
+  <!-- <div class="">
     <h1>IT Weather</h1>
     <div class="weather row">
       <div class="PM col-6">
@@ -213,10 +255,46 @@ $(document).ready(()=>{
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+    <div class="sesor-realtime">
+      <div class="d-flex justify-content-between">
+          <div class="left-pm d-flex">
+            <div class="local-time d-flex flex-column">
+              <div class="location-pm">
+                    <?php
+                    $i = 0;
+                      foreach($location as $key=>$value){ 
+                    ?>
+                      <div><?php echo $value->machine_name;?></div>
+
+                        <?php if($i == $key){
+                          break;
+                        }
+                        $i++;
+                      }   
+                    ?>
+              </div>
+              <div class="date-pm">
+                  <?php echo $dateNow ?>
+              </div>
+            </div>
+            <div class="pm-realtime">
+                <h5 class="">PM 2.5</h5>
+                <div class="d-flex flex-row justify-content-center">
+                    <p id="pm">0.00</p>
+                    <span class="pm-symbol">µg/&#13221</span>
+                </div>
+            </div>
+          </div>
+          <div class="rigth-pm d-flex align-items-start flex-column">
+              <p>temp</p>
+              <p>hum</p>
+          </div>
+      </div>
+    </div>
 
 <!-- pm24 -->
-  <div class="container">
+  <div class="">
     <div class="card-pm24">
       <div class="head-pm24">
         <h4>ค่าเฉลี่ยฝุ่นละออง PM 2.5 ราย 24 ชั่วโมง</h4>
@@ -305,7 +383,7 @@ $(document).ready(()=>{
     </div>
 
 <!-- chart -->
-  <div class="container">
+  <!-- <div class="">
     <div class="card" id="pm1">
       <div class="card-header">
         <h3>กราฟแสดงคุณภาพอากาศ</h3>
@@ -315,14 +393,29 @@ $(document).ready(()=>{
         </div>
       </div>
       <div class="card-body">
-          <div id="chart" style="width: 100%; height: 500px;"></div>
-          <div id="chart2" style="width: 100%; height: 500px;display:none"></div>
+          <div id="chart" style=""></div>
+          <div id="chart2" style="display:none"></div>
       </div>
     </div>
-  </div>
+  </div> -->
+
+<!-- chart2 -->
+    <div class="graph-pm">
+      <h3>Weather Graph</h3>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a id="btnChart" class="nav-link active" style="color:#989be0" onclick="showChart()">Day</a>
+        </li>
+        <li class="nav-item">
+          <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
+        </li>
+      </ul>
+      <div id="chart" style="width: 100%; height: 550px;"></div>
+      <div id="chart2" style="width: 100%; height: 550px;display:none"></div>
+    </div>
 
 <!-- map -->
-  <div class="container">
+  <div class="">
     <div class="card" id="Machinlocat">
       <h3 class="card-header">พิกัดตำแหน่งชุดตรวจวัด PM 2.5</h3>
       <div class="card-body">
@@ -331,7 +424,13 @@ $(document).ready(()=>{
     </div>
   </div>
 
-</body>
+<button onclick="changeColor()">change</button>
+          </div>
+      </div>
+
+    </div>
+</div>
+
 
 <script>
   function setDataPM(req){
@@ -371,13 +470,15 @@ function showNotification(req){
   console.log(Notification.permission);
     if(Notification.permission === "granted"){
       const notification = new Notification("New messege from IT Weather",{
-            body:`${req}`
+            body:`${req}`,
+            icon: '/images/LogoHead-1.png'
         });
     }else if(Notification.permission !== "denied"){
-        Notification.requestPermission().then(permissoin => {
+      Notification.requestPermission().then(permissoin => {
             if(permission === "granted"){
                 const notification = new Notification("New messege from IT Weather",{
-                  body:`${req}`
+                  body:`${req}`,
+                  icon: '/images/LogoHead-1.png'
                 });
             }
         });
@@ -397,18 +498,22 @@ function showTable(){
 function showChart(){
   document.getElementById("chart2").style.display = "none";
   document.getElementById("btnChart2").classList.remove("active");
+  document.getElementById("btnChart2").style.color = "#000000";
   Graph();
   document.getElementById("chart").style.display = "block";
   document.getElementById("btnChart").classList.add("active");
+  document.getElementById("btnChart").style.color = "#989be0";
 }
 function showChart2(){
   document.getElementById("chart").style.display = "none";
   document.getElementById("btnChart").classList.remove("active");
+  document.getElementById("btnChart").style.color = "#000000";
   Graph2();
   document.getElementById("chart2").style.display = "block";
   document.getElementById("btnChart2").classList.add("active");
+  document.getElementById("btnChart2").style.color = "#989be0";
 }
 
 </script>
-
+</body>
 </html>
