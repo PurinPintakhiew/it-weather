@@ -21,28 +21,29 @@
 
 <div class="row">
   <div class="chart-left col-sm-2 col-md-2" style="background-color:#6165f8;">
-    <div div class="it-left-top">
+    <div class="container">
+      <div div class="it-left-top">
 
-      <div class="logo-home">
-        <a href="/">
-          <img src="{{url('/images/it-weather2.png')}}" >
-        </a>
+        <div class="logo-home">
+          <a href="/">
+            <img src="{{url('/images/it-weather2.png')}}" >
+          </a>
+        </div>
+
+        <div class="it-list-box">
+          <ul>
+            <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
+            <li><img src="{{url('/images/analysis.png')}}">Graph</li>
+            <li><img src="{{url('/images/map.png')}}">Map</li>
+            <li><a href="/chartData">Historical Data</a></li>
+          </ul>
+        </div>
       </div>
-
-      <div class="it-list-box">
-        <ul>
-          <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
-          <li><img src="{{url('/images/analysis.png')}}">Graph</li>
-          <li><img src="{{url('/images/map.png')}}">Map</li>
-          <li><a href="/chartData">Historical Data</a></li>
-        </ul>
-      </div>
-
     </div>
   </div>
 
   <div class="chart-rigth col-sm-12 col-md-10">
-    <div class="container">
+    <div class="container-fluid">
       <div class="insert-box">
         <h1>ข้อมูลย้อนหลัง</h1>
         <div class="row">

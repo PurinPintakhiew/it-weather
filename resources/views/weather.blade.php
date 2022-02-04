@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/charts.scss') }}" rel="stylesheet">
   <!-- Bootstrap 4 css -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- css -->
@@ -290,20 +291,25 @@ function map(data) {
   <div class="avg-pm">
   <h3>Average PM 2.5 in 24 hours</h3>
     <div class="card-pm24">
-
-      <button class="btn btn-primary" onclick="showTable()">รายละเอียด</button>
-      <div class="body-pm24 row">
-        <div class="col-sm-12 col-md-4">
-          <div id="value-pm24"><?php echo $pmavg ?></div>
+      <div class="row">
+        <div class="col-sm-12 col-md-4" style="background:#2a265f;color:white;">
+            <div >
+              <h4>PM Average</h4>
+              <div id="value-pm24"><?php echo $pmavg ?></div>
+            </div>
         </div>
-        <div class="col-sm-12 col-md-8">
-          <div>
+        <div class="col-sm-12 col-md-3">
             <div id="color-level-pm24"></div>
             <div id="level-pm24"></div>
-            <div id="details-pm24"></div>
-          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div id="details-pm24"></div>
         </div>
       </div>
+    </div>
+    <div id="arrowAnim" onclick="showTable()">
+      <p>รายละเอียด</p>
+      <div class="arrow"></div>
     </div>
   </div>
 
