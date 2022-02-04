@@ -24,11 +24,11 @@ Route::get('weather-chartDay',[SensorController::class,'chart'])->name('chart');
 
 Route::get('chartPm',[ChartController::class,'chartData']);
 Route::get('chartData',[ChartController::class,'chartSelect']);
-Route::post('chartData',[ChartController::class,'dataSelect'])->name('see');
+Route::post('dataSelect',[ChartController::class,'dataSelect'])->name('see');
 
 Route::get('edit/{id}',[MachineController::class,'showEdit']);
 Route::post('addMachine',[MachineController::class,'addMachine'])->name('saveMac');
-Route::GET('delMachine/{id}',[MachineController::class,'deleteMachine']);
+Route::get('delMachine/{id}',[MachineController::class,'deleteMachine']);
 
 // Route::post('test', function()
 // {

@@ -24,3 +24,33 @@ div#chart2 {
 .pmWeek h1 {
     margin-bottom: 25px;
 }
+
+/* ----------- select chart ---------------- */
+
+/* ------------------ chart ------------------- */
+div#pm1 {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+div#chart {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ----------------- chartSelect --------------- */
+
+/* chart left */
+.chart-left.col-sm-2.col-md-2 {
+    height: 100vh;
+}
+.logo-home a img {
+    width: 200px;
+}
+
+/* chart Rigth */
+.insert-box {
+    background-color: aliceblue;
+    margin-top: 10px;
+    padding: 15px;
+}

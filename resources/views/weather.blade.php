@@ -29,7 +29,7 @@
 <script type="text/javascript">
   // get data from Mqtt
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("10.133.0.131", Number(9001),id);
+client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
 if(!client){
   console.log("not connect");
 }
@@ -102,6 +102,14 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
       chart.draw(data, options);
     }
   }
+
+  $(window).resize(function(){
+    if(document.getElementById("chart2").style.display == "none"){
+      Graph();
+    }else if(document.getElementById("chart").style.display == "none"){
+      Graph2();
+    }
+  });
 
 // ajax 
 var dataRequest;
@@ -199,20 +207,21 @@ function map(data) {
     <div class="row g-0">
 
       <div class="col-sm-2 col-md-2" style="background-color:#6165f8;">
-        <div class="" style="">
+        <div class="it-left" style="">
           <div class="it-left-top">
             <div class="logo-home">
                 <a href="/">
                   <img src="{{url('/images/it-weather2.png')}}" >
                 </a>
-              </div>
-              <div class="it-list-box">
+            </div>
+            <div class="it-list-box">
                   <ul>
                     <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
                     <li><img src="{{url('/images/analysis.png')}}">Graph</li>
                     <li><img src="{{url('/images/map.png')}}">Map</li>
+                    <li><a href="/chartData">Historical Data</a></li>
                   </ul>
-              </div>
+            </div>
           </div>
           <div class="it-session">
 
@@ -224,40 +233,8 @@ function map(data) {
           <div class="container-fluid">
 
 <!-- display data from sensor -->
-  <!-- <div class="">
-    <h1>IT Weather</h1>
-    <div class="weather row">
-      <div class="PM col-6">
-        <h1 class="">PM 2.5</h1>
-        <div class="d-flex flex-row justify-content-center">
-          <img class="pm-img" src="{{url('/images/pm25.png')}}">
-          <p id="pm">0.00</p>
-          <span class="pm-symbol">µg/&#13221</span>
-        </div>
-      </div>
-
-      <div class="t-h col-6">
-        <div class="Temperature col-4">
-          <h1>Temperature</h1>
-          <div class="d-flex flex-row justify-content-center">
-            <img class="temp-img" src="{{url('/images/temperatures.png')}}">
-            <p id="tamp">0.00</p>
-            <span class="temp-symbol">&#8451</span>
-          </div>
-        </div>
-        <div class="Humidity col-4">
-            <h1>Humidity</h1>
-            <div class="d-flex flex-row justify-content-center">
-              <img class="hum-img" src="{{url('/images/humidity2.png')}}">
-              <p id="hum">0.00</p>
-              <span class="hum-symbol">%</span>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-    <div class="sesor-realtime">
-      <div class="d-flex justify-content-between">
+    <div class="">
+      <div class="sesor-realtime d-flex justify-content-between">
           <div class="left-pm d-flex">
             <div class="local-time d-flex flex-column">
               <div class="location-pm">
@@ -286,25 +263,40 @@ function map(data) {
                 </div>
             </div>
           </div>
-          <div class="rigth-pm d-flex align-items-start flex-column">
-              <p>temp</p>
-              <p>hum</p>
+          <div class="rigth-pm d-flex flex-column text-center">
+            <div class="temp-hum">
+              <div class="temp-pm"> 
+                  <h5>Temperature</h5>
+                  <div class="d-flex flex-row justify-content-center">
+                    <img class="temp-img" src="{{url('/images/temperatures.png')}}">
+                    <p id="tamp">0.00</p>
+                    <span class="temp-symbol">&#8451</span>
+                  </div>
+                </div>
+                <div class="hum-pm">
+                  <h5>Humidity</h5>
+                  <div class="d-flex flex-row justify-content-center">
+                    <img class="hum-img" src="{{url('/images/humidity2.png')}}">
+                    <p id="hum">0.00</p>
+                    <span class="hum-symbol">%</span>
+                  </div>
+                </div>
+            </div>
           </div>
       </div>
     </div>
 
 <!-- pm24 -->
-  <div class="">
+  <div class="avg-pm">
+  <h3>Average PM 2.5 in 24 hours</h3>
     <div class="card-pm24">
-      <div class="head-pm24">
-        <h4>ค่าเฉลี่ยฝุ่นละออง PM 2.5 ราย 24 ชั่วโมง</h4>
-        <button class="btn btn-primary" onclick="showTable()">รายละเอียด</button>
-      </div>
+
+      <button class="btn btn-primary" onclick="showTable()">รายละเอียด</button>
       <div class="body-pm24 row">
-        <div class="col-4">
+        <div class="col-sm-12 col-md-4">
           <div id="value-pm24"><?php echo $pmavg ?></div>
         </div>
-        <div class="col-8">
+        <div class="col-sm-12 col-md-8">
           <div>
             <div id="color-level-pm24"></div>
             <div id="level-pm24"></div>
@@ -410,8 +402,11 @@ function map(data) {
           <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
         </li>
       </ul>
-      <div id="chart" style="width: 100%; height: 550px;"></div>
-      <div id="chart2" style="width: 100%; height: 550px;display:none"></div>
+      <div>
+        <div id="chart"></div>
+      </div>
+      
+      <div id="chart2" style="display:none"></div>
     </div>
 
 <!-- map -->

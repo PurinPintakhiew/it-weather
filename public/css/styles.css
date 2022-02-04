@@ -26,13 +26,13 @@ img.pm-img {
     width: 30%;
     padding: 10px;
 }
-p#pm {
+/* p#pm {
     padding: 10px;
     margin-bottom: auto;
     align-items: end;
     margin-top: auto;
     font-size: 60px;
-}
+} */
 span.pm-symbol {
     margin-top: 75px;
     font-size: 25px;
@@ -110,7 +110,7 @@ img.it-img {
 }
 
 /* ------------------ chart ------------------- */
-div#pm1 {
+/* div#pm1 {
     text-align: center;
     margin-top: 100px;
     margin-bottom: 50px;
@@ -118,13 +118,13 @@ div#pm1 {
 div#chart {
     margin-left: auto;
     margin-right: auto;
-}
+} */
 
 /* ----------------- chartSelect --------------- */
-.col-md-12.col-lg-1.part2 {
+/* .col-md-12.col-lg-1.part2 {
     text-align: center;
     margin-top: 35px;
-}
+} */
 
 /* details table */
 #details-level {
@@ -207,9 +207,10 @@ div#iconmap{
 /* sesor-realtime */
 .sesor-realtime {
     background-image: url('/images/weather-wallpaper.jpg');
-    /* background-repeat: no-repeat; */
-    /* background-size: 100%; */
+    background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
+    height: 325px;
     /* background-color: #8F00FF; */
     color: white;
     padding: 15px;
@@ -218,13 +219,68 @@ div#iconmap{
 }
 .location-pm {
     margin-bottom: auto;
+    font-size: 26px;
+    font-weight: bold;
 }
+.date-pm {
+    font-size: 18px;
+    font-weight: 600;
+}
+.pm-realtime {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.pm-realtime h5 {
+    font-size: 24px;
+    font-weight: 600;
+}
+p#pm {
+    padding: 10px;
+    font-size: 74px;
+    font-weight: bolder;
+}
+.temp-hum {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Agv pm */
+.avg-pm {
+    margin-top: 30px;
+}
+
+/* Graph */
 .graph-pm {
     margin-top: 35px;
+}
+a#btnChart {
+    font-size: 18px;
+    font-weight: bold;
+}
+a#btnChart2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* ------------- media -------------------- */
+@media only screen and (max-width: 1920px) {
+/* sensor realtime */
+.sesor-realtime {
+    height: 400px;
+}
+/* graph */
+div#chart{
+    height: 550px;
+}
+
 }
 
 @media only screen and (max-width: 1366px) {
     .it-list-box ul li {
         font-size: 16px;
+    }
+
+    .sesor-realtime {
+        height: 300px;
     }
 }

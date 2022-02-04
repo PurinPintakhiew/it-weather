@@ -77,7 +77,7 @@ class SensorController extends Controller
 
     public function chart(){
         $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
-        $dataDay[] = ['Time','Average'];
+        $dataDay[] = ['Time','Average PM 2.5'];
         foreach($sql as $key => $value){
             $time = date("d-m-Y H:i", strtotime($value->datetime));
             $dataDay[++$key] = [$time,$value->pm2_5];
@@ -90,7 +90,7 @@ class SensorController extends Controller
         $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
             WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
     
-        $dataWeek[] = ['Time','Average'];
+        $dataWeek[] = ['Time','Average PM 2.5'];
         foreach($sql as $key => $value){
             $date = $value->DateOnly;
             $time = $this->DateThai($date);

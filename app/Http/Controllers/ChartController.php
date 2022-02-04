@@ -69,16 +69,25 @@ class ChartController extends Controller
       }
 
       public function dataSelect(Request $request){
-        $date1 = date("Y-m-d", strtotime($request->date1));
-        $date2 = date("Y-m-d", strtotime($request->date2));
-        $time1 = $request->time1;
-        $time2 = $request->time2;
-        $data1 = $date1." ".$time1;
-        $data2 = $date2." ".$time2;
+        // $get1 = str_replace('/', '-', $request->date1);
+        // $date1 = date("Y-m-d", strtotime($get1));
+        // $get2 = str_replace('/', '-', $request->date2);
+        // $date2 = date("Y-m-d", strtotime($get2));
+        // $time1 = $request->time1;
+        // $time2 = $request->time2;
+        // $data1 = $date1." ".$time1;
+        // $data2 = $date2." ".$time2;
+        $data1 = $request->date1;
+        $data2 = $request->date2;
 
-        $sql = DB::select("select datetime,pm2_5 from datapm where datetime between '$date1' and '$date2'  ");
-        
-        // return redirect()->route('chartSelect', $sql)->with('stuff');
+        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN '$data1' and '$data2'  ");
+        $dataTime[] = ['Time','Average'];
+        foreach($sql as $key => $value){
+          $dataTime[++$key] = [$date = $value->datetime,$value->pm2_5];
+        }
+        $dataTime = json_encode($dataTime);
+
+        return $dataTime;
       }
 
       public function chartSelect(){
