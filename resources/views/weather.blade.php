@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/charts.scss') }}" rel="stylesheet">
   <!-- Bootstrap 4 css -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- css -->
@@ -79,10 +78,16 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
     function drawChart(){
       var data = google.visualization.arrayToDataTable(dateDay);
       var options = {
-        title: 'ค่า PM 2.5 ราย 24 ชั่วโมง ',
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        pointSize: 5,
+        chartArea: {
+          left: 40,
+          top:40,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
@@ -94,10 +99,16 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
     function drawChart() {
       var data = google.visualization.arrayToDataTable(dateWeek);
       var options = {
-        title: 'ค่า PM 2.5 รายสัปดาห์',
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        pointSize: 5,
+        chartArea: {
+          left: 40,
+          top:40,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart2'));
       chart.draw(data, options);
@@ -105,9 +116,9 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
   }
 
   $(window).resize(function(){
-    if(document.getElementById("chart2").style.display == "none"){
+    if(document.getElementById("chart-box2").style.display == "none"){
       Graph();
-    }else if(document.getElementById("chart").style.display == "none"){
+    }else if(document.getElementById("chart-box1").style.display == "none"){
       Graph2();
     }
   });
@@ -139,7 +150,7 @@ $(document).ready(()=>{
         url: "/weather-pm24",
         success: (response) => {
           if(response){
-            if(response != dataRequest){
+            if(response != dataRequest){                                                                    
               init(response);
               setDataPM(response);
               dataRequest = response;
@@ -207,7 +218,7 @@ function map(data) {
 <div class="container-fluid">
     <div class="row g-0">
 
-      <div class="col-sm-2 col-md-2" style="background-color:#6165f8;">
+      <div class="col-md-2 it-bar" style="background-color:#6165f8;">
         <div class="it-left" style="">
           <div class="it-left-top">
             <div class="logo-home">
@@ -217,10 +228,10 @@ function map(data) {
             </div>
             <div class="it-list-box">
                   <ul>
-                    <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
-                    <li><img src="{{url('/images/analysis.png')}}">Graph</li>
-                    <li><img src="{{url('/images/map.png')}}">Map</li>
-                    <li><a href="/chartData">Historical Data</a></li>
+                    <li onclick="clickScroll('avg-pm')"><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
+                    <li onclick="clickScroll('graph-pm')"><img src="{{url('/images/analysis.png')}}">Graph</li>
+                    <li onclick="clickScroll('map-pm')"><img src="{{url('/images/mapWhite.png')}}">Map</li>
+                    <li onclick="goPath('chartData')"><img src="{{url('/images/history2.png')}}">Historical Data</a></li>
                   </ul>
             </div>
           </div>
@@ -230,12 +241,12 @@ function map(data) {
         </div>
       </div>
 
-      <div class="col-sm-10 col-md-10">
+      <div class="col-md-10 it-weather">
           <div class="container-fluid">
 
 <!-- display data from sensor -->
     <div class="">
-      <div class="sesor-realtime d-flex justify-content-between">
+      <div id="sesor-realtime" class="d-flex justify-content-between">
           <div class="left-pm d-flex">
             <div class="local-time d-flex flex-column">
               <div class="location-pm">
@@ -243,7 +254,7 @@ function map(data) {
                     $i = 0;
                       foreach($location as $key=>$value){ 
                     ?>
-                      <div><?php echo $value->machine_name;?></div>
+                      <div><?php echo $value->address;?></div>
 
                         <?php if($i == $key){
                           break;
@@ -288,22 +299,29 @@ function map(data) {
     </div>
 
 <!-- pm24 -->
-  <div class="avg-pm">
+<div id="avg-pm">
   <h3>Average PM 2.5 in 24 hours</h3>
-    <div class="card-pm24">
+    <div class="card-pm24 container-fluid">
       <div class="row">
-        <div class="col-sm-12 col-md-4" style="background:#2a265f;color:white;">
-            <div >
-              <h4>PM Average</h4>
-              <div id="value-pm24"><?php echo $pmavg ?></div>
+        <div class="col-sm-12 col-md-4" id="pm24-avg-part">
+            <h4>PM Average</h4>
+            <div class="d-flex justify-content-center">
+              <div id="value-pm24">0</div>
+              <span class="pm24-symbol">µg/&#13221</span>
             </div>
         </div>
-        <div class="col-sm-12 col-md-3">
+        <div class="col-sm-12 col-md-3" id="pm24-level-part">
+          <h4>Level of PM 2.5</h4>
+          <div class="d-flex justify-content-center align-items-center">
             <div id="color-level-pm24"></div>
             <div id="level-pm24"></div>
+          </div>
         </div>
-        <div class="col-sm-12 col-md-5">
-          <div id="details-pm24"></div>
+        <div class="col-sm-12 col-md-5" id="pm24-detail-part">
+          <h4>Detail</h4>
+          <div class="d-flex justify-content-center">
+            <div id="details-pm24"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -381,24 +399,7 @@ function map(data) {
     </div>
 
 <!-- chart -->
-  <!-- <div class="">
-    <div class="card" id="pm1">
-      <div class="card-header">
-        <h3>กราฟแสดงคุณภาพอากาศ</h3>
-        <div class="btn-group d-flex">
-          <button id="btnChart" type="button" class="btn btn-primary active" onclick="showChart()">ราย 24 ชั่วโมง</button>
-          <button id="btnChart2" type="button" class="btn btn-primary" onclick="showChart2()">รายสัปดาห์</button>
-        </div>
-      </div>
-      <div class="card-body">
-          <div id="chart" style=""></div>
-          <div id="chart2" style="display:none"></div>
-      </div>
-    </div>
-  </div> -->
-
-<!-- chart2 -->
-    <div class="graph-pm">
+    <div id="graph-pm">
       <h3>Weather Graph</h3>
       <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -408,15 +409,40 @@ function map(data) {
           <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
         </li>
       </ul>
-      <div>
-        <div id="chart"></div>
+      <div id="chart-box1">
+        <div class="row">
+          <div id="chart" class="col-sm-12 col-md-11"></div>
+          <div class="chart-temp col-sm-12 col-md-1">
+              <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
+                <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
+                <div class="value-chart"><?php echo $tempDay ?> &#8451</div>
+              </div>
+              <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
+                <img class="chart-icon-temp" src="{{url('/images/humidity_chart.png')}}">
+                <div class="value-chart"><?php echo $humDay ?> %</div>
+              </div>
+          </div>
+        </div>
       </div>
-      
-      <div id="chart2" style="display:none"></div>
+      <div id="chart-box2" style="display:none">
+      <div class="row">
+          <div id="chart2" class="col-sm-12 col-md-11"></div>
+          <div class="chart-temp col-sm-12 col-md-1">
+              <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
+                <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
+                <div class="value-chart"><?php echo $tempWeek ?> &#8451</div>
+              </div>
+              <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
+                <img class="chart-icon-temp" src="{{url('/images/humidity_chart.png')}}">
+                <div class="value-chart"><?php echo $humWeek ?> %</div>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
 
 <!-- map -->
-  <div class="">
+  <div id="map-pm">
     <div class="card" id="Machinlocat">
       <h3 class="card-header">พิกัดตำแหน่งชุดตรวจวัด PM 2.5</h3>
       <div class="card-body">
@@ -497,23 +523,57 @@ function showTable(){
 }
 
 function showChart(){
-  document.getElementById("chart2").style.display = "none";
+  document.getElementById("chart-box2").style.display = "none";
   document.getElementById("btnChart2").classList.remove("active");
   document.getElementById("btnChart2").style.color = "#000000";
   Graph();
-  document.getElementById("chart").style.display = "block";
+  document.getElementById("chart-box1").style.display = "block";
   document.getElementById("btnChart").classList.add("active");
   document.getElementById("btnChart").style.color = "#989be0";
 }
 function showChart2(){
-  document.getElementById("chart").style.display = "none";
+  document.getElementById("chart-box1").style.display = "none";
   document.getElementById("btnChart").classList.remove("active");
   document.getElementById("btnChart").style.color = "#000000";
   Graph2();
-  document.getElementById("chart2").style.display = "block";
+  document.getElementById("chart-box2").style.display = "block";
   document.getElementById("btnChart2").classList.add("active");
   document.getElementById("btnChart2").style.color = "#989be0";
 }
+
+// Change image
+changeImage()
+function changeImage(){
+  let time = new Date().getHours();
+  let image = document.getElementById("sesor-realtime");
+  console.log(time); 
+  if(time >= 6 && time <  9){
+    image.style.backgroundImage = "url('/images/morning.jpg')"
+    image.style.color = "white";
+  } else if(time >= 9 && time < 16 ){
+    image.style.backgroundImage = "url('/images/day.jpg')"
+    image.style.color = "black";
+  } else if(time >= 16 && time < 19){
+    image.style.backgroundImage = "url('/images/evening.jpg')"
+    image.style.color = "#2d9726";
+  } else if(time >= 19 || time < 6){
+    image.style.backgroundImage = "url('/images/nigth.jpg')"
+    image.style.color = "white";
+  }
+}
+
+// scroll click
+function clickScroll(id){
+  document.getElementById(`${id}`).scrollIntoView({
+    behavior: 'smooth'
+  });
+}
+
+// path click
+function goPath(path){
+  window.location = `/${path}`;
+}
+
 
 </script>
 </body>

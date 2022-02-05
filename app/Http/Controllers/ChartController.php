@@ -69,14 +69,6 @@ class ChartController extends Controller
       }
 
       public function dataSelect(Request $request){
-        // $get1 = str_replace('/', '-', $request->date1);
-        // $date1 = date("Y-m-d", strtotime($get1));
-        // $get2 = str_replace('/', '-', $request->date2);
-        // $date2 = date("Y-m-d", strtotime($get2));
-        // $time1 = $request->time1;
-        // $time2 = $request->time2;
-        // $data1 = $date1." ".$time1;
-        // $data2 = $date2." ".$time2;
         $data1 = $request->date1;
         $data2 = $request->date2;
 
@@ -91,7 +83,6 @@ class ChartController extends Controller
       }
 
       public function chartSelect(){
-
         return view('chartSelect');
       }
 

@@ -64,30 +64,6 @@ span.hum-symbol {
     border-radius: 25px;
 }
 
-/* pm24 */
-.card-pm24 {
-    margin-top: 20px;
-    /* border: 1px solid; */
-    /* border-radius: 10px; */
-    /* box-shadow: 3px 6px rgb(0 0 0 / 60%); */
-}
-.head-pm24 {
-    border-bottom: 1px solid;
-    padding: 10px 10px 5px;
-    display: flex;
-    justify-content: space-between;
-}
-div#color-level-pm24 {
-    height: 30px;
-    width: 30px;
-    border-radius: 15px;
-}
-div#value-pm24 {
-    text-align: center;
-    font-size: 52px;
-    font-weight: bold;
-}
-
 
 /*----------------- bar-1 ----------------------*/
 .bar-1 {
@@ -183,10 +159,9 @@ div#iconmap{
     margin-bottom: 12px;
     margin-right: 8px;
 }
-/* .it-left-top {
+.it-left-top {
     position: fixed;
-    top: 0;
-} */
+}
 .it-session {
     position: fixed;
     bottom: 0;
@@ -197,10 +172,10 @@ div#iconmap{
 
 /*--------- right bar ----------*/
 /* sesor-realtime */
-.sesor-realtime {
-    background-image: url('/images/weather-wallpaper.jpg');
+div#sesor-realtime {
+    background-image: url('/images/morning.jpg');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
     background-size: cover;
     height: 325px;
     /* background-color: #8F00FF; */
@@ -235,41 +210,91 @@ p#pm {
     margin-top: auto;
     margin-bottom: auto;
 }
+.temp-pm h5 {
+    font-size: 24px;
+    font-weight: 600;
+}
+.hum-pm h5 {
+    font-size: 30px;
+    font-weight: 600;
+}
 
 /* Agv pm */
-.avg-pm {
+div#avg-pm {
     margin-top: 30px;
 }
-
-/* Graph */
-.graph-pm {
-    margin-top: 35px;
+div#pm24-avg-part{
+    color: white;
+    background: #2a265f;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 20px;
 }
-a#btnChart {
-    font-size: 18px;
+.card-pm24 {
+    margin-top: 20px;
+    /* border: 1px solid; */
+    /* border-radius: 10px; */
+    /* box-shadow: 3px 6px rgb(0 0 0 / 60%); */
+}
+.head-pm24 {
+    border-bottom: 1px solid;
+    padding: 10px 10px 5px;
+    display: flex;
+    justify-content: space-between;
+}
+div#color-level-pm24 {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+div#value-pm24 {
+    font-size: 52px;
     font-weight: bold;
 }
-a#btnChart2 {
-    font-size: 18px;
-    font-weight: bold;
+div#pm24-level-part {
+    border: 1px solid black;
+    padding: 20px;
+}
+div#pm24-detail-part {
+    border: 1px solid black;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 20px;
+}
+div#pm24-avg-part h4 {
+    font-weight: 500;
+}
+div#level-pm24 {
+    font-weight: 600;
+}
+div#pm24-level-part h4 {
+    font-weight: 600;
+}
+div#pm24-detail-part h4 {
+    font-weight: 600;
+}
+div#details-pm24 {
+    font-weight: 600;
 }
 
 #arrowAnim {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 div#arrowAnim p {
     margin: 0;
-    font-size: 24px;
+    font-size: 16px;
+    font-weight: 600;
 }
 .arrow {
-	width: 6vmin;
-	height: 6vmin;
-	box-sizing: border-box;
-	transform: rotate(135deg);
+    width: 6vmin;
+    height: 6vmin;
+    box-sizing: border-box;
+    transform: rotate(135deg);
 }
 .arrow::before {
     content: '';
@@ -292,25 +317,115 @@ div#arrowAnim p {
     transform: scale(.8);
 }
 
+/* Graph */
+div#graph-pm {
+    margin-top: 35px;
+}
+a#btnChart {
+    font-size: 18px;
+    font-weight: bold;
+}
+a#btnChart2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.value-chart {
+    font-weight: 600;
+    font-size: 16px;
+}
+.chart-temp.col-sm-12.col-md-1 {
+    margin-top: 40px;
+}
+
+
 /* ------------- media -------------------- */
 @media only screen and (max-width: 1920px) {
+/* bar */
+.logo-home a img {
+    width: 220px;
+}
 /* sensor realtime */
 .sesor-realtime {
     height: 400px;
 }
+.temp-pm h5 {
+    font-size: 30px;
+}
 /* graph */
 div#chart{
     height: 550px;
+    width: 100%;
+}
+div#chart2{
+    height: 550px;
+    width: 100%;
 }
 
 }
 
+/* ------------- 1366 px ---------------- */
 @media only screen and (max-width: 1366px) {
-    .it-list-box ul li {
-        font-size: 16px;
-    }
+/* bar */
+.logo-home a img {
+    width: 165px;
+}
+.it-list-box ul li {
+    font-size: 16px;
+}
 
-    .sesor-realtime {
-        height: 300px;
-    }
+/* sensor realtime */
+.sesor-realtime {
+    height: 300px;
+}
+.temp-pm h5 {
+    font-size: 24px;
+}
+.hum-pm h5 {
+    font-size: 24px;
+}
+
+/* chart */
+img.chart-icon-temp {
+    width: 35%;
+}
+.value-chart {
+    font-size: 14px;
+}
+
+}
+
+/* ------------- 1280 px ---------------- */
+@media only screen and (max-width: 1280px){
+/* bar */
+.logo-home a img {
+    width: 145px;
+}
+
+    
+}
+
+/* ------------- 1200 px ---------------- */
+@media only screen and (max-width: 1200px){
+/* bar */
+.logo-home a img {
+    width: 135px;
+}
+.it-list-box ul li {
+    padding: 5px;
+}
+
+}
+
+/*------------ IPad Pro 1024px ----------- */
+@media only screen and (max-width: 1024px){
+/* bar */
+.col-md-2.it-bar {
+    display: none;
+}
+
+/* it-weather */
+.col-md-10.it-weather {
+    width: 100% !important;
+}
+
 }

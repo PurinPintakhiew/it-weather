@@ -179,9 +179,14 @@ function Graph(pmArr) {
     function drawChart(){
       var data = google.visualization.arrayToDataTable(pmArr);
       var options = {
-        title: 'ค่า PM 2.5 ราย 24 ชั่วโมง ',
-        curveType: 'function',
-        legend: { position: 'bottom' },
+        chartArea: {
+      // leave room for y-axis labels
+      width: '95%'
+    },
+    legend: {
+      position: 'top'
+    },
+    width: '100%',
         pointSize: 5,
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart'));

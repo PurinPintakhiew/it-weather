@@ -108,11 +108,72 @@ class SensorController extends Controller
         }
         $pmavg = round($pmavg);
         return $pmavg;
-      }
+    }
+
+    public function tempDay(){
+        $sql = DB::select("SELECT AVG(temperature) as tempavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
+        $result = count($sql);
+        if($result > 0){
+            foreach($sql as $value){
+                $tempDay = $value->tempavg;
+            }
+            $tempDay = round($tempDay);
+            return $tempDay;
+        }else{
+            return 0;
+        }
+    }
+
+    public function humDay(){
+        $sql = DB::select("SELECT AVG(humidity) as humavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
+        $result = count($sql);
+        if($result > 0){
+            foreach($sql as $value){
+                $humDay = $value->humavg;
+            }
+            $humDay = round($humDay);
+            return $humDay;
+        }else{
+            return 0;
+        }
+    }
+
+    public function tempWeek(){
+        $sql = DB::select("SELECT AVG(temperature) as tempavg FROM datapm WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()");
+        $result = count($sql);
+        if($result > 0){
+            foreach($sql as $value){
+                $tempWeek = $value->tempavg;
+            }
+            $tempWeek = round($tempWeek);
+            return $tempWeek;
+        }else{
+            return 0;
+        }
+    }
+
+    public function humWeek(){
+        $sql = DB::select("SELECT AVG(humidity) as humavg FROM datapm WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()");
+        $result = count($sql);
+        if($result > 0){
+            foreach($sql as $value){
+                $humWeek = $value->humavg;
+            }
+            $humWeek = round($humWeek);
+            return $humWeek;
+        }else{
+            return 0;
+        }
+    }
 
     public function machineLocation(){
         $sql = DB::select("SELECT * FROM machine_location");
-        return $sql;
+        $result = count($sql);
+        if($result > 0){
+            return $sql;
+        }else{
+            return 0;
+        }
     }
 
     public function show(){
@@ -121,7 +182,11 @@ class SensorController extends Controller
         $pmavg = $this->pmAvg();
         $location = $this->machineLocation();
         $dateNow = $this->DateThai(date("Y-m-d"));
-        return view('weather',compact('dataDay','pmavg','location','dataWeek','dateNow'));
+        $tempDay = $this->tempDay();
+        $humDay = $this->humDay();
+        $tempWeek = $this->tempWeek();
+        $humWeek = $this->humWeek();
+        return view('weather',compact('dataDay','pmavg','location','dataWeek','dateNow','tempDay','humDay','tempWeek','humWeek'));
     }
 
 
