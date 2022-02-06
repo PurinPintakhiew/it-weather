@@ -16,6 +16,7 @@ img.temp-img {
 p#tamp {
     padding: 10px;
     font-size: 24px;
+    font-weight: 600;
 }
 span.temp-symbol {
     font-size: 20px;
@@ -41,6 +42,7 @@ span.pm-symbol {
 p#hum {
     padding: 10px;
     font-size: 24px;
+    font-weight: 600;
 }
 img.hum-img {
     height: 10%;
@@ -76,23 +78,6 @@ img.bru-img {
 img.it-img {
     width: 30%;
 }
-
-/* ------------------ chart ------------------- */
-/* div#pm1 {
-    text-align: center;
-    margin-top: 100px;
-    margin-bottom: 50px;
-}
-div#chart {
-    margin-left: auto;
-    margin-right: auto;
-} */
-
-/* ----------------- chartSelect --------------- */
-/* .col-md-12.col-lg-1.part2 {
-    text-align: center;
-    margin-top: 35px;
-} */
 
 /* details table */
 #details-level {
@@ -333,7 +318,7 @@ a#btnChart2 {
     font-weight: 600;
     font-size: 16px;
 }
-.chart-temp.col-sm-12.col-md-1 {
+.chart-temp.col-1 {
     margin-top: 40px;
 }
 
@@ -383,6 +368,9 @@ div#chart2{
 .hum-pm h5 {
     font-size: 24px;
 }
+.location-pm {
+    font-size: 20px;
+}
 
 /* chart */
 img.chart-icon-temp {
@@ -419,13 +407,283 @@ img.chart-icon-temp {
 /*------------ IPad Pro 1024px ----------- */
 @media only screen and (max-width: 1024px){
 /* bar */
-.col-md-2.it-bar {
+.col-2.it-bar {
     display: none;
 }
 
 /* it-weather */
-.col-md-10.it-weather {
-    width: 100% !important;
+.col-10.it-weather {
+    max-width: 100%;
+    flex: auto;
+}
+/* sensor realtime */
+div#sesor-realtime {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+}
+.pm-realtime h5 {
+    font-size: 22px;
+    font-weight: 600;
+}
+p#pm {
+    font-size: 70px;
+}
+span.pm-symbol {
+    margin-top: 50px;
+}
+.temp-pm h5 {
+    font-size: 22px;
+}
+.hum-pm h5 {
+    font-size: 22px;
+}
+img.hum-img {
+    width: 24px;
+    padding: 0px;
+}
+img.temp-img {
+    width: 24px;
+    padding: 0px;
+}
+p#hum {
+    margin-left: 5px;
+    padding: 2px;
+    font-size: 18px;
+    margin-right: 2px;
+    margin-bottom: 0;
+}
+span.temp-symbol {
+    font-size: 12px;
+    margin-top: 7px;
+}
+span.hum-symbol {
+    font-size: 12px;
+    margin-top: 7px;
+}
+p#tamp {
+    margin-left: 5px;
+    padding: 2px;
+    font-size: 18px;
+    margin-right: 2px;
+    margin-bottom: 0;
+}
+
+/* pm24 */
+div#avg-pm {
+    margin-top: 350px;
+}
+.arrow {
+    width: 3vmin;
+    height: 3vmin;
+}
+
+/* graph */
+.value-chart {
+    font-size: 12px;
+}
+div#chart {
+    height: 350px;
+}
+div#chart2 {
+    height: 350px;
+}
+
+}
+
+/*----------- IPad air 820px -------- */
+@media only screen and (max-width:820px) {
+/* pm24 */
+div#pm24-avg-part {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+}
+div#pm24-level-part {
+    border-bottom-left-radius: 5px;
+}
+div#pm24-detail-part {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 5px;
+}
+/* graph */
+div#chart {
+    flex: 0 0 90%;
+    max-width: 90%;
+}
+div#chart2 {
+    flex: 0 0 90%;
+    max-width: 90%;
+}
+.chart-temp.col-1 {
+    margin-top: 35px;
+    flex: 0 0 10%;
+    max-width: 10%;
+    padding: 0px;
+}
+.value-chart {
+    font-size: 11px;
+}
+div#graph-pm {
+    margin-top: 20px;
+}
+img.chart-icon-temp {
+    width: 30%;
+}
+}
+
+/*------------ IPad 768px ----------- */
+@media only screen and (max-width: 768px){
+/* sensor real time */
+div#sesor-realtime {
+    height: 290px;
+}
+.location-pm {
+    font-size: 16px;
+}
+.date-pm {
+    font-size: 16px;
+}
+.pm-realtime h5 {
+    font-size: 20px;
+}
+p#pm {
+    padding: 5px;
+    font-size: 60px;
+}
+span.pm-symbol {
+    margin-top: 43px;
+    font-size: 20px;
+}
+.temp-pm h5 {
+    font-size: 18px;
+}
+.hum-pm h5 {
+    font-size: 18px;
+}
+
+/* graph */
+div#avg-pm {
+    margin-top: 310px;
+}
+    
+}
+
+/* ----------- IPhone 6/7/8 Plus -------- */
+@media only screen and (max-width:414px) {
+/* sesor realtime */
+.location-pm {
+    font-size: 12px;
+}
+.date-pm {
+    font-size: 10px;
+}
+.pm-realtime h5 {
+    font-size: 16px;
+    margin: 0;
+}
+p#pm {
+    padding: 5px;
+    font-size: 40px;
+}
+span.pm-symbol {
+    margin-top: 29px;
+    font-size: 16px;
+}
+.temp-pm h5 {
+    font-size: 16px;
+}
+img.temp-img {
+    width: 18px;
+    padding: 0px;
+}
+p#tamp {
+    margin-left: 5px;
+    padding: 2px;
+    font-size: 14px;
+    margin-right: 2px;
+    margin-bottom: 0;
+}
+span.temp-symbol {
+    font-size: 10px;
+    margin-top: 6px;
+}
+.hum-pm h5 {
+    font-size: 16px;
+}
+img.hum-img {
+    width: 18px;
+    padding: 0px;
+}
+p#hum {
+    margin-left: 5px;
+    padding: 2px;
+    font-size: 14px;
+    margin-right: 2px;
+    margin-bottom: 0;
+}
+span.hum-symbol {
+    font-size: 12px;
+    margin-top: 7px;
+}
+div#sesor-realtime {
+    height: 275px;
+}
+
+/* pm24 */
+div#avg-pm {
+    margin-top: 285px;
+}
+div#avg-pm h3 {
+    font-size: 20px;
+}
+div#pm24-avg-part h4 {
+    font-size: 16px;
+}
+div#value-pm24 {
+    font-size: 35px;
+}
+span.pm24-symbol {
+    font-size: 12px;
+}
+div#pm24-level-part h4 {
+    font-size: 16px;
+}
+div#color-level-pm24 {
+    height: 25px;
+    width: 25px;
+}
+div#level-pm24 {
+    font-size: 14px;
+}
+div#pm24-detail-part h4 {
+    font-size: 16px;
+}
+div#details-pm24 {
+    font-size: 14px;
+}
+div#pm24-avg-part {
+    padding: 10px;
+}
+div#pm24-level-part {
+    border-bottom-left-radius: 0;
+    padding: 10px;
+}
+div#pm24-detail-part {
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+}
+
+} 
+
+/*------------ IPhone 5 320px ----------- */
+@media only screen and (max-width: 320px){
+/* it weather */
+div#sesor-realtime {
+    display: none !important;
 }
 
 }

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>
   <!-- Fonts -->
@@ -216,10 +219,10 @@ function map(data) {
 <body>
 
 <div class="container-fluid">
-    <div class="row g-0">
+    <div class="row">
 
-      <div class="col-md-2 it-bar" style="background-color:#6165f8;">
-        <div class="it-left" style="">
+      <div class="col-2 it-bar" style="background-color:#6165f8;">
+        <div class="">
           <div class="it-left-top">
             <div class="logo-home">
                 <a href="/">
@@ -241,11 +244,10 @@ function map(data) {
         </div>
       </div>
 
-      <div class="col-md-10 it-weather">
-          <div class="container-fluid">
+      <div class="col-10 it-weather">
+          <div class="">
 
 <!-- display data from sensor -->
-    <div class="">
       <div id="sesor-realtime" class="d-flex justify-content-between">
           <div class="left-pm d-flex">
             <div class="local-time d-flex flex-column">
@@ -296,28 +298,27 @@ function map(data) {
             </div>
           </div>
       </div>
-    </div>
 
 <!-- pm24 -->
 <div id="avg-pm">
   <h3>Average PM 2.5 in 24 hours</h3>
     <div class="card-pm24 container-fluid">
       <div class="row">
-        <div class="col-sm-12 col-md-4" id="pm24-avg-part">
+        <div class="col-md-12 col-lg-4" id="pm24-avg-part">
             <h4>PM Average</h4>
             <div class="d-flex justify-content-center">
               <div id="value-pm24">0</div>
               <span class="pm24-symbol">µg/&#13221</span>
             </div>
         </div>
-        <div class="col-sm-12 col-md-3" id="pm24-level-part">
+        <div class="col-sm-4 col-md-4 col-lg-4" id="pm24-level-part">
           <h4>Level of PM 2.5</h4>
           <div class="d-flex justify-content-center align-items-center">
             <div id="color-level-pm24"></div>
             <div id="level-pm24"></div>
           </div>
         </div>
-        <div class="col-sm-12 col-md-5" id="pm24-detail-part">
+        <div class="col-sm-8 col-md-8 col-lg-4" id="pm24-detail-part">
           <h4>Detail</h4>
           <div class="d-flex justify-content-center">
             <div id="details-pm24"></div>
@@ -333,20 +334,20 @@ function map(data) {
 
 <!-- Table index PM -->
   <div class="container">
-      <div id = "details-level" style="display:none">
+      <div id = "details-level" style="display:none;overflow-x:auto;">
         <div class="head-d-level">
           <strong>เกณฑ์ค่าความเข้มข้นของ PM 2.5 ของประเทศไทย</strong>
         </div>
         <table class="table table-bordered t-1">
           <thead>
             <tr>
-              <th scope="col">PM 2.5 (µg/m³)</th>
-              <th scope="col">สีที่ใช้</th>
-              <th scope="col">ความหมาย</th>
-              <th scope="col">คำอธิบาย</th>
+              <th scope="col" style="vertical-align: middle">PM 2.5 (µg/m³)</th>
+              <th scope="col" style="vertical-align: middle">สีที่ใช้</th>
+              <th scope="col" style="vertical-align: middle">ความหมาย</th>
+              <th scope="col" style="vertical-align: middle">คำอธิบาย</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="font-weight: 600;">
             <tr>
               <th>0 - 25</th>
               <td><div class="circle_table" style="background: rgb(59, 204, 255);"></div></td>
@@ -411,8 +412,8 @@ function map(data) {
       </ul>
       <div id="chart-box1">
         <div class="row">
-          <div id="chart" class="col-sm-12 col-md-11"></div>
-          <div class="chart-temp col-sm-12 col-md-1">
+          <div id="chart" class="col-11"></div>
+          <div class="chart-temp col-1">
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
                 <div class="value-chart"><?php echo $tempDay ?> &#8451</div>
@@ -426,8 +427,8 @@ function map(data) {
       </div>
       <div id="chart-box2" style="display:none">
       <div class="row">
-          <div id="chart2" class="col-sm-12 col-md-11"></div>
-          <div class="chart-temp col-sm-12 col-md-1">
+          <div id="chart2" class="col-11"></div>
+          <div class="chart-temp col-1">
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
                 <div class="value-chart"><?php echo $tempWeek ?> &#8451</div>
@@ -444,7 +445,7 @@ function map(data) {
 <!-- map -->
   <div id="map-pm">
     <div class="card" id="Machinlocat">
-      <h3 class="card-header">พิกัดตำแหน่งชุดตรวจวัด PM 2.5</h3>
+      <h3 class="card-header">Machine Location</h3>
       <div class="card-body">
         <div id="map"></div>
       </div>
