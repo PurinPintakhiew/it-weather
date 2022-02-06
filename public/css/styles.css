@@ -99,8 +99,8 @@ div#map {
     height: 400px;
 }
 div#iconmap{
-    background-color: powderblue;
-    height: 30px;width: 30px;
+    height: 30px;
+    width: 30px;
     border-radius: 50% 50% 50% 0;
     border: 4px solid #fff;
     width: 35px;
@@ -471,6 +471,10 @@ p#tamp {
     margin-right: 2px;
     margin-bottom: 0;
 }
+.location-pm {
+    width: 235px;
+    word-break: break-all;
+}
 
 /* pm24 */
 div#avg-pm {
@@ -543,6 +547,7 @@ div#sesor-realtime {
 }
 .location-pm {
     font-size: 16px;
+    width: 185px;
 }
 .date-pm {
     font-size: 16px;
@@ -565,6 +570,7 @@ span.pm-symbol {
     font-size: 18px;
 }
 
+
 /* graph */
 div#avg-pm {
     margin-top: 310px;
@@ -577,6 +583,7 @@ div#avg-pm {
 /* sesor realtime */
 .location-pm {
     font-size: 12px;
+    width: 140px;
 }
 .date-pm {
     font-size: 10px;
@@ -677,13 +684,107 @@ div#pm24-detail-part {
     border-bottom-left-radius: 5px;
 }
 
-} 
+/* table */
+.head-d-level {
+    font-size: 14px;
+}
+div#details-level table tbody {
+    font-size: 12px;
+}
+
+
+/* graph */
+div#graph-pm {
+    margin-top: 20px;
+}
+div#graph-pm h3 {
+    font-size: 20px;
+}
+a#btnChart {
+    font-size: 16px;
+}
+a#btnChart2 {
+    font-size: 16px;
+}
+div#chart {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+div#chart2 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.chart-temp.col-1 {
+    margin-top: 10px;
+    right: 0;
+    flex: 0 0 30%;
+    max-width:30%;
+    padding: 0px;
+    display: flex;
+    position: absolute;
+}
+.value-chart {
+    font-size: 12px;
+}
+img.chart-icon-temp {
+    width: 32%;
+}
+
+/* map */
+div#map-pm h3 {
+    font-size: 20px;
+}
+
+}
+
+/* --------- IPhone 6/7/8 375px --------- */
+@media only screen and (max-width:375px) {
+/* sensor */
+.location-pm {
+    font-size: 12px;
+    width: 90px;
+}
+p#tamp {
+    font-size: 12px;
+}
+.temp-pm h5 {
+    font-size: 14px;
+}
+img.temp-img {
+    width: 16px;
+}
+.hum-pm h5 {
+    font-size: 14px;
+}
+img.hum-img {
+    width: 16px;
+}
+p#hum {
+    font-size: 12px;
+}
+span.hum-symbol {
+    font-size: 10px;
+    margin-top: 4px;
+}
+span.temp-symbol {
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+}
 
 /*------------ IPhone 5 320px ----------- */
 @media only screen and (max-width: 320px){
 /* it weather */
-div#sesor-realtime {
-    display: none !important;
+span.pm-symbol {
+    margin-top: 30px;
+    font-size: 12px;
+}
+p#pm {
+    font-size: 35px;
+}
+.pm-realtime h5 {
+    font-size: 14px;
 }
 
 }

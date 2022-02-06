@@ -23,7 +23,7 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -141,7 +141,6 @@ $(document).ready(()=>{
     success: (response) => {
       if(response){
         dataRequest = response;
-        init(response);
         setDataPM(response);
         console.log(dataRequest);
       }
@@ -154,7 +153,6 @@ $(document).ready(()=>{
         success: (response) => {
           if(response){
             if(response != dataRequest){                                                                    
-              init(response);
               setDataPM(response);
               dataRequest = response;
               console.log("data updated");
@@ -170,53 +168,55 @@ $(document).ready(()=>{
 });
 
 // map
-async function init(data){
-   map(data);
+// async function init(data){
+//    map(data);
 
-}
+// }
 
-
-function map(data) {
+function init() {
 
   var locationList = <?php echo json_encode($location) ?> ;
-    // for (var i = 0; i < locationList.length; ++i) {
-    //   console.log(locationList[i].longitude + "," + locationList[i].latitude);
-    // }
-    // var map = new longdo.Map({
-    //     placeholder: document.getElementById('map')
-    // });
-    // for (var i = 0; i < locationList.length; ++i) {
-    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-    //       {
-    //         title: 'Custom Marker',
-    //         icon: {
-    //           html:  `<div class="icon-map-box">
-    //                     <div id="iconmap"></div>
-    //                     <strong class="mappm">${data}</strong>
-    //                 </div>`,
-    //           offset: { x: 18, y: 21 }
-    //           },
-    //         popup: {
-    //           html: '<div style="background: #eeeeff;">popup</div>'
-    //           }
-    //   }));
-    // }
-    // setTimeout(() => {
-    //   if(data >= 0){
-    //       document.getElementById("iconmap").style.backgroundColor = "red" ;
-    //     }
-    // }, 1000);
-  }
-  const changeColor = (data) => {
-      if(data >= 0){
-          document.getElementById("iconmap").style.backgroundColor = "red" ;
+    var map = new longdo.Map({
+        placeholder: document.getElementById('map')
+    });
+    for (var i = 0; i < locationList.length; ++i) {
+      let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+      var color;
+      if(pm25 >= 91){
+        color = "rgb(240, 70, 70)";
+      } else if (pm25 >= 51 ){
+        color = "rgb(255, 162, 0)";
+      } else if(pm25 >= 38){
+        color = "rgb(255, 255, 0)";
+      } else if(pm25 >= 26){
+        color = "rgb(146, 208, 80)";
+      } else if(pm25 >= 0){
+        color = "rgb(59, 204, 255)";
+      } else{
+        color = "black";
       }
+      map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+          {
+            title: 'Custom Marker',
+            icon: {
+              html:  `<div class="icon-map-box">
+                        <div id="iconmap" style="background-color:${color};"></div>
+                        <strong class="mappm">${pm25}</strong>
+                    </div>`,
+              offset: { x: 18, y: 21 }
+              },
+            popup: {
+              html: '<div style="background: #eeeeff;">popup</div>'
+              }
+      }));
     }
+    
+  }
 
   </script>
 </head>
 
-<body>
+<body onload="init();">
 
 <div class="container-fluid">
     <div class="row">
@@ -255,10 +255,8 @@ function map(data) {
                     <?php
                     $i = 0;
                       foreach($location as $key=>$value){ 
-                    ?>
-                      <div><?php echo $value->address;?></div>
-
-                        <?php if($i == $key){
+                          echo $value->address;
+                          if($i == $key){
                           break;
                         }
                         $i++;
@@ -452,7 +450,6 @@ function map(data) {
     </div>
   </div>
 
-<button onclick="changeColor()">change</button>
           </div>
       </div>
 
