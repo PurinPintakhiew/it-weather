@@ -23,7 +23,7 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
+  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -167,49 +167,43 @@ $(document).ready(()=>{
   }, 60 * 1000);
 });
 
-// map
-// async function init(data){
-//    map(data);
-
-// }
-
 function init() {
 
   var locationList = <?php echo json_encode($location) ?> ;
-    var map = new longdo.Map({
-        placeholder: document.getElementById('map')
-    });
-    for (var i = 0; i < locationList.length; ++i) {
-      let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-      var color;
-      if(pm25 >= 91){
-        color = "rgb(240, 70, 70)";
-      } else if (pm25 >= 51 ){
-        color = "rgb(255, 162, 0)";
-      } else if(pm25 >= 38){
-        color = "rgb(255, 255, 0)";
-      } else if(pm25 >= 26){
-        color = "rgb(146, 208, 80)";
-      } else if(pm25 >= 0){
-        color = "rgb(59, 204, 255)";
-      } else{
-        color = "black";
-      }
-      map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-          {
-            title: 'Custom Marker',
-            icon: {
-              html:  `<div class="icon-map-box">
-                        <div id="iconmap" style="background-color:${color};"></div>
-                        <strong class="mappm">${pm25}</strong>
-                    </div>`,
-              offset: { x: 18, y: 21 }
-              },
-            popup: {
-              html: '<div style="background: #eeeeff;">popup</div>'
-              }
-      }));
-    }
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    //   var color;
+    //   if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //   } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //   } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //   } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //   } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //   } else{
+    //     color = "black";
+    //   }
+    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //       {
+    //         title: 'Custom Marker',
+    //         icon: {
+    //           html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //           offset: { x: 18, y: 21 }
+    //           },
+    //         popup: {
+    //           html: '<div style="background: #eeeeff;">popup</div>'
+    //           }
+    //   }));
+    // }
     
   }
 
@@ -219,6 +213,28 @@ function init() {
 <body onload="init();">
 
 <div class="container-fluid">
+
+   <!-- <div id="moblie-menu">
+     <div id="btn-menu"></div>
+   </div> -->
+
+   <div id="moblie-menu">
+     <div id="menuToggle">
+        <input id="check-show" type="checkbox" onclick="showMenu()"/>
+        <span></span>
+        <span></span>
+        <span></span>
+     </div>
+   </div>
+  
+   <div id="list-menu" style="display:none">
+          <ul>
+            <li onclick="clickScroll('avg-pm')">Average PM 2.5</li>
+            <li onclick="clickScroll('graph-pm')">Graph</li>
+            <li onclick="clickScroll('map-pm')">Map</li>
+            <li onclick="goPath('chartData')">Historical Data</a></li>
+          </ul>
+        </div>
     <div class="row">
 
       <div class="col-2 it-bar" style="background-color:#6165f8;">
@@ -444,15 +460,33 @@ function init() {
   <div id="map-pm">
     <div class="card" id="Machinlocat">
       <h3 class="card-header">Machine Location</h3>
-      <div class="card-body">
+      <div class="">
         <div id="map"></div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="map-level-pm">
+        <div class="row">
+          <div class="col">ดีมาก</div>
+          <div class="col">ดี</div>
+          <div class="col">ปานกลาง</div>
+          <div class="col">เริ่มมีผลกระทบต่อสุขภาพ</div>
+          <div class="col">มีผลกระทบต่อสุขภาพ</div>
+        </div>
+        <div class="row tab-color">
+          <div class="col" style="background-color:rgb(59, 204, 255)"></div>
+          <div class="col" style="background-color:rgb(146, 208, 80)"></div>
+          <div class="col" style="background-color:rgb(255, 255, 0)"></div>
+          <div class="col" style="background-color:rgb(255, 162, 0)"></div>
+          <div class="col" style="background-color:rgb(240, 70, 70)"></div>
+        </div>
       </div>
     </div>
   </div>
 
+
           </div>
       </div>
-
     </div>
 </div>
 
@@ -544,7 +578,6 @@ changeImage()
 function changeImage(){
   let time = new Date().getHours();
   let image = document.getElementById("sesor-realtime");
-  console.log(time); 
   if(time >= 6 && time <  9){
     image.style.backgroundImage = "url('/images/morning.jpg')"
     image.style.color = "white";
@@ -553,7 +586,7 @@ function changeImage(){
     image.style.color = "black";
   } else if(time >= 16 && time < 19){
     image.style.backgroundImage = "url('/images/evening.jpg')"
-    image.style.color = "#2d9726";
+    image.style.color = "#a5a5a5";
   } else if(time >= 19 || time < 6){
     image.style.backgroundImage = "url('/images/nigth.jpg')"
     image.style.color = "white";
@@ -570,6 +603,17 @@ function clickScroll(id){
 // path click
 function goPath(path){
   window.location = `/${path}`;
+}
+
+// show moblie menu
+function showMenu(){
+  let checkBox = document.getElementById("check-show").checked;
+  let list = document.getElementById("list-menu");
+  if(checkBox == true ){
+    list.style.display = "block";
+  }else{
+    list.style.display = "none";
+  }
 }
 
 
