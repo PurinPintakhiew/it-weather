@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- css -->
   <link rel="stylesheet" type="text/css" href="{{ url('/css/styles.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url('/css/fontello.css') }}" />
   <!-- My Js -->
   <script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
   <!-- Jquery -->
@@ -214,25 +215,22 @@ function init() {
 
 <div class="container-fluid">
 
-   <!-- <div id="moblie-menu">
-     <div id="btn-menu"></div>
-   </div> -->
-
-   <div id="moblie-menu">
+   <div id="moblie-menu" style="display:none">
      <div id="menuToggle">
         <input id="check-show" type="checkbox" onclick="showMenu()"/>
-        <span></span>
-        <span></span>
-        <span></span>
+          <span class="s1"></span>
+          <span class="s2"></span>
+          <span class="s3"></span>
      </div>
    </div>
   
    <div id="list-menu" style="display:none">
           <ul>
-            <li onclick="clickScroll('avg-pm')">Average PM 2.5</li>
-            <li onclick="clickScroll('graph-pm')">Graph</li>
-            <li onclick="clickScroll('map-pm')">Map</li>
-            <li onclick="goPath('chartData')">Historical Data</a></li>
+            <li style="text-align:center" onclick="goPath('')"><img src="{{url('/images/it-weather2.png')}}" ></li>
+            <li onclick="clickScroll('avg-pm')"><i class="icon-pm"></i>Average PM 2.5</li>
+            <li onclick="clickScroll('graph-pm')"><i class="icon-chart-area"></i>Graph</li>
+            <li onclick="clickScroll('map-pm')"><i class="icon-map"></i>Map</li>
+            <li onclick="goPath('chartData')"><i class="icon-hourglass-3"></i>Historical Data</a></li>
           </ul>
         </div>
     <div class="row">
@@ -247,10 +245,10 @@ function init() {
             </div>
             <div class="it-list-box">
                   <ul>
-                    <li onclick="clickScroll('avg-pm')"><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
-                    <li onclick="clickScroll('graph-pm')"><img src="{{url('/images/analysis.png')}}">Graph</li>
-                    <li onclick="clickScroll('map-pm')"><img src="{{url('/images/mapWhite.png')}}">Map</li>
-                    <li onclick="goPath('chartData')"><img src="{{url('/images/history2.png')}}">Historical Data</a></li>
+                    <li onclick="clickScroll('avg-pm')"><i class="icon-pm"></i>Average PM 2.5</li>
+                    <li onclick="clickScroll('graph-pm')"><i class="icon-chart-area"></i>Graph</li>
+                    <li onclick="clickScroll('map-pm')"><i class="icon-map-1"></i>Map</li>
+                    <li onclick="goPath('chartData')"><i class="icon-hourglass-3"></i>Historical Data</a></li>
                   </ul>
             </div>
           </div>
@@ -547,10 +545,13 @@ function showNotification(req){
 // show-table
 function showTable(){
   var x = document.getElementById("details-level");
+  var arrow = document.getElementsByClassName("arrow")[0];
   if (x.style.display === "none") {
     x.style.display = "block";
+    arrow.classList.add("arrow-rotate");
   } else {
     x.style.display = "none";
+    arrow.classList.remove("arrow-rotate");
   }
 }
 

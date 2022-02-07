@@ -241,10 +241,16 @@ div#arrowAnim p {
     font-weight: 600;
 }
 .arrow {
-    width: 6vmin;
-    height: 6vmin;
+    width: 4vmin;
+    height: 4vmin;
     box-sizing: border-box;
     transform: rotate(135deg);
+    transition: .5s;
+}
+.arrow-rotate {
+    margin-top: 10px;
+    transform: rotate(316deg);
+    transition: .5s;
 }
 .arrow::before {
     content: '';
@@ -289,7 +295,7 @@ a#btnChart2 {
 
 /* details table */
 #details-level {
-    margin-top: 35px;
+    margin-top: 15px;
 }
 table.table.table-bordered.t-1 {
     text-align: center;
@@ -339,15 +345,19 @@ div#moblie-menu {
     position: fixed;
     z-index: 999;
     right: 10px;
-    top: 10px;
+    top: 15px;
 }
-input#check-show {
+#menuToggle input {
     position: absolute;
-    right: 2px;
-    height: 30px;
-    width: 30px;
+    right: 0;
+    top: 0;
+    height: 40px;
+    width: 40px;
     cursor: pointer;
     opacity: 0;
+}
+div#menuToggle {
+    margin-top: 10px;
 }
 #list-menu{
     position: fixed;
@@ -356,11 +366,12 @@ input#check-show {
     z-index: 1;
     height: 100vh;
     background: #6165f8;
-    width: 20vw;
+
 }
 #list-menu ul {
-    margin-top: 60px;
+    margin-top: 40px;
     list-style: none;
+    padding: 20px;
 }
 #list-menu ul li{
     font-size: 20px;
@@ -368,6 +379,9 @@ input#check-show {
     font-weight: 600;
     margin-bottom: 10px;
     padding: 5px;
+}
+#list-menu ul li img{
+    width: 150px;
 }
 #menuToggle span {
     display: block;
@@ -377,14 +391,37 @@ input#check-show {
     position: relative;
     background: #cdcdcd;
     border-radius: 3px;
+    transform-origin: 4px 1px;
+  
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+                background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+                opacity 0.55s ease;
+}
+#menuToggle span:first-child
+{
+  transform-origin: 0% 0%;
 }
 
-/* div#btn-menu{
-    background-image: url('/images/menu.png');
-    background-repeat: no-repeat;
-    height: 32px;
-    width: 32px;
-} */
+#menuToggle .s3
+{
+  transform-origin: 0% 100%;
+}
+
+#menuToggle input:checked ~ span
+{
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+  background: #232323;
+}
+#menuToggle input:checked ~ .s2
+{
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+#menuToggle input:checked ~ .s3
+{
+  transform: rotate(-45deg) translate(0, -1px);
+}
 
 /* ------------- media -------------------- */
 @media only screen and (max-width: 1920px) {
@@ -478,6 +515,11 @@ img.chart-icon-temp {
 /* bar */
 .col-2.it-bar {
     display: none;
+}
+
+/* moblie menu */
+#moblie-menu{
+    display: block !important;
 }
 
 /* it-weather */

@@ -39,35 +39,6 @@ div#chart {
 }
 
 /* ----------------- chartSelect --------------- */
-
-/* chart left */
-.chart-left.col-sm-2.col-md-2 {
-    height: 100vh;
-}
-.logo-home {
-    text-align: center;
-    border-bottom: 2px solid white;
-}
-.logo-home a img {
-    width: 100%;
-}
-.it-list-box ul {
-    margin-left: 0;
-    padding: 0;
-}
-.it-list-box ul li {
-    padding: 10px;
-    font-size: 26px;
-    font-weight: 800;
-    color: snow;
-    list-style: none;
-    margin-top: 10px;
-}
-.it-list-box ul li img {
-    margin-bottom: 12px;
-    margin-right: 8px;
-}
-
 /* chart Rigth */
 .insert-box {
     background-color: #75b4eb;
@@ -92,14 +63,3 @@ input#date2 {
 }
 
 /* ------------- media -------------------- */
-@media only screen and (max-width: 1920px) {
-    .it-list-box ul li {
-        font-size: 20px;
-    }
-}
-    
-@media only screen and (max-width: 1366px) {
-    .it-list-box ul li {
-        font-size: 16px;
-    }
-}

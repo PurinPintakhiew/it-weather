@@ -6,11 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootsrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-      <!-- Jquery -->
+    <!-- Jquery -->
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  
+      <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="{{ url('/css/chart.css') }}" /> 
-      <!-- Google Chart -->
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/styles.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/fontello.css') }}" />
+     <!-- Google Chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -19,30 +25,24 @@
 </head>
 <body>
 
+<div class="container-fluid">
+
 <div class="row">
-  <div class="chart-left col-sm-2 col-md-2" style="background-color:#6165f8;">
-    <div class="container">
-      <div div class="it-left-top">
-
-        <div class="logo-home">
-          <a href="/">
-            <img src="{{url('/images/it-weather2.png')}}" >
-          </a>
-        </div>
-
-        <div class="it-list-box">
-          <ul>
-            <li><img src="{{url('/images/air-pollution.png')}}">Average PM 2.5</li>
-            <li><img src="{{url('/images/analysis.png')}}">Graph</li>
-            <li><img src="{{url('/images/map.png')}}">Map</li>
-            <li><a href="/chartData">Historical Data</a></li>
-          </ul>
-        </div>
+<!-- bar -->
+  <div class="col-2 it-bar" style="background-color:#6165f8;height: 100vh;">
+    <div class="it-left-top">
+      <div class="logo-home">
+        <a href="/"><img src="{{url('/images/it-weather2.png')}}" ></a>
+      </div>
+      <div class="it-list-box">
+        <ul>
+          <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
+        </ul>
       </div>
     </div>
   </div>
-
-  <div class="chart-rigth col-sm-12 col-md-10">
+<!-- content -->
+  <div class="chart-rigth col-10">
     <div class="container-fluid">
       <div class="insert-box">
         <h1>ข้อมูลย้อนหลัง</h1>
@@ -119,12 +119,14 @@
           </div>
         </div>
       </div>
-      <div id="chart">
+      <div id="chart" style="margin: 0 auto">
           <!-- <h3>ไม่พบข้อมูล</h3> -->
       </div>
     </div>
   </div>
 </div>
+</div>
+
 
 <script>
 
@@ -180,19 +182,31 @@ function Graph(pmArr) {
       var data = google.visualization.arrayToDataTable(pmArr);
       var options = {
         chartArea: {
-      // leave room for y-axis labels
-      width: '95%'
-    },
-    legend: {
-      position: 'top'
-    },
-    width: '100%',
+          // left: 40,
+          // top:40,
+          width: '85%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
         pointSize: 5,
+        hAxis : { 
+          textStyle:{
+            fontSize: 12 
+          },
+          slantedText: true
+        }
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
     }
   }
+
+// path click
+function goPath(path){
+  window.location = `/${path}`;
+}
 
 </script>
 </body>

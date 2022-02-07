@@ -1,0 +1,126 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?11940976');
+  src: url('../font/fontello.eot?11940976#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff2?11940976') format('woff2'),
+       url('../font/fontello.woff?11940976') format('woff'),
+       url('../font/fontello.ttf?11940976') format('truetype'),
+       url('../font/fontello.svg?11940976#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?11940976#fontello') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-home:before { content: '\0e82'; } /* 'ຂ' */
+.icon-map-1:before { content: '\e800'; } /* '' */
+.icon-sun-filled:before { content: '\e801'; } /* '' */
+.icon-chart-bar:before { content: '\e801'; } /* '' */
+.icon-cloud:before { content: '\e802'; } /* '' */
+.icon-chart-line:before { content: '\e802'; } /* '' */
+.icon-flash:before { content: '\e803'; } /* '' */
+.icon-rain:before { content: '\e804'; } /* '' */
+.icon-cloud-sun:before { content: '\e805'; } /* '' */
+.icon-moon:before { content: '\e806'; } /* '' */
+.icon-flash-outline:before { content: '\e807'; } /* '' */
+.icon-sun:before { content: '\e808'; } /* '' */
+.icon-drizzle:before { content: '\e809'; } /* '' */
+.icon-snow:before { content: '\e80a'; } /* '' */
+.icon-cloud-flash:before { content: '\e80b'; } /* '' */
+.icon-cloud-wind:before { content: '\e80c'; } /* '' */
+.icon-wind:before { content: '\e80d'; } /* '' */
+.icon-windy-rain-inv:before { content: '\e80e'; } /* '' */
+.icon-snow-inv:before { content: '\e80f'; } /* '' */
+.icon-snow-heavy-inv:before { content: '\e810'; } /* '' */
+.icon-hail-inv:before { content: '\e811'; } /* '' */
+.icon-clouds-inv:before { content: '\e812'; } /* '' */
+.icon-clouds-flash-inv:before { content: '\e813'; } /* '' */
+.icon-temperature:before { content: '\e814'; } /* '' */
+.icon-compass:before { content: '\e815'; } /* '' */
+.icon-na:before { content: '\e816'; } /* '' */
+.icon-celcius:before { content: '\e817'; } /* '' */
+.icon-fahrenheit:before { content: '\e818'; } /* '' */
+.icon-clouds-flash-alt:before { content: '\e819'; } /* '' */
+.icon-sun-inv:before { content: '\e81a'; } /* '' */
+.icon-moon-inv:before { content: '\e81b'; } /* '' */
+.icon-cloud-sun-inv:before { content: '\e81c'; } /* '' */
+.icon-cloud-moon-inv:before { content: '\e81d'; } /* '' */
+.icon-cloud-inv:before { content: '\e81e'; } /* '' */
+.icon-cloud-flash-inv:before { content: '\e81f'; } /* '' */
+.icon-drizzle-inv:before { content: '\e820'; } /* '' */
+.icon-windy-inv:before { content: '\e821'; } /* '' */
+.icon-rain-inv:before { content: '\e822'; } /* '' */
+.icon-sunrise:before { content: '\e823'; } /* '' */
+.icon-sun-1:before { content: '\e824'; } /* '' */
+.icon-moon-1:before { content: '\e825'; } /* '' */
+.icon-eclipse:before { content: '\e826'; } /* '' */
+.icon-mist:before { content: '\e827'; } /* '' */
+.icon-snowflake:before { content: '\e828'; } /* '' */
+.icon-cloud-sun-1:before { content: '\e829'; } /* '' */
+.icon-wind-1:before { content: '\e82a'; } /* '' */
+.icon-cloud-moon:before { content: '\e82b'; } /* '' */
+.icon-fog-sun:before { content: '\e82c'; } /* '' */
+.icon-fog-moon:before { content: '\e82d'; } /* '' */
+.icon-fog-cloud:before { content: '\e82e'; } /* '' */
+.icon-fog:before { content: '\e82f'; } /* '' */
+.icon-cloud-1:before { content: '\e830'; } /* '' */
+.icon-cloud-flash-1:before { content: '\e831'; } /* '' */
+.icon-cloud-flash-alt:before { content: '\e832'; } /* '' */
+.icon-drizzle-1:before { content: '\e833'; } /* '' */
+.icon-rain-1:before { content: '\e834'; } /* '' */
+.icon-windy:before { content: '\e835'; } /* '' */
+.icon-windy-rain:before { content: '\e836'; } /* '' */
+.icon-snow-1:before { content: '\e837'; } /* '' */
+.icon-snow-alt:before { content: '\e838'; } /* '' */
+.icon-hail:before { content: '\e839'; } /* '' */
+.icon-clouds:before { content: '\e83a'; } /* '' */
+.icon-clouds-flash:before { content: '\e83b'; } /* '' */
+.icon-snow-heavy:before { content: '\e83c'; } /* '' */
+.icon-pm:before { content: '\e83d'; } /* '' */
+.icon-gauge:before { content: '\e83d'; } /* '' */
+.icon-chart-area:before { content: '\f1fe'; } /* '' */
+.icon-hourglass-o:before { content: '\f250'; } /* '' */
+.icon-hourglass-3:before { content: '\f253'; } /* '' */
+.icon-map:before { content: '\f279'; } /* '' */
