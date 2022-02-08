@@ -27,6 +27,25 @@
 
 <div class="container-fluid">
 
+  <div id="moblie-menu" style="display:none">
+    <div id="menuToggle">
+      <input id="check-show" type="checkbox" onclick="showMenu()"/>
+      <span class="s1"></span>
+      <span class="s2"></span>
+      <span class="s3"></span>
+    </div>
+  </div>
+  
+  <div id="list-menu" style="display:none">
+    <ul>
+      <li style="text-align:center" onclick="goPath('')"><img src="{{url('/images/it-weather2.png')}}" ></li>
+      <li onclick="clickScroll('avg-pm')"><i class="icon-pm"></i>Average PM 2.5</li>
+      <li onclick="clickScroll('graph-pm')"><i class="icon-chart-area"></i>Graph</li>
+      <li onclick="clickScroll('map-pm')"><i class="icon-map"></i>Map</li>
+      <li onclick="goPath('chartData')"><i class="icon-hourglass-3"></i>Historical Data</a></li>
+    </ul>
+  </div>
+
 <div class="row">
 <!-- bar -->
   <div class="col-2 it-bar it-bar-height" id="chart-bar" style="background-color:#6165f8;">
@@ -124,7 +143,8 @@
         </div>
       </div>
     </div>
-    <div id="chart-pm" style="margin: 0 auto">
+    
+    <div id="chart-pm">
         <p id="no-data">ไม่พบข้อมูล</p>
     </div>
 
@@ -285,6 +305,17 @@ function noData(){
 // path click
 function goPath(path){
   window.location = `/${path}`;
+}
+
+// show moblie menu
+function showMenu(){
+  let checkBox = document.getElementById("check-show").checked;
+  let list = document.getElementById("list-menu");
+  if(checkBox == true ){
+    list.style.display = "block";
+  }else{
+    list.style.display = "none";
+  }
 }
 
 </script>
