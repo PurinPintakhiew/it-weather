@@ -83,8 +83,9 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
       var data = google.visualization.arrayToDataTable(dateDay);
       var options = {
         chartArea: {
-          left: 40,
+          left: 80,
           top:40,
+          // bottom:50,
           width: '100%'
         },
         legend: {

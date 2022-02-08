@@ -33,12 +33,23 @@ div#pm1 {
     margin-top: 100px;
     margin-bottom: 50px;
 }
-div#chart {
+div#chart-pm {
+    height: 500px;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
+div#chart-pm p {
+    margin-top: 50px;
+    font-size: 40px;
+    font-weight: 600;
+}
 
 /* ----------------- chartSelect --------------- */
+/* bar */
+.it-bar-height{
+    height: 100vh;
+}
 /* chart Rigth */
 .insert-box {
     background-color: #75b4eb;
@@ -61,5 +72,27 @@ input#date1 {
 input#date2 {
     margin-right: 10px;
 }
+.insert-box label {
+    font-weight: 600;
+}
+.insert-box h1 {
+    font-weight: 600;
+}
+.insert-box p {
+    font-weight: 600;
+}
+select#time1 {
+    flex: 0 45%;
+}
+select#time2 {
+    flex: 0 45%;
+}
 
+/* summery */
+div#detail-table h3 {
+    font-weight: 600;
+}
+div#detail-table {
+    margin-top: 25px;
+}
 /* ------------- media -------------------- */

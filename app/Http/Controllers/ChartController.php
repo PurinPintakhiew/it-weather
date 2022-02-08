@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Weather;
+use App\Models\Machine;
 use Illuminate\Support\Facades\DB;
 
 class ChartController extends Controller
@@ -68,11 +69,17 @@ class ChartController extends Controller
 
       }
 
+      public function machine(){
+        $sql = DB::select("SELECT machine_id,address FROM machine_location");
+        return $sql;
+      }
+
       public function dataSelect(Request $request){
+        $macid = $request->macid;
         $data1 = $request->date1;
         $data2 = $request->date2;
 
-        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN '$data1' and '$data2'  ");
+        $sql = DB::select("SELECT machine_id,datetime,pm2_5 FROM datapm WHERE machine_id = $macid and  datetime BETWEEN '$data1' and '$data2'  ");
         $dataTime[] = ['Time','Average'];
         foreach($sql as $key => $value){
           $dataTime[++$key] = [$date = $value->datetime,$value->pm2_5];
@@ -83,7 +90,8 @@ class ChartController extends Controller
       }
 
       public function chartSelect(){
-        return view('chartSelect');
+        $machines = $this->machine();
+        return view('chartSelect',compact('machines'));
       }
 
 

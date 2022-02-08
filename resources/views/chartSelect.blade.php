@@ -29,7 +29,7 @@
 
 <div class="row">
 <!-- bar -->
-  <div class="col-2 it-bar" style="background-color:#6165f8;height: 100vh;">
+  <div class="col-2 it-bar it-bar-height" id="chart-bar" style="background-color:#6165f8;">
     <div class="it-left-top">
       <div class="logo-home">
         <a href="/"><img src="{{url('/images/it-weather2.png')}}" ></a>
@@ -43,15 +43,20 @@
   </div>
 <!-- content -->
   <div class="chart-rigth col-10">
-    <div class="container-fluid">
-      <div class="insert-box">
-        <h1>ข้อมูลย้อนหลัง</h1>
-        <div class="row">
-          <div class="col-md-4 part1">
-            <label for=""  class="form-label" >วันที่เริ่มต้น</label>
-            <div class="d-flex">
-              <input  type="date" class="form-control col" id="date1">
-                <select  class="form-select col" id="time1">
+    <div class="insert-box">
+      <h1>ข้อมูลย้อนหลัง</h1>
+      <label for=""  class="form-label" ></label>
+      <select id="machine-pm"  class="form-select mb-2">
+        @foreach($machines as $machine)
+          <option value="{{$machine->machine_id}}">{{$machine->address}}</option>
+         @endforeach
+      </select>
+      <div class="row">
+        <div class="col-md-4 part1">
+          <label for=""  class="form-label" >วันที่เริ่มต้น</label>
+          <div class="d-flex">
+            <input  type="date" class="form-control" id="date1">
+            <select  class="form-select" id="time1">
                   <option value="00:00">00:00</option>
                   <option value="01:00">01:00</option>
                   <option value="02:00">02:00</option>
@@ -77,16 +82,16 @@
                   <option value="22:00">22:00</option>
                   <option value="23:00">23:00</option>
                 </select>
-              </div>
-            </div>
-          <div class="col-md-1 part2">
-              <p>to</p>
           </div>
-          <div class="col-md-4 part3">
-            <label for=""  class="form-label" >วันที่สิ้นสุด</label>
-            <div class="d-flex">
-              <input type="date" class="form-control col" id="date2">
-              <select  class="form-select col" id="time2">
+        </div>
+        <div class="col-md-1 part2">
+          <p>to</p>
+        </div>
+        <div class="col-md-4 part3">
+          <label for=""  class="form-label" >วันที่สิ้นสุด</label>
+          <div class="d-flex">
+            <input type="date" class="form-control" id="date2">
+            <select  class="form-select" id="time2">
                 <option value="00:00">00:00</option>
                 <option value="01:00">01:00</option>
                 <option value="02:00">02:00</option>
@@ -112,25 +117,51 @@
                 <option value="22:00">22:00</option>
                 <option value="23:00">23:00</option>
               </select>
-            </div>
-          </div>
-          <div class="col-md-3 part4">
-            <button  class="btn btn-primary" onclick="showChart()">ตรวจสอบ</button>
           </div>
         </div>
-      </div>
-      <div id="chart" style="margin: 0 auto">
-          <!-- <h3>ไม่พบข้อมูล</h3> -->
+        <div class="col-md-3 part4">
+          <button  class="btn btn-primary col" onclick="showChart()">ตรวจสอบ</button>
+        </div>
       </div>
     </div>
+    <div id="chart-pm" style="margin: 0 auto">
+        <p id="no-data">ไม่พบข้อมูล</p>
+    </div>
+
+    <div id="detail-table" style="display:none">
+        <h3>Summery</h3>
+        <table class="table table-bordered text-center">
+          <tbody>
+            <tr>
+              <th scope="row">ค่าสูงสุด</th>
+              <td id="pm-max">0</td>
+            </tr>
+            <tr>
+              <th scope="row">ค่าน้อยสุด</th>
+              <td id="pm-min">0</td>
+            </tr>
+            <tr>
+              <th scope="row">ค่าเฉลี่ย</th>
+              <td id="pm-avg">0</td>
+            </tr>
+            <tr>
+              <th scope="row">จำนวนที่เก็บค่าได้</th>
+              <td id="pm-amount">0</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
   </div>
-</div>
+  <!-- end -->
+</div> 
 </div>
 
 
 <script>
 
 const showChart = () => {
+  var macid = document.getElementById("machine-pm").value;
   var date1 = document.getElementById("date1").value;
   var date2 = document.getElementById("date2").value;
   var time1 = document.getElementById("time1").value;
@@ -139,10 +170,7 @@ const showChart = () => {
   if(date1 != ""  && date2 != ""){
     date1 = date1 + " " + time1;
     date2 = date2 + " " + time2;
-    console.log(date1);
-    console.log(date2);
-
-    dateAll = {date1: date1 ,date2: date2};
+    dateAll = {macid: macid ,date1: date1 ,date2: date2};
 
   $.ajaxSetup({
     headers: {
@@ -156,13 +184,12 @@ const showChart = () => {
     data: dateAll,
     success: (response) => {
       if(response){
-        console.log(response);
         var pmArr = JSON.parse(response);
         if(pmArr.length > 1){
           Graph(pmArr);
+          detail(response)
         }else{
-          console.log(pmArr.length);
-          document.getElementById("chart").innerHTML = "NO";
+          noData();
         }
       }
     } 
@@ -182,9 +209,10 @@ function Graph(pmArr) {
       var data = google.visualization.arrayToDataTable(pmArr);
       var options = {
         chartArea: {
-          // left: 40,
-          // top:40,
-          width: '85%'
+          rigth: 0,
+          top:40,
+          bottom:80,
+          width: '80%'
         },
         legend: {
           position: 'top'
@@ -194,14 +222,65 @@ function Graph(pmArr) {
         hAxis : { 
           textStyle:{
             fontSize: 12 
-          },
-          slantedText: true
+          }
         }
       };
-      var chart = new google.visualization.LineChart(document.getElementById('chart'));
+      var chart = new google.visualization.LineChart(document.getElementById('chart-pm'));
       chart.draw(data, options);
     }
   }
+
+// detail table 
+function detail(pmArr){
+  var arr = JSON.parse(pmArr);
+  var arr2 = new Array();
+  var sum = 0;
+  var i = 0;
+  arr.splice(0, 1);
+  arr.map((a1) =>{
+    a1.map((a2) =>{
+        if(typeof(a2) == "number"){
+            arr2.push(a2)
+        }
+    })
+})
+  arr2.map((val,key) => {
+    sum = sum + val;
+    i = i + 1;
+})
+const avg = sum / i;
+const max =  Math.max(...arr2);
+const min = Math.min(...arr2);
+let table = document.getElementById("detail-table");
+let bar = document.getElementById("chart-bar");
+let avgt = document.getElementById("pm-avg");
+let maxt = document.getElementById("pm-max");
+let mint = document.getElementById("pm-min");
+let amount = document.getElementById("pm-amount");
+
+table.style.display = "block";
+bar.classList.remove("it-bar-height");
+avgt.innerHTML = avg.toFixed(3);
+maxt.innerHTML = max;
+mint.innerHTML = min;
+amount.innerHTML = i;
+
+}
+
+// no data
+function noData(){
+  var chart = document.getElementById("chart-pm");
+  let table = document.getElementById("detail-table");
+  let bar = document.getElementById("chart-bar");
+
+  chart.innerHTML = "";
+  let item = document.createElement('p');
+  item.textContent = "ไม่พบข้อมูล";
+  item.classList.add('no-data');
+  chart.appendChild(item);
+  table.style.display =  "none";
+  bar.classList.add("it-bar-height");
+}
 
 // path click
 function goPath(path){
@@ -211,5 +290,3 @@ function goPath(path){
 </script>
 </body>
 </html>
-<?php
-?>
