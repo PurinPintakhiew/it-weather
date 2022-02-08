@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>IT Weather</title>
+    <link rel="icon" href="{{url('/images/LOGO-IT.png')}}" type="image/gif" sizes="16x16">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,13 +19,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/login.css') }}" />
+    
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="">
-                    IT Weather
+        <nav class="navbar navbar-expand-md shadow-sm" style="background-color:#6165f8;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img id="icon-weather" src="{{url('/images/it-weather2.png')}}" >
                 </a>
             </div>
         </nav>

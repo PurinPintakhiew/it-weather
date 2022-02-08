@@ -37,7 +37,7 @@ div#chart-pm {
 }
 div#chart-pm p {
     margin-top: 50px;
-    font-size: 40px;
+    font-size: 24px;
     font-weight: 600;
 }
 
@@ -75,6 +75,7 @@ input#date2 {
     font-weight: 600;
 }
 .insert-box h1 {
+    text-align: center;
     font-weight: 600;
 }
 .insert-box p {
@@ -86,6 +87,16 @@ select#time1 {
 select#time2 {
     flex: 0 45%;
 }
+.insert-box select {
+    font-weight: 600;
+}
+.insert-box input {
+    font-weight: 600;
+}
+.insert-box button {
+    font-weight: 600;
+}
+
 
 /* summery */
 div#detail-table h3 {
@@ -130,9 +141,39 @@ div#chart-pm {
 
 /* ----------------- IPad Air 820px -------------- */
 @media only screen and (max-width: 820px) {
-/* bar */
-#list-menu ul li img {
-    width: 180px;
+/* chart right */
+.col-md-4.part1 {
+    width: 100%;
+    margin-bottom: 10px;
 }
+.col-md-1.part2 {
+    width: 100%;
+}
+.col-md-1.part2 p {
+   margin: 0;
+}
+.col-md-4.part3 {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.col-md-3.part4 {
+    width: 100%;
+}
+.insert-box h1 {
+    font-size: 26px;
+}
+.insert-box {
+    padding: 25px 40px;
+}
+
+/* graph */
+div#chart-pm {
+    margin-top: 405px;
+    height: 400px
+}
+div#chart-pm p {
+    font-size: 26px;
+}
+
 
 }

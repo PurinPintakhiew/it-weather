@@ -8,35 +8,34 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>IT Weather</title>
+    <link rel="icon" href="{{url('/images/LOGO-IT.png')}}" type="image/gif" sizes="16x16">
 
+    <!-- Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/login.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/admin.css') }}" />
 
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+        <nav class="navbar navbar-expand-md" style="background-color:#6165f8;">
+            <div class="container-fluid">
                 <a id="it-brand" class="navbar-brand" href="/">
-                    IT Weather
+                    <img id="icon-weather" src="{{url('/images/it-weather2.png')}}" >
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -49,16 +48,16 @@
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
+                                <li class="nav-item text-bar">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
+                            <li class="nav-item text-bar">
                                 <a class="nav-link" href="register">เพิ่มผู้ดูแล</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li class="nav-item dropdown text-bar">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
@@ -90,7 +89,7 @@
 <script type="text/javascript">
 
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("10.133.0.131", Number(9001),id);
+client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -103,7 +102,7 @@ client.connect({onSuccess:onConnect});
 function onConnect() {
     console.log("onConnect");
     document.getElementById("status").innerHTML = "Connect";
-    // document.getElementById("checkbox_on").checked = true;
+    document.getElementById("checkbox_on").checked = true;
     client.subscribe("it_bru/project/pm");
   client.subscribe("it_bru/project/temp");
   client.subscribe("it_bru/project/hum");

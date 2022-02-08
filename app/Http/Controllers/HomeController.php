@@ -34,4 +34,10 @@ class HomeController extends Controller
         return $sql;
     }
 
+    public function dashboard()
+    {
+        $machines=$this->machine();
+        return view('dashboard',compact('machines'));
+    }
+
 }

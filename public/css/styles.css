@@ -365,12 +365,12 @@ div#menuToggle {
     right: 0;
     z-index: 1;
     height: 100vh;
-    width: 30vw;
+    width: 40vw;
     background: #6165f8;
 
 }
 #list-menu ul {
-    margin-top: 40px;
+    margin-top: 30px;
     list-style: none;
     padding: 20px;
 }
@@ -382,7 +382,7 @@ div#menuToggle {
     padding: 5px;
 }
 #list-menu ul li img{
-    width: 215px;
+    width: 100%;
 }
 #menuToggle span {
     display: block;
@@ -612,6 +612,12 @@ div#chart2 {
 
 /*----------- IPad air 820px -------- */
 @media only screen and (max-width:820px) {
+/* bar */
+#list-menu ul li {
+    font-size: 20px;
+}
+
+
 /* pm24 */
 div#pm24-avg-part {
     border-top-left-radius: 5px;
@@ -697,8 +703,22 @@ div#avg-pm {
     
 }
 
+/* ----------- Nexus 7 600px ------------ */
+@media only screen and (max-width:600px) {
+/* bar */
+
+
+}
+
 /* ----------- IPhone 6/7/8 Plus -------- */
 @media only screen and (max-width:414px) {
+/* moblie bar */
+#list-menu ul li {
+    font-size: 16px;
+}
+#list-menu {
+    width: 50vw;
+}
 /* sesor realtime */
 .location-pm {
     font-size: 12px;
@@ -866,6 +886,11 @@ div#map {
 
 /* --------- IPhone 6/7/8 375px --------- */
 @media only screen and (max-width:375px) {
+/* moblie bar */
+#list-menu ul li {
+    font-size: 14px;
+}
+
 /* sensor */
 .location-pm {
     font-size: 12px;

@@ -29,6 +29,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>IT Weather</title>
+  <link rel="icon" href="{{url('/images/LOGO-IT.png')}}" type="image/gif" sizes="16x16">
 
 <script type="text/javascript">
   // get data from Mqtt

@@ -1,0 +1,25 @@
+/* icon-login */
+img#icon-weather {
+    width: 185px;
+}
+
+
+/* ---------------- media ------------------- */
+
+/* ----------- IPad PRO 1024px ------------- */
+@media only screen and (max-width: 1024px){
+/* icon-login */
+img#icon-weather {
+    width: 150px;
+}
+
+}
+
+/* ----------- Nexus 7 600px ------------- */
+@media only screen and (max-width: 600px){
+/* icon-login */
+img#icon-weather {
+    width: 125px;
+}
+
+}

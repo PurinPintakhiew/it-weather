@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Jquery -->
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  
-      <!-- Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>ข้อมูลย้อนหลัง</title>
+    <link rel="icon" href="{{url('/images/LOGO-IT.png')}}" type="image/gif" sizes="16x16">
 </head>
 <body>
 
@@ -39,10 +40,7 @@
   <div id="list-menu" style="display:none">
     <ul>
       <li style="text-align:center" onclick="goPath('')"><img src="{{url('/images/it-weather2.png')}}" ></li>
-      <li onclick="clickScroll('avg-pm')"><i class="icon-pm"></i>Average PM 2.5</li>
-      <li onclick="clickScroll('graph-pm')"><i class="icon-chart-area"></i>Graph</li>
-      <li onclick="clickScroll('map-pm')"><i class="icon-map"></i>Map</li>
-      <li onclick="goPath('chartData')"><i class="icon-hourglass-3"></i>Historical Data</a></li>
+      <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
     </ul>
   </div>
 
@@ -64,7 +62,7 @@
   <div class="chart-rigth col-10">
     <div class="insert-box">
       <h1>ข้อมูลย้อนหลัง</h1>
-      <label for=""  class="form-label" ></label>
+      <label for=""  class="form-label" >สถานที่</label>
       <select id="machine-pm"  class="form-select mb-2">
         @foreach($machines as $machine)
           <option value="{{$machine->machine_id}}">{{$machine->address}}</option>
@@ -148,9 +146,9 @@
         <p id="no-data">ไม่พบข้อมูล</p>
     </div>
 
-    <div id="detail-table" style="display:none">
+    <div id="detail-table" class="container" style="display:none">
         <h3>Summery</h3>
-        <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center border-dark">
           <tbody>
             <tr>
               <th scope="row">ค่าสูงสุด</th>
@@ -179,6 +177,16 @@
 
 
 <script>
+// Array chart
+var pmArr = new Array();
+
+$(window).resize(function(){
+  let table = document.getElementById("detail-table");
+    if(table.style.display == "block"){
+      Graph(pmArr);
+      console.log("true")
+    }
+});
 
 const showChart = () => {
   var macid = document.getElementById("machine-pm").value;
@@ -204,7 +212,7 @@ const showChart = () => {
     data: dateAll,
     success: (response) => {
       if(response){
-        var pmArr = JSON.parse(response);
+        pmArr = JSON.parse(response);
         if(pmArr.length > 1){
           Graph(pmArr);
           detail(response)
@@ -232,7 +240,7 @@ function Graph(pmArr) {
           rigth: 0,
           top:40,
           bottom:80,
-          width: '80%'
+          // width: '80%'
         },
         legend: {
           position: 'top'

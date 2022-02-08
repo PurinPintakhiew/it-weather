@@ -1,0 +1,104 @@
+/* font */
+body{
+    /* font-family: 'Prompt', sans-serif; */
+}
+
+/* text-bar */
+a.nav-link {
+    color: white;
+    font-size: 20px;
+}
+a.nav-link:hover {
+    color: rgb(247, 242, 0);
+}
+
+/* control css */
+/* card control */
+.card-control {
+    padding: 20px;
+    background-color: #c5c5c5;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+  }
+  .status-p {
+    text-align: end;
+  }
+  #status {
+    color: white;
+    background-color: #50dc00;
+    padding: 6px;
+    border-radius: 15px;
+    font-size: 18px;
+  }
+  .col.mac {
+    display: flex;
+    flex-direction: column;
+  }
+  input.input-m {
+    border-radius: 15px;
+  }
+  .col.pm-box {
+    background-color: #22e389;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  .col.temp-box {
+    background-color: #aacfff;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  .col.hum-box {
+    background-color: #dff2cb;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  h1#pm {
+    font-size: 72px;
+  }
+  h1#temp {
+    font-size: 72px;
+  }
+  h1#hum {
+    font-size: 72px;
+  }
+  
+  /* table machine */
+  thead.table-h {
+    background: black;
+    color: white;
+    text-align: center;
+  }
+  tbody.table-b {
+    text-align: center;
+  }
+  div#dialog-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  div#dialog-background {
+    display: none;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.85);
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 11999;
+  }
+  a#it-brand {
+      font-size: 20px;
+      font-weight: 600;
+  }
+  div#dialog-delete {
+    display: none;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.85);
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 11999;
+  }
