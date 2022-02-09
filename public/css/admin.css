@@ -69,7 +69,7 @@ a.nav-link:hover {
     font-size: 72px;
   }
   
-  /* box-control */
+  /* ------------------------ box-control ------------------------ */
   #light-status-mqtt {
     background-color:#ccc;
     border-radius:50px;
@@ -107,7 +107,11 @@ span.mb-2.span-topic {
   margin-left: 20px;
 }
 
-  /* table machine */
+  /* ---------- table machine ------------ */
+#machine-list {
+    height: 500px;
+    overflow-y: auto;
+}
   thead.table-h {
     background: black;
     color: white;
@@ -116,6 +120,14 @@ span.mb-2.span-topic {
   tbody.table-b {
     text-align: center;
   }
+  .card-machine-body{
+    border: 1px solid;
+  }
+  .card-machine-footer {
+    border: 1px solid;
+    padding: 10px;
+    border-top: 0;
+}
   div#dialog-form {
     position: absolute;
     top: 50%;
@@ -147,7 +159,42 @@ span.mb-2.span-topic {
     z-index: 11999;
   }
 
+  /* ----------------- map ------------------ */
+#map-location {
+    margin-top: 40px;
+}
 
+#map{
+  height: 500px;
+}
+div#iconmap{
+  height: 30px;
+  width: 30px;
+  border-radius: 50% 50% 50% 0;
+  border: 4px solid #fff;
+  width: 35px;
+  height: 35px;
+  transform: rotate(-45deg);
+}
+.mappm{
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+.icon-map-box{
+  position: absolute;
+}
+
+/* --------------- chart ------------- */
+#chart {
+  height: 500px;
+}
+#chart2 {
+  height: 500px;
+}
+
+  /* ------------------------------------------------------------------------------------------ */
   /* button on off */
 .switch {
   position: relative;

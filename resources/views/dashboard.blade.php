@@ -18,6 +18,9 @@
     <!-- Boostrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+    <!-- Jquery -->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -31,8 +34,16 @@
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="{{ url('/css/login.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url('/css/admin.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/fontello.css') }}" />
+
+    <!-- Google Chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- Map -->
+    <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+
 </head>
-<body>
+<body onload="init()">
 
 <!-- bar -->
 <nav class="navbar navbar-expand-md shadow-sm" style="background-color:#6165f8;">
@@ -144,6 +155,67 @@
         </div>
     </div>
 
+    <div id="map-location">
+        <div class="row">
+            <div id="map-box" class="col-7">
+                <div id="map"></div>
+            </div>
+            <div id="machine-box" class="col-5 card-machine">
+                <div id="machine-list" class="card-machine-body">
+                    <table class="table">
+                        <thead class="table-h">
+                            <tr>
+                                <th>Machine Name</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-b">
+                            @foreach($machines as $machine)
+                            <tr>
+                                <td class="table-d">{{$machine->machine_name}}</td>
+                                <td  class="table-d">{{$machine->latitude}}</td>
+                                <td  class="table-d">{{$machine->longitude}}</td>
+                                <td style="">
+                                    <i class="icon-pencil" onclick="goEdit('/edit/{{$machine->machine_id}}')"></i>
+                                    <i class="icon-trash-empty" onclick="showDelete({{$machine->machine_id}})"></i>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-machine-footer">
+                    <button id="showAdd" type="button" class="btn btn-success" onclick="showAdd()">Add Machine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- chart -->
+    <div id="graph-pm">
+      <h3>Weather Graph</h3>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a id="btnChart" class="nav-link active" style="color:#989be0" onclick="showChart()">Day</a>
+        </li>
+        <li class="nav-item">
+          <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
+        </li>
+      </ul>
+      <div id="chart-box1">
+        <div class="row">
+          <div id="chart" class=""></div>
+        </div>
+      </div>
+      <div id="chart-box2" style="display:none">
+      <div class="row">
+          <div id="chart2" class=""></div>
+        </div>
+      </div>
+    </div>
+
 </div> 
 
 <!-- <div class="container">
@@ -222,6 +294,27 @@
         <button id="showAdd" type="button" class="btn btn-success" onclick="showAdd()">Add Machine</button>
     </div>
 
+
+<div id="dialog-delete">
+    <div id="dialog-form" class="col-md-2 col-sm-5">
+        <div class="card">
+            <div class="card-header" style="text-align:center">
+               <p>You confirm to delete</p>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-evenly">
+                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
+                    <button class="btn btn-danger" onclick="closs()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toru"></div>
+</div> -->
+
+<!-- dialog add -->
 <div id="dialog-background">
     <div id="dialog-form" class="col-5">
         <div class="card">
@@ -253,30 +346,12 @@
     </div>
 </div>
 
-<div id="dialog-delete">
-    <div id="dialog-form" class="col-md-2 col-sm-5">
-        <div class="card">
-            <div class="card-header" style="text-align:center">
-               <p>You confirm to delete</p>
-            </div>
-            <div class="card-body">
-                <div class="d-flex justify-content-evenly">
-                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
-                    <button class="btn btn-danger" onclick="closs()">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="toru"></div>
-</div> -->
 
 <script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
 <script type="text/javascript">
 
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("10.133.0.103", Number(9001),id);
+client = new Paho.MQTT.Client("10.30.164.12", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -320,10 +395,15 @@ function showAdd(){
     document.getElementById("dialog-background").style.display = "block";
 }
 
-// closs dialog add
+// closs dialog 
 function closs(){
     document.getElementById("dialog-background").style.display = "none";
     document.getElementById("dialog-delete").style.display = "none";
+}
+
+// go edit
+function goEdit(path){
+    window.location = `${path}`;
 }
 
 // closs dialog delete
@@ -374,19 +454,195 @@ function setCheckbox(){
 }
 
 // set input address
-var locationList = <?php echo $machines ?>;
+var macid = document.getElementById("macid").value;
+var machineList = <?php echo $machines ?>;
+var chartDay = new Array();
+var chartWeek = new Array();
 
 setAddress();
 function setAddress(){
-    let macid = document.getElementById("macid").value;
     let address = document.getElementById("address");
-    locationList.map((val,key) => {
-        if(macid == (key+1)){
-            console.log("id: "+ macid + "," + key + 1);
+    machineList.map((val,key) => {
+        if(macid == val.machine_id){
+            console.log("id: "+ macid + "," + val.machine_id);
             address.value = val.address;
         }
     })
+    if(document.getElementById("chart-box2").style.display == "none"){
+        getChart(macid);
+    }else if(document.getElementById("chart-box1").style.display == "none"){
+        getChartWeek(macid);
+    }
 }
+
+// get chart
+function getChart(macid){
+    $.ajax({
+        type: "POST",
+        url: "/getChart",
+        data: {id: macid},
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+            chartDay = JSON.parse(response);
+            if(chartDay.length > 0){
+                Graph(chartDay);
+                console.log(chartDay);
+            }else{
+            console.log("not data")
+            }
+        }
+        } 
+    });
+}
+
+function getChartWeek(macid){
+    $.ajax({
+        type: "POST",
+        url: "/getChartWeek",
+        data: {id: macid},
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+            chartWeek = JSON.parse(response);
+            if(chartWeek.length > 0){
+                Graph2(chartWeek);
+                console.log(chartWeek);
+            }else{
+            console.log("not data")
+            }
+        }
+        } 
+    });
+}
+
+// map
+function init() {
+
+var locationList = <?php echo json_encode($map) ?>;
+
+//   var map = new longdo.Map({
+//       placeholder: document.getElementById('map')
+//   });
+//   for (var i = 0; i < locationList.length; ++i) {
+//     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+//     var color;
+//     if(pm25 >= 91){
+//       color = "rgb(240, 70, 70)";
+//     } else if (pm25 >= 51 ){
+//       color = "rgb(255, 162, 0)";
+//     } else if(pm25 >= 38){
+//       color = "rgb(255, 255, 0)";
+//     } else if(pm25 >= 26){
+//       color = "rgb(146, 208, 80)";
+//     } else if(pm25 >= 0){
+//       color = "rgb(59, 204, 255)";
+//     } else{
+//       color = "black";
+//     }
+//     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+//         {
+//           title: 'Custom Marker',
+//           icon: {
+//             html:  `<div class="icon-map-box">
+//                       <div id="iconmap" style="background-color:${color};"></div>
+//                       <strong class="mappm">${pm25}</strong>
+//                   </div>`,
+//             offset: { x: 18, y: 21 }
+//             },
+//           popup: {
+//             html: '<div style="background: #eeeeff;">popup</div>'
+//             }
+//     }));
+//   }
+}
+
+// show graph
+function showChart(){
+  document.getElementById("chart-box2").style.display = "none";
+  document.getElementById("btnChart2").classList.remove("active");
+  document.getElementById("btnChart2").style.color = "#000000";
+  document.getElementById("chart-box1").style.display = "block";
+  document.getElementById("btnChart").classList.add("active");
+  document.getElementById("btnChart").style.color = "#989be0";
+  if(chartDay.length > 0){
+    Graph(chartDay);
+  }else{
+      getChart(macid);
+  }
+}
+function showChart2(){
+  document.getElementById("chart-box1").style.display = "none";
+  document.getElementById("btnChart").classList.remove("active");
+  document.getElementById("btnChart").style.color = "#000000";
+  document.getElementById("chart-box2").style.display = "block";
+  document.getElementById("btnChart2").classList.add("active");
+  document.getElementById("btnChart2").style.color = "#989be0";
+  if(chartWeek.length > 0){
+    Graph2(chartWeek);
+  }else{
+    getChartWeek(macid);
+  }
+}
+
+// chart
+function Graph(chartDay) {
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart(){
+      var data = google.visualization.arrayToDataTable(chartDay);
+      var options = {
+        chartArea: {
+          left: 80,
+          top:40,
+          // bottom:50,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart'));
+      chart.draw(data, options);
+    }
+}
+
+function Graph2(chartWeek){
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(chartWeek);
+      var options = {
+        chartArea: {
+          left: 40,
+          top:40,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart2'));
+      chart.draw(data, options);
+    }
+  }
+
+  $(window).resize(function(){
+    if(document.getElementById("chart-box2").style.display == "none"){
+      Graph();
+    }else if(document.getElementById("chart-box1").style.display == "none"){
+      Graph2();
+    }
+  });
 
 </script>
 </body>

@@ -76,7 +76,7 @@ function onMessageArrived(message) {
 // Chart
 var dateDay = <?php echo json_encode($dataDay) ?>;
 var dateWeek = <?php echo json_encode($dataWeek) ?>;
-  function Graph() {
+function Graph() {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     
@@ -98,7 +98,7 @@ var dateWeek = <?php echo json_encode($dataWeek) ?>;
       var chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
     }
-  }
+}
   function Graph2(){
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);

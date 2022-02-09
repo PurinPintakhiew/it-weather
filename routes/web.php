@@ -46,4 +46,6 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('is_admin');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('is_admin');
+Route::post('/getChart', [HomeController::class, 'chart']);
+Route::post('/getChartWeek', [HomeController::class, 'chartWeek']);
 
