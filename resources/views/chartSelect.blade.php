@@ -149,7 +149,7 @@
     <div id="detail-table" class="container" style="display:none">
         <h3>Summery</h3>
         <table class="table table-bordered text-center border-dark">
-          <tbody>
+          <tbody style="font-weight: 600;">
             <tr>
               <th scope="row">ค่าสูงสุด</th>
               <td id="pm-max">0</td>

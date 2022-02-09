@@ -449,6 +449,18 @@ div#chart2{
 
 }
 
+/* ------------- 1440 px ---------------- */
+@media only screen and (max-width: 1440px) {
+/* bar */
+.it-list-box ul li {
+    font-size: 18px;
+}
+.logo-home a img {
+    width: 165px;
+}
+
+}
+
 /* ------------- 1366 px ---------------- */
 @media only screen and (max-width: 1366px) {
 /* bar */
