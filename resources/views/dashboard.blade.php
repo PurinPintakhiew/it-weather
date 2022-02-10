@@ -61,9 +61,14 @@
                         {{ Auth::user()->name }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdown-list">
-                        <a class="dropdown-item" href="{{ route('logout') }}">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                        </form>
                     </ul>
                 </li>
             </ul>
@@ -179,7 +184,7 @@
                                 <td  class="table-d">{{$machine->longitude}}</td>
                                 <td style="">
                                     <i class="icon-pencil" onclick="goEdit('/edit/{{$machine->machine_id}}')"></i>
-                                    <i class="icon-trash-empty" onclick="showDelete({{$machine->machine_id}})"></i>
+                                    <i class="icon-trash-empty" onclick="showDelete('{{$machine->machine_id}}')"></i>
                                 </td>
                             </tr>
                             @endforeach
@@ -317,9 +322,9 @@
 <!-- dialog add -->
 <div id="dialog-background">
     <div id="dialog-form" class="col-5">
-        <div class="card">
+        <div class="card" style="font-weight: 600;">
             <div class="card-header">
-                <h5 style="text-align:center">Add Machine Location</h5>
+                <h5 style="text-align:center;font-weight: 600;">Add Machine Location</h5>
             </div>
             <div class="card-body">
                 <form  action="{{route('saveMac')}}" method="POST" enctype="multipart/form-data">
@@ -328,13 +333,39 @@
                         <label for="" class="form-label">Machine name</label>
                         <input type="text" class="form-control" name="set_name">
                     </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Latitude</label>
-                        <input type="text" class="form-control" name="set_lat">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Latitude</label>
+                            <input type="text" class="form-control" name="set_lat">
+                        </div>
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Longitude</label>
+                            <input type="text" class="form-control" name="set_long">
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="" class="form-label">Longitude</label>
-                        <input type="text" class="form-control" name="set_long">
+                        <label for="" class="form-label">Address</label>
+                        <input type="text" class="form-control" name="set_address">
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Topic Status Machine</label>
+                            <input type="text" class="form-control" name="topic_status">
+                        </div>
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Topic PM</label>
+                            <input type="text" class="form-control" name="topic_pm">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Topic Temperature</label>
+                            <input type="text" class="form-control" name="topic_temp">
+                        </div>
+                        <div class="col mb-3">
+                            <label for="" class="form-label">Topic Humidity</label>
+                            <input type="text" class="form-control" name="topic_hum">
+                        </div>
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary">Add</button>
@@ -350,8 +381,45 @@
 <script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
 <script type="text/javascript">
 
+let topic_status;
+let topic_pm;
+let topic_temp;
+let topic_hum;
+let machineList = <?php echo $machines ?>;
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+let light_mac = document.getElementById("light-status-machine");
+// set input address
+function setAddress(){
+    let macid = document.getElementById("macid").value;
+    let address = document.getElementById("address");
+    // light = 
+    if(macid != ""){
+        machineList.map((val,key) => {
+            if(macid == val.machine_id){
+
+                console.log("id: "+ macid + "," + val.machine_id);
+                address.value = val.address;
+                topic_status = val.topic_status;
+                topic_pm = val.topic_pm;
+                topic_temp = val.topic_temp;
+                topic_hum = val.topic_hum;
+                Mqtt();
+
+                if(document.getElementById("chart-box2").style.display == "none"){
+                    getChart(macid);
+                } else if(document.getElementById("chart-box1").style.display == "none"){
+                    getChartWeek(macid);
+                }
+            }
+        });
+    } else {
+        console.log("data machine is null");
+    }
+} setAddress();
+
+
+function Mqtt(){
+    client = new Paho.MQTT.Client("10.133.0.103", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -359,48 +427,52 @@ client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 
-client.connect({onSuccess:onConnect});
+    client.connect({onSuccess:onConnect});
 
-function onConnect() {
-    console.log("onConnect");
-    document.getElementById("light-status-mqtt").style.backgroundColor = "rgb(132 255 59)";
-    client.subscribe("it_bru/project/status_machine");
-    client.subscribe("it_bru/project/pm");
-    client.subscribe("it_bru/project/temp");
-    client.subscribe("it_bru/project/hum");
-}
-
-function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:" + responseObject.errorMessage);
-    document.getElementById("light-status-mqtt").style.backgroundColor = "#ccc";
-    alert("There was an error with the server, please check")
-  } else {
-    console.log("connect");
-  }
-}
-
-
-function onMessageArrived(message) {
-    if(message.destinationName == "it_bru/project/status_machine"){
-        console.log("status machine :" + message.payloadString);
-        status_machine = message.payloadString;
-        if(status_machine == "on"){
-            document.getElementById("light-status-machine").style.backgroundColor = "rgb(132 255 59)";
-        } else {
-            document.getElementById("light-status-machine").style.backgroundColor = "#ccc";
-        }
-    } else if(message.destinationName == "it_bru/project/pm"){
-        console.log("PM 2.5:" + message.payloadString);
-        document.getElementById("pm").innerHTML = message.payloadString;
-    } else if(message.destinationName == "it_bru/project/temp"){
-        console.log("Temperature:" + message.payloadString);
-        document.getElementById("temp").innerHTML = message.payloadString;
-    } else if(message.destinationName == "it_bru/project/hum"){
-        console.log("Humidity:" + message.payloadString);
-        document.getElementById("hum").innerHTML = message.payloadString;
+    function onConnect() {
+        console.log("onConnect");
+        document.getElementById("light-status-mqtt").style.backgroundColor = "rgb(132 255 59)";
+        client.subscribe(topic_status);
+        client.subscribe(topic_pm);
+        client.subscribe(topic_temp);
+        client.subscribe(topic_hum);
     }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+            document.getElementById("light-status-mqtt").style.backgroundColor = "#ccc";
+            alert("There was an error with the server, please check")
+        } else {
+            console.log("connect");
+        }
+    }
+
+    function onMessageArrived(message) {
+        if(message.destinationName == topic_status){
+            console.log("status machine :" + message.payloadString);
+            status_machine = message.payloadString;
+            if(status_machine == "on"){
+                light_mac.style.backgroundColor = "rgb(132 255 59)";
+            } else {
+                light_mac.style.backgroundColor = "#ccc";
+            }
+        } else if(message.destinationName == topic_pm){
+            console.log("PM 2.5:" + message.payloadString);
+            document.getElementById("pm").innerHTML = message.payloadString;
+        } else if(message.destinationName == topic_temp){
+            console.log("Temperature:" + message.payloadString);
+            document.getElementById("temp").innerHTML = message.payloadString;
+        } else if(message.destinationName == topic_hum){
+            console.log("Humidity:" + message.payloadString);
+            document.getElementById("hum").innerHTML = message.payloadString;
+        } else {
+            console.log("Don't know this topic " + message.destinationName);
+        }
+    }
+
 }
+
 
 // show dialog add
 function showAdd(){
@@ -419,7 +491,7 @@ function goEdit(path){
 }
 
 // closs dialog delete
-var delID;
+let delID;
 function showDelete(id){
     delID = id;
     document.getElementById("dialog-delete").style.display = "block";
@@ -447,9 +519,9 @@ function deleteMac(){
 }
 
 function setCheckbox(){
-    var checkBox = document.getElementById("checkbox_on").checked;
+    let checkBox = document.getElementById("checkbox_on").checked;
     // var itMac = document.getElementById("select-topic").value;
-    var itMac = "it_bru/project/motor";
+    let itMac = "it_bru/project/motor";
     if(checkBox == true){
         document.getElementById("toru").innerHTML = "on" + itMac;
         msg = "1";
@@ -462,30 +534,6 @@ function setCheckbox(){
         message = new Paho.MQTT.Message(msg);
         message.destinationName = itMac;
         client.send(message);
-    }
-}
-
-// set input address
-var machineList = <?php echo $machines ?>;
-
-setAddress();
-function setAddress(){
-    let macid = document.getElementById("macid").value;
-    let address = document.getElementById("address");
-    if(macid != ""){
-        machineList.map((val,key) => {
-            if(macid == val.machine_id){
-                console.log("id: "+ macid + "," + val.machine_id);
-                address.value = val.address;
-                if(document.getElementById("chart-box2").style.display == "none"){
-                    getChart(macid);
-                } else if(document.getElementById("chart-box1").style.display == "none"){
-                    getChartWeek(macid);
-                }
-            }
-        });
-    } else {
-        console.log("data machine is null");
     }
 }
 
@@ -537,7 +585,7 @@ function getChartWeek(macid){
 // map
 function init() {
 
-var locationList = <?php echo json_encode($map) ?>;
+let locationList = <?php echo json_encode($map) ?>;
 
 //   var map = new longdo.Map({
 //       placeholder: document.getElementById('map')

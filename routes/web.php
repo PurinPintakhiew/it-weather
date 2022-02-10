@@ -28,16 +28,9 @@ Route::post('dataSelect',[ChartController::class,'dataSelect'])->name('see');
 
 Route::get('edit/{id}',[MachineController::class,'showEdit']);
 Route::post('addMachine',[MachineController::class,'addMachine'])->name('saveMac');
+Route::post('/updateMachine',[MachineController::class,'updateMachine'])->name('editMac');
 Route::get('delMachine/{id}',[MachineController::class,'deleteMachine']);
 
-// Route::post('test', function()
-// {
-//     return 'Success! ajax in laravel 5';
-// });
-// Route::get('test', function()
-// {
-//     return view('test');
-// });
 Route::get('getData', function()
 {
     return view('getMqtt');

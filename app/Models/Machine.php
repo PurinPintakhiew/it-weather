@@ -9,4 +9,6 @@ class Machine extends Model
 {
     use HasFactory;
     protected $table = 'machine_location';
+    protected $primaryKey = 'machine_id';
+
 }
