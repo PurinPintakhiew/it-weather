@@ -119,7 +119,7 @@
                     <div class="d-flex align-items-center mb-2">
                         <span>OFF</span>
                         <label class="switch">
-                            <input type="checkbox" id="checkbox_onoff">
+                            <input type="checkbox" id="checkbox_mac" onclick="controlMachine()">
                             <span class="slider round"></span>
                         </label>
                         <span>ON</span>
@@ -128,14 +128,14 @@
                     <div class="d-flex align-items-center mb-2">
                         <span>Auto</span>
                         <label class="switch">
-                            <input type="checkbox" id="checkbox_mode">
+                            <input type="checkbox" id="checkbox_mode" onclick="changeMode()">
                             <span class="slider round"></span>
                         </label>
                         <span>Manual</span>
                         <div class="sub-manual">
                             <span>UP</span>
                             <label class="switch">
-                                <input type="checkbox" id="checkbox_onoff">
+                                <input type="checkbox" id="checkbox_updown" disabled>
                                 <span class="slider round"></span>
                             </label>
                             <span>Down</span>
@@ -221,103 +221,8 @@
       </div>
     </div>
 
+        <div id="toru"></div>
 </div> 
-
-<!-- <div class="container">
-    <div class="card-control">
-        <div class="status-p">
-            <span id="status">Not Connect</span>
-        </div>
-        <div class="control-mode">
-            <p>Auto Mode</p>
-            <label class="switch">
-                <input type="checkbox" id="checkbox_on" onclick="setCheckbox()">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="machine row">
-            <div class="col-6 mac">
-                <label class="label-m">Machine ID</label>
-                <select class="form-select" id="select-topic">
-                    @foreach($machines as $machine)
-                    <option value="{{$machine->machine_name}}">{{$machine->machine_name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col pm-box">
-                <p>PM 2.5</p>
-                <div class="pm-body d-flex justify-content-center">
-                    <h1 id="pm">0.00</h1>
-                    <span class="pm-symbol">µg/&#13221</span>
-                </div>
-            </div>
-            <div class="col temp-box">
-                <p>Temperature</p>
-                <div class="temp-body d-flex justify-content-center">
-                    <h1 id="temp">0.00</h1>
-                    <span class="pm-symbol">&#8451</span>
-                </div>
-            </div>
-            <div class="col hum-box ">
-                <p>Humidity</p>
-                <div class="hum-body d-flex justify-content-center">
-                    <h1 id="hum">0.00</h1>
-                    <span class="pm-symbol">%</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <table class="table">
-        <thead class="table-h">
-            <tr>
-                <th>Machine ID</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody class="table-b">
-            @foreach($machines as $machine)
-            <tr>
-                <td class="table-d">{{$machine->machine_id}}</td>
-                <td  class="table-d">{{$machine->latitude}}</td>
-                <td  class="table-d">{{$machine->longitude}}</td>
-                <td style="text-align:center">
-                    <a class="btn btn-warning" href="/edit/{{$machine->machine_id}}">Edit</a>
-                    <button class="btn btn-danger" onclick="showDelete({{$machine->machine_id}})">Delete</button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div class="">
-        <button id="showAdd" type="button" class="btn btn-success" onclick="showAdd()">Add Machine</button>
-    </div>
-
-
-<div id="dialog-delete">
-    <div id="dialog-form" class="col-md-2 col-sm-5">
-        <div class="card">
-            <div class="card-header" style="text-align:center">
-               <p>You confirm to delete</p>
-            </div>
-            <div class="card-body">
-                <div class="d-flex justify-content-evenly">
-                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
-                    <button class="btn btn-danger" onclick="closs()">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="toru"></div>
-</div> -->
 
 <!-- dialog add -->
 <div id="dialog-background">
@@ -377,6 +282,23 @@
     </div>
 </div>
 
+<!-- dialog delete -->
+<div id="dialog-delete">
+    <div id="dialog-form" class="col-md-2 col-sm-5">
+        <div class="card"  style="font-weight: 600;">
+            <div class="card-header" style="text-align:center">
+               <p style="margin: 0;">You confirm to delete</p>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-evenly">
+                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
+                    <button class="btn btn-danger" onclick="closs()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript" src="{{ asset('js/paho-mqtt.js') }}"></script>
 <script type="text/javascript">
@@ -386,8 +308,16 @@ let topic_pm;
 let topic_temp;
 let topic_hum;
 let machineList = <?php echo $machines ?>;
-const id = Math.random().toString(36).substring(2);
 let light_mac = document.getElementById("light-status-machine");
+let light_server = document.getElementById("light-status-mqtt");
+let div_pm = document.getElementById("pm");
+let div_temp = document.getElementById("temp");
+let div_hum = document.getElementById("hum");
+let chartBox1 = document.getElementById("chart-box1");
+let chartBox2 = document.getElementById("chart-box2");
+let chart1 = document.getElementById("chart");
+let chart2 = document.getElementById("chart2");
+
 // set input address
 function setAddress(){
     let macid = document.getElementById("macid").value;
@@ -396,7 +326,7 @@ function setAddress(){
     if(macid != ""){
         machineList.map((val,key) => {
             if(macid == val.machine_id){
-
+                clean()
                 console.log("id: "+ macid + "," + val.machine_id);
                 address.value = val.address;
                 topic_status = val.topic_status;
@@ -404,10 +334,11 @@ function setAddress(){
                 topic_temp = val.topic_temp;
                 topic_hum = val.topic_hum;
                 Mqtt();
-
-                if(document.getElementById("chart-box2").style.display == "none"){
+                if(chartBox2.style.display == "none"){
+                    console.log("c1");
                     getChart(macid);
-                } else if(document.getElementById("chart-box1").style.display == "none"){
+                } else if(chartBox1.style.display == "none"){
+                    console.log("c2");
                     getChartWeek(macid);
                 }
             }
@@ -419,7 +350,8 @@ function setAddress(){
 
 
 function Mqtt(){
-    client = new Paho.MQTT.Client("10.133.0.103", Number(9001),id);
+    const id = Math.random().toString(36).substring(2);
+    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -431,7 +363,7 @@ function Mqtt(){
 
     function onConnect() {
         console.log("onConnect");
-        document.getElementById("light-status-mqtt").style.backgroundColor = "rgb(132 255 59)";
+        light_server.style.backgroundColor = "rgb(132 255 59)";
         client.subscribe(topic_status);
         client.subscribe(topic_pm);
         client.subscribe(topic_temp);
@@ -441,7 +373,7 @@ function Mqtt(){
     function onConnectionLost(responseObject) {
         if (responseObject.errorCode !== 0) {
             console.log("onConnectionLost:" + responseObject.errorMessage);
-            document.getElementById("light-status-mqtt").style.backgroundColor = "#ccc";
+            light_server.style.backgroundColor = "#ccc";
             alert("There was an error with the server, please check")
         } else {
             console.log("connect");
@@ -459,13 +391,13 @@ function Mqtt(){
             }
         } else if(message.destinationName == topic_pm){
             console.log("PM 2.5:" + message.payloadString);
-            document.getElementById("pm").innerHTML = message.payloadString;
+            div_pm.innerHTML = message.payloadString;
         } else if(message.destinationName == topic_temp){
             console.log("Temperature:" + message.payloadString);
-            document.getElementById("temp").innerHTML = message.payloadString;
+            div_temp.innerHTML = message.payloadString;
         } else if(message.destinationName == topic_hum){
             console.log("Humidity:" + message.payloadString);
-            document.getElementById("hum").innerHTML = message.payloadString;
+            div_hum.innerHTML = message.payloadString;
         } else {
             console.log("Don't know this topic " + message.destinationName);
         }
@@ -473,6 +405,15 @@ function Mqtt(){
 
 }
 
+function clean(){
+    light_mac.style.backgroundColor = "#ccc";
+    light_server.style.backgroundColor = "#ccc";
+    div_pm.innerHTML = "0.00";
+    div_temp.innerHTML = "0.00";
+    div_hum.innerHTML = "0.00";
+    chart1.innerHTML = "";
+    chart2.innerHTML = "";
+}
 
 // show dialog add
 function showAdd(){
@@ -490,7 +431,7 @@ function goEdit(path){
     window.location = `${path}`;
 }
 
-// closs dialog delete
+// get id delete
 let delID;
 function showDelete(id){
     delID = id;
@@ -509,8 +450,9 @@ function deleteMac(){
         url:`/delMachine/${delID}`,
         success:(response) => {
           if(response){
-            console.log(response);
+            // console.log(response);
             document.getElementById("dialog-delete").style.display = "none";
+            location.reload();
           } else{
             console.log("Not have response");
           }
@@ -518,22 +460,47 @@ function deleteMac(){
     })
 }
 
-function setCheckbox(){
-    let checkBox = document.getElementById("checkbox_on").checked;
-    // var itMac = document.getElementById("select-topic").value;
-    let itMac = "it_bru/project/motor";
+// checkbox control
+// control machine
+function controlMachine(){
+    let checkBox = document.getElementById("checkbox_mac").checked;
     if(checkBox == true){
-        document.getElementById("toru").innerHTML = "on" + itMac;
-        msg = "1";
+        document.getElementById("toru").innerHTML = "on";
+        msg = "on";
         message = new Paho.MQTT.Message(msg);
-        message.destinationName = itMac;
+        message.destinationName = topic_status;
         client.send(message);
     }else{
-        document.getElementById("toru").innerHTML = "off" + itMac;
-        msg = "2";
+        document.getElementById("toru").innerHTML = "off";
+        msg = "off";
         message = new Paho.MQTT.Message(msg);
-        message.destinationName = itMac;
+        message.destinationName = topic_status;
         client.send(message);
+    }
+}
+
+// control moter
+function changeMode(){
+    let mode = document.getElementById("checkbox_mode").checked;
+    let updown = document.getElementById("checkbox_updown");
+    if(mode == true){
+        updown.disabled = false;
+    }else{
+        updown.disabled = true;
+    }
+}
+
+// no data
+function noData(){
+    let item = document.createElement('h1');
+    item.textContent = "ไม่พบข้อมูล";
+    item.classList.add('no-data');
+    if(chartBox2.style.display == "none"){
+        chart1.innerHTML = "";
+        chart1.appendChild(item);
+    } else if(chartBox1.style.display == "none"){
+        chart2.innerHTML = "";
+        chart2.appendChild(item);
     }
 }
 
@@ -549,11 +516,12 @@ function getChart(macid){
         success: (response) => {
         if(response){
             chartDay = JSON.parse(response);
-            if(chartDay.length > 0){
+            if(chartDay.length > 1){
                 Graph(chartDay);
-                console.log(chartDay);
+                console.log("not data")
             }else{
-            console.log("not data")
+                noData();
+                console.log("not data")
             }
         }
         } 
@@ -571,10 +539,11 @@ function getChartWeek(macid){
         success: (response) => {
         if(response){
             chartWeek = JSON.parse(response);
-            if(chartWeek.length > 0){
+            if(chartWeek.length > 1){
                 Graph2(chartWeek);
                 console.log(chartWeek);
             }else{
+                noData();
                 console.log("not data")
             }
         }
@@ -626,10 +595,10 @@ let locationList = <?php echo json_encode($map) ?>;
 // show graph
 function showChart(){
     let macid = document.getElementById("macid").value;
-    document.getElementById("chart-box2").style.display = "none";
+    chartBox2.style.display = "none";
     document.getElementById("btnChart2").classList.remove("active");
     document.getElementById("btnChart2").style.color = "#000000";
-    document.getElementById("chart-box1").style.display = "block";
+    chartBox1.style.display = "block";
     document.getElementById("btnChart").classList.add("active");
     document.getElementById("btnChart").style.color = "#989be0";
     if(macid != ""){
@@ -640,10 +609,10 @@ function showChart(){
 }
 function showChart2(){
     let macid = document.getElementById("macid").value;
-    document.getElementById("chart-box1").style.display = "none";
+    chartBox1.style.display = "none";
     document.getElementById("btnChart").classList.remove("active");
     document.getElementById("btnChart").style.color = "#000000";
-    document.getElementById("chart-box2").style.display = "block";
+    chartBox2.style.display = "block";
     document.getElementById("btnChart2").classList.add("active");
     document.getElementById("btnChart2").style.color = "#989be0";
     if(macid != ""){
@@ -700,13 +669,14 @@ function Graph2(chartWeek){
     }
   }
 
-  $(window).resize(function(){
-    if(document.getElementById("chart-box2").style.display == "none"){
+$(window).resize(function(){
+    let macid = document.getElementById("macid").value;
+    if(chartBox2.style.display == "none"){
         getChart(macid);
-    } else if(document.getElementById("chart-box1").style.display == "none"){
+    } else if(chartBox1.style.display == "none"){
         getChartWeek(macid);
     }
-  });
+});
 
 </script>
 </body>

@@ -213,7 +213,7 @@ const showChart = () => {
     success: (response) => {
       if(response){
         pmArr = JSON.parse(response);
-        if(pmArr.length > 0){
+        if(pmArr.length > 1){
           Graph(pmArr);
           detail(response)
         }else{
