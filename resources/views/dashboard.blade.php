@@ -351,7 +351,7 @@
 <script type="text/javascript">
 
 const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("10.30.164.12", Number(9001),id);
+client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -364,6 +364,7 @@ client.connect({onSuccess:onConnect});
 function onConnect() {
     console.log("onConnect");
     document.getElementById("light-status-mqtt").style.backgroundColor = "rgb(132 255 59)";
+    client.subscribe("it_bru/project/status_machine");
     client.subscribe("it_bru/project/pm");
     client.subscribe("it_bru/project/temp");
     client.subscribe("it_bru/project/hum");
@@ -372,22 +373,33 @@ function onConnect() {
 function onConnectionLost(responseObject) {
   if (responseObject.errorCode !== 0) {
     console.log("onConnectionLost:" + responseObject.errorMessage);
+    document.getElementById("light-status-mqtt").style.backgroundColor = "#ccc";
+    alert("There was an error with the server, please check")
   } else {
     console.log("connect");
   }
 }
 
+
 function onMessageArrived(message) {
-  if(message.destinationName == "it_bru/project/pm"){
-    console.log("PM 2.5:" + message.payloadString);
-    document.getElementById("pm").innerHTML = message.payloadString;
-  } else if(message.destinationName == "it_bru/project/temp"){
-    console.log("Temperature:" + message.payloadString);
-    document.getElementById("temp").innerHTML = message.payloadString;
-  } else if(message.destinationName == "it_bru/project/hum"){
-    console.log("Humidity:" + message.payloadString);
-    document.getElementById("hum").innerHTML = message.payloadString;
-  }
+    if(message.destinationName == "it_bru/project/status_machine"){
+        console.log("status machine :" + message.payloadString);
+        status_machine = message.payloadString;
+        if(status_machine == "on"){
+            document.getElementById("light-status-machine").style.backgroundColor = "rgb(132 255 59)";
+        } else {
+            document.getElementById("light-status-machine").style.backgroundColor = "#ccc";
+        }
+    } else if(message.destinationName == "it_bru/project/pm"){
+        console.log("PM 2.5:" + message.payloadString);
+        document.getElementById("pm").innerHTML = message.payloadString;
+    } else if(message.destinationName == "it_bru/project/temp"){
+        console.log("Temperature:" + message.payloadString);
+        document.getElementById("temp").innerHTML = message.payloadString;
+    } else if(message.destinationName == "it_bru/project/hum"){
+        console.log("Humidity:" + message.payloadString);
+        document.getElementById("hum").innerHTML = message.payloadString;
+    }
 }
 
 // show dialog add
@@ -454,24 +466,26 @@ function setCheckbox(){
 }
 
 // set input address
-var macid = document.getElementById("macid").value;
 var machineList = <?php echo $machines ?>;
-var chartDay = new Array();
-var chartWeek = new Array();
 
 setAddress();
 function setAddress(){
+    let macid = document.getElementById("macid").value;
     let address = document.getElementById("address");
-    machineList.map((val,key) => {
-        if(macid == val.machine_id){
-            console.log("id: "+ macid + "," + val.machine_id);
-            address.value = val.address;
-        }
-    })
-    if(document.getElementById("chart-box2").style.display == "none"){
-        getChart(macid);
-    }else if(document.getElementById("chart-box1").style.display == "none"){
-        getChartWeek(macid);
+    if(macid != ""){
+        machineList.map((val,key) => {
+            if(macid == val.machine_id){
+                console.log("id: "+ macid + "," + val.machine_id);
+                address.value = val.address;
+                if(document.getElementById("chart-box2").style.display == "none"){
+                    getChart(macid);
+                } else if(document.getElementById("chart-box1").style.display == "none"){
+                    getChartWeek(macid);
+                }
+            }
+        });
+    } else {
+        console.log("data machine is null");
     }
 }
 
@@ -482,7 +496,7 @@ function getChart(macid){
         url: "/getChart",
         data: {id: macid},
         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: (response) => {
         if(response){
@@ -504,7 +518,7 @@ function getChartWeek(macid){
         url: "/getChartWeek",
         data: {id: macid},
         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: (response) => {
         if(response){
@@ -513,7 +527,7 @@ function getChartWeek(macid){
                 Graph2(chartWeek);
                 console.log(chartWeek);
             }else{
-            console.log("not data")
+                console.log("not data")
             }
         }
         } 
@@ -563,30 +577,32 @@ var locationList = <?php echo json_encode($map) ?>;
 
 // show graph
 function showChart(){
-  document.getElementById("chart-box2").style.display = "none";
-  document.getElementById("btnChart2").classList.remove("active");
-  document.getElementById("btnChart2").style.color = "#000000";
-  document.getElementById("chart-box1").style.display = "block";
-  document.getElementById("btnChart").classList.add("active");
-  document.getElementById("btnChart").style.color = "#989be0";
-  if(chartDay.length > 0){
-    Graph(chartDay);
-  }else{
-      getChart(macid);
-  }
+    let macid = document.getElementById("macid").value;
+    document.getElementById("chart-box2").style.display = "none";
+    document.getElementById("btnChart2").classList.remove("active");
+    document.getElementById("btnChart2").style.color = "#000000";
+    document.getElementById("chart-box1").style.display = "block";
+    document.getElementById("btnChart").classList.add("active");
+    document.getElementById("btnChart").style.color = "#989be0";
+    if(macid != ""){
+        getChart(macid);
+    }else{
+        console.log("data machine is null")
+    }
 }
 function showChart2(){
-  document.getElementById("chart-box1").style.display = "none";
-  document.getElementById("btnChart").classList.remove("active");
-  document.getElementById("btnChart").style.color = "#000000";
-  document.getElementById("chart-box2").style.display = "block";
-  document.getElementById("btnChart2").classList.add("active");
-  document.getElementById("btnChart2").style.color = "#989be0";
-  if(chartWeek.length > 0){
-    Graph2(chartWeek);
-  }else{
-    getChartWeek(macid);
-  }
+    let macid = document.getElementById("macid").value;
+    document.getElementById("chart-box1").style.display = "none";
+    document.getElementById("btnChart").classList.remove("active");
+    document.getElementById("btnChart").style.color = "#000000";
+    document.getElementById("chart-box2").style.display = "block";
+    document.getElementById("btnChart2").classList.add("active");
+    document.getElementById("btnChart2").style.color = "#989be0";
+    if(macid != ""){
+        getChartWeek(macid);
+    }else{
+        console.log("data machine is null")
+    }
 }
 
 // chart
@@ -638,9 +654,9 @@ function Graph2(chartWeek){
 
   $(window).resize(function(){
     if(document.getElementById("chart-box2").style.display == "none"){
-      Graph();
-    }else if(document.getElementById("chart-box1").style.display == "none"){
-      Graph2();
+        getChart(macid);
+    } else if(document.getElementById("chart-box1").style.display == "none"){
+        getChartWeek(macid);
     }
   });
 
