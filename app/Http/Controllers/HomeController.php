@@ -54,7 +54,7 @@ class HomeController extends Controller
         }
         $dataDay = json_encode($dataDay);
         return $dataDay;
-      }
+    }
 
     public function chartWeek(Request $request){
         $id = $request->id;
@@ -69,7 +69,7 @@ class HomeController extends Controller
         }
         $dataWeek = json_encode($dataWeek);
         return $dataWeek;
-      }
+    }
 
     public function dashboard()
     {

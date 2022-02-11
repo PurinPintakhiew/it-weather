@@ -19,8 +19,11 @@ use App\Http\Controllers\MachineController;
 Route::get('/',[SensorController::class,'show']);
 Route::post('weather-add',[SensorController::class,'writeData'])->name('add');
 Route::get('weather-save',[SensorController::class,'saveData'])->name('save');
-Route::get('weather-pm24',[SensorController::class,'pmAvg'])->name('avg');
-Route::get('weather-chartDay',[SensorController::class,'chart'])->name('chart');
+Route::post('/weather-chart',[SensorController::class,'chart']);
+Route::post('/weather-chartWeek',[SensorController::class,'chartWeek']);
+Route::post('/weather-pm24',[SensorController::class,'pmAvg']);
+Route::post('/weather-data24',[SensorController::class,'dayAvg']);
+Route::post('/weather-data7',[SensorController::class,'weekAvg']);
 
 Route::get('chartPm',[ChartController::class,'chartData']);
 Route::get('chartData',[ChartController::class,'chartSelect']);

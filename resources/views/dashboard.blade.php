@@ -460,7 +460,6 @@ function deleteMac(){
     })
 }
 
-// checkbox control
 // control machine
 function controlMachine(){
     let checkBox = document.getElementById("checkbox_mac").checked;

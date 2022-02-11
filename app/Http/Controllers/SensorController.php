@@ -75,95 +75,47 @@ class SensorController extends Controller
         return "$day $monthThai $year";
     }
 
-    public function chart(){
-        $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
-        $dataDay[] = ['Time','Average PM 2.5'];
-        foreach($sql as $key => $value){
-            $time = date("d-m-Y H:i", strtotime($value->datetime));
-            $dataDay[++$key] = [$time,$value->pm2_5];
-        }
-        // $dataDay = json_encode($dataDay);
-        return $dataDay;
-      }
+    // public function chart(){
+    //     $sql = DB::select("SELECT datetime,pm2_5 FROM datapm WHERE datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
+    //     $dataDay[] = ['Time','Average PM 2.5'];
+    //     foreach($sql as $key => $value){
+    //         $time = date("d-m-Y H:i", strtotime($value->datetime));
+    //         $dataDay[++$key] = [$time,$value->pm2_5];
+    //     }
+    //     // $dataDay = json_encode($dataDay);
+    //     return $dataDay;
+    //   }
 
-    public function chartWeek(){
-        $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
-            WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
+    // public function chartWeek(){
+    //     $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
+    //         WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
     
-        $dataWeek[] = ['Time','Average PM 2.5'];
-        foreach($sql as $key => $value){
-            $date = $value->DateOnly;
-            $time = $this->DateThai($date);
-            $dataWeek[++$key] = [$time,$value->avg];
-        }
-        // $dataWeek = json_encode($dataWeek);
+    //     $dataWeek[] = ['Time','Average PM 2.5'];
+    //     foreach($sql as $key => $value){
+    //         $date = $value->DateOnly;
+    //         $time = $this->DateThai($date);
+    //         $dataWeek[++$key] = [$time,$value->avg];
+    //     }
+    //     // $dataWeek = json_encode($dataWeek);
     
-        return $dataWeek;
+    //     return $dataWeek;
+    // }
+    public function pmAvg(Request $request){  
+        $id = $request->id;
+        $sql = DB::select("SELECT AVG(pm2_5) as pmavg FROM datapm WHERE machine_id = $id AND datetime > NOW() - INTERVAL 24 HOUR");
+        return $sql;
     }
 
-    public function pmAvg(){  
-        $sql = DB::select("SELECT AVG(pm2_5) as pmavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
-        foreach($sql as $value){
-            $pmavg = $value->pmavg;
-        }
-        $pmavg = round($pmavg);
-        return $pmavg;
+    public function dayAvg(Request $request){  
+        $id = $request->id;
+        $sql = DB::select("SELECT AVG(temperature) as tempavg,AVG(humidity) as humavg FROM datapm WHERE machine_id = $id AND datetime > NOW() - INTERVAL 24 HOUR");
+        return $sql;
     }
 
-    public function tempDay(){
-        $sql = DB::select("SELECT AVG(temperature) as tempavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
-        $result = count($sql);
-        if($result > 0){
-            foreach($sql as $value){
-                $tempDay = $value->tempavg;
-            }
-            $tempDay = round($tempDay);
-            return $tempDay;
-        }else{
-            return 0;
-        }
-    }
-
-    public function humDay(){
-        $sql = DB::select("SELECT AVG(humidity) as humavg FROM datapm WHERE datetime > NOW() - INTERVAL 24 HOUR;");
-        $result = count($sql);
-        if($result > 0){
-            foreach($sql as $value){
-                $humDay = $value->humavg;
-            }
-            $humDay = round($humDay);
-            return $humDay;
-        }else{
-            return 0;
-        }
-    }
-
-    public function tempWeek(){
-        $sql = DB::select("SELECT AVG(temperature) as tempavg FROM datapm WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()");
-        $result = count($sql);
-        if($result > 0){
-            foreach($sql as $value){
-                $tempWeek = $value->tempavg;
-            }
-            $tempWeek = round($tempWeek);
-            return $tempWeek;
-        }else{
-            return 0;
-        }
-    }
-
-    public function humWeek(){
-        $sql = DB::select("SELECT AVG(humidity) as humavg FROM datapm WHERE datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()");
-        $result = count($sql);
-        if($result > 0){
-            foreach($sql as $value){
-                $humWeek = $value->humavg;
-            }
-            $humWeek = round($humWeek);
-            return $humWeek;
-        }else{
-            return 0;
-        }
+    public function weekAvg(Request $request){  
+        $id = $request->id;
+        $sql = DB::select("SELECT AVG(temperature) as tempavg,AVG(humidity) as humavg FROM datapm WHERE machine_id = $id AND datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW();");
+        return $sql;
     }
 
     public function machineLocation(){
@@ -176,17 +128,48 @@ class SensorController extends Controller
         }
     }
 
+    public function chart(Request $request){
+        $id = $request->id;
+        $sql = DB::select("SELECT datetime,pm2_5,machine_id FROM datapm WHERE machine_id = $id AND datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
+        $dataDay[] = ['Time','Average PM 2.5'];
+        foreach($sql as $key => $value){
+            $time = date("d-m-Y H:i", strtotime($value->datetime));
+            $dataDay[++$key] = [$time,$value->pm2_5];
+        }
+        $dataDay = json_encode($dataDay);
+        return $dataDay;
+    }
+
+    public function chartWeek(Request $request){
+        $id = $request->id;
+        $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
+            WHERE machine_id = $id AND datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
+    
+        $dataWeek[] = ['Time','Average PM 2.5'];
+        foreach($sql as $key => $value){
+            $date = $value->DateOnly;
+            // $time = $this->DateThai($date);
+            $dataWeek[++$key] = [$date,$value->avg];
+        }
+        $dataWeek = json_encode($dataWeek);
+        return $dataWeek;
+    }
+
+    public function machine(){
+        $sql = DB::table('machine_location')->get();
+        return $sql;
+    }
+
     public function show(){
-        $dataDay = $this->chart();
-        $dataWeek = $this->chartWeek();
-        $pmavg = $this->pmAvg();
+        // $pmavg = $this->pmAvg();
         $location = $this->machineLocation();
         $dateNow = $this->DateThai(date("Y-m-d"));
-        $tempDay = $this->tempDay();
-        $humDay = $this->humDay();
-        $tempWeek = $this->tempWeek();
-        $humWeek = $this->humWeek();
-        return view('weather',compact('dataDay','pmavg','location','dataWeek','dateNow','tempDay','humDay','tempWeek','humWeek'));
+        // $tempDay = $this->tempDay();
+        // $humDay = $this->humDay();
+        // $tempWeek = $this->tempWeek();
+        // $humWeek = $this->humWeek();
+        $machine = $this->machine();
+        return view('weather',compact('location','machine','dateNow'));
     }
 
 

@@ -31,186 +31,6 @@
   <title>IT Weather</title>
   <link rel="icon" href="{{url('/images/LOGO-IT.png')}}" type="image/gif" sizes="16x16">
 
-<script type="text/javascript">
-  // get data from Mqtt
-const id = Math.random().toString(36).substring(2);
-client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
-if(!client){
-  console.log("not connect");
-}
-client.onConnectionLost = onConnectionLost;
-client.onMessageArrived = onMessageArrived;
-
-client.connect({onSuccess:onConnect});
-
-function onConnect() {
-  console.log("onConnect");
-  client.subscribe("it_bru/project/pm");
-  client.subscribe("it_bru/project/temp");
-  client.subscribe("it_bru/project/hum");
-}
-
-function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:" + responseObject.errorMessage);
-  } else {
-    console.log("connect");
-  }
-}
-
-function onMessageArrived(message) {
-  if(message.destinationName == "it_bru/project/temp"){
-    console.log("Temp:" + message.payloadString);
-    document.getElementById("tamp").innerHTML = message.payloadString;
-
-  } else if(message.destinationName == "it_bru/project/pm"){
-    console.log("PM:" + message.payloadString);
-    document.getElementById("pm").innerHTML = message.payloadString;
-
-  } else if(message.destinationName == "it_bru/project/hum"){
-    console.log("Humidity:" + message.payloadString);
-    document.getElementById("hum").innerHTML = message.payloadString;
-
-  }
-}
-// Chart
-var dateDay = <?php echo json_encode($dataDay) ?>;
-var dateWeek = <?php echo json_encode($dataWeek) ?>;
-function Graph() {
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    
-    function drawChart(){
-      var data = google.visualization.arrayToDataTable(dateDay);
-      var options = {
-        chartArea: {
-          left: 80,
-          top:40,
-          // bottom:50,
-          width: '100%'
-        },
-        legend: {
-          position: 'top'
-        },
-        width: '100%',
-        pointSize: 5
-      };
-      var chart = new google.visualization.LineChart(document.getElementById('chart'));
-      chart.draw(data, options);
-    }
-}
-  function Graph2(){
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable(dateWeek);
-      var options = {
-        chartArea: {
-          left: 40,
-          top:40,
-          width: '100%'
-        },
-        legend: {
-          position: 'top'
-        },
-        width: '100%',
-        pointSize: 5
-      };
-      var chart = new google.visualization.LineChart(document.getElementById('chart2'));
-      chart.draw(data, options);
-    }
-  }
-
-  $(window).resize(function(){
-    if(document.getElementById("chart-box2").style.display == "none"){
-      Graph();
-    }else if(document.getElementById("chart-box1").style.display == "none"){
-      Graph2();
-    }
-  });
-
-// ajax 
-var dataRequest;
-$(document).ready(()=>{
-  Graph();
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  $.ajax({
-    type: "GET",
-    url: "/weather-pm24",
-    success: (response) => {
-      if(response){
-        dataRequest = response;
-        setDataPM(response);
-        console.log(dataRequest);
-      }
-    } 
-  });
-  setInterval(() => {
-    $.ajax({
-        type: "GET",
-        url: "/weather-pm24",
-        success: (response) => {
-          if(response){
-            if(response != dataRequest){                                                                    
-              setDataPM(response);
-              dataRequest = response;
-              console.log("data updated");
-            } else{
-              console.log("data not update");
-            }
-          } else {
-            console.log("Not have response");
-          }
-        }
-    });
-  }, 60 * 1000);
-});
-
-function init() {
-
-  var locationList = <?php echo json_encode($location) ?> ;
-    // var map = new longdo.Map({
-    //     placeholder: document.getElementById('map')
-    // });
-    // for (var i = 0; i < locationList.length; ++i) {
-    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-    //   var color;
-    //   if(pm25 >= 91){
-    //     color = "rgb(240, 70, 70)";
-    //   } else if (pm25 >= 51 ){
-    //     color = "rgb(255, 162, 0)";
-    //   } else if(pm25 >= 38){
-    //     color = "rgb(255, 255, 0)";
-    //   } else if(pm25 >= 26){
-    //     color = "rgb(146, 208, 80)";
-    //   } else if(pm25 >= 0){
-    //     color = "rgb(59, 204, 255)";
-    //   } else{
-    //     color = "black";
-    //   }
-    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-    //       {
-    //         title: 'Custom Marker',
-    //         icon: {
-    //           html:  `<div class="icon-map-box">
-    //                     <div id="iconmap" style="background-color:${color};"></div>
-    //                     <strong class="mappm">${pm25}</strong>
-    //                 </div>`,
-    //           offset: { x: 18, y: 21 }
-    //           },
-    //         popup: {
-    //           html: '<div style="background: #eeeeff;">popup</div>'
-    //           }
-    //   }));
-    // }
-    
-  }
-
-  </script>
 </head>
 
 <body onload="init();">
@@ -268,16 +88,11 @@ function init() {
           <div class="left-pm d-flex">
             <div class="local-time d-flex flex-column">
               <div class="location-pm">
-                    <?php
-                    $i = 0;
-                      foreach($location as $key=>$value){ 
-                          echo $value->address;
-                          if($i == $key){
-                          break;
-                        }
-                        $i++;
-                      }   
-                    ?>
+                <select id="local_mac" onchange="setAddress()">
+                  @foreach($machine as $local)
+                    <option id="option_mac" value="{{$local->machine_id}}">{{$local->address}}</option>
+                  @endforeach
+                </select>
               </div>
               <div class="date-pm">
                   <?php echo $dateNow ?>
@@ -297,7 +112,7 @@ function init() {
                   <h5>Temperature</h5>
                   <div class="d-flex flex-row justify-content-center">
                     <img class="temp-img" src="{{url('/images/temperatures.png')}}">
-                    <p id="tamp">0.00</p>
+                    <p id="temp">0.00</p>
                     <span class="temp-symbol">&#8451</span>
                   </div>
                 </div>
@@ -430,11 +245,11 @@ function init() {
           <div class="chart-temp col-1">
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
-                <div class="value-chart"><?php echo $tempDay ?> &#8451</div>
+                <div class="value-chart" id="value-temp">0&#8451</div>
               </div>
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/humidity_chart.png')}}">
-                <div class="value-chart"><?php echo $humDay ?> %</div>
+                <div class="value-chart" id="value-hum">0%</div>
               </div>
           </div>
         </div>
@@ -445,11 +260,11 @@ function init() {
           <div class="chart-temp col-1">
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/temperature_chart.png')}}">
-                <div class="value-chart"><?php echo $tempWeek ?> &#8451</div>
+                <div class="value-chart" id="value-temp2">0&#8451</div>
               </div>
               <div class="d-flex flex-row justify-content-center align-items-end" style="margin-bottom:10px">
                 <img class="chart-icon-temp" src="{{url('/images/humidity_chart.png')}}">
-                <div class="value-chart"><?php echo $humWeek ?> %</div>
+                <div class="value-chart" id="value-hum2">0%</div>
               </div>
           </div>
         </div>
@@ -491,7 +306,417 @@ function init() {
 </div>
 
 
-<script>
+<script type="text/javascript">
+
+let topic_status;
+let topic_pm;
+let topic_temp;
+let topic_hum;
+let machineList = <?php echo $machine ?>;
+let div_pm = document.getElementById("pm");
+let div_temp = document.getElementById("temp");
+let div_hum = document.getElementById("hum");
+let chartBox1 = document.getElementById("chart-box1");
+let chartBox2 = document.getElementById("chart-box2");
+let chart1 = document.getElementById("chart");
+let chart2 = document.getElementById("chart2");
+let temp_value = document.getElementById("value-temp");
+let hum_value = document.getElementById("value-hum");
+let temp_value2 = document.getElementById("value-temp2");
+let hum_value2 = document.getElementById("value-hum2");
+let color_level = document.getElementById("color-level-pm24");
+let level_pm24 = document.getElementById("level-pm24");
+let details_pm24 = document.getElementById("details-pm24");
+let value_pm24 = document.getElementById("value-pm24");
+let pm_level = 0;
+
+function setAddress(){
+    let macid = document.getElementById("local_mac").value;
+    if(macid != ""){
+        machineList.map((val,key) => {
+            if(macid == val.machine_id){
+                clearDiv();
+                console.log("id: "+ macid + "," + val.machine_id);
+                topic_status = val.topic_status;
+                topic_pm = val.topic_pm;
+                topic_temp = val.topic_temp;
+                topic_hum = val.topic_hum;
+                Mqtt();
+                getPm(macid);
+                pmRealtime(macid)
+                if(chartBox2.style.display == "none"){
+                  getChart(macid);
+                } else if(chartBox1.style.display == "none"){
+                  getChartWeek(macid);
+                }
+            }
+        });
+    } else {
+        console.log("data machine is null");
+    }
+} setAddress();
+
+// clear
+function clearDiv(){
+    div_pm.innerHTML = "0.00";
+    div_temp.innerHTML = "0.00";
+    div_hum.innerHTML = "0.00";
+    chart1.innerHTML = "";
+    chart2.innerHTML = "";
+    temp_value.innerHTML = "0&#8451";
+    hum_value.innerHTML = "0%";
+    temp_value2.innerHTML = "0&#8451";
+    hum_value2.innerHTML = "0%";
+    pm_level = 0;
+    value_pm24.innerHTML = "0";
+    color_level.style.backgroundColor = "#ccc";
+    level_pm24.innerHTML = "กรุณารอสักครู่...";
+    details_pm24.innerHTML = "กรุณารอสักครู่...";
+}
+
+// get data from Mqtt
+function Mqtt(){
+    const id = Math.random().toString(36).substring(2);
+    client = new Paho.MQTT.Client("10.133.0.103", Number(9001),id);
+    if(!client){
+        console.log("not connect");
+    }
+        
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect({onSuccess:onConnect});
+
+    function onConnect() {
+        console.log("onConnect");
+        client.subscribe(topic_status);
+        client.subscribe(topic_pm);
+        client.subscribe(topic_temp);
+        client.subscribe(topic_hum);
+    }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+            alert("There was an error with the server, please check")
+        } else {
+            console.log("connect");
+        }
+    }
+
+    function onMessageArrived(message) {
+        if(message.destinationName == topic_status){
+            console.log("status machine :" + message.payloadString);
+            status_machine = message.payloadString;
+            if(status_machine == "on"){
+              console.log("machine on");
+            } else {
+              console.log("machine off");
+            }
+        } else if(message.destinationName == topic_pm){
+            console.log("PM 2.5:" + message.payloadString);
+            div_pm.innerHTML = message.payloadString;
+        } else if(message.destinationName == topic_temp){
+            console.log("Temperature:" + message.payloadString);
+            div_temp.innerHTML = message.payloadString;
+        } else if(message.destinationName == topic_hum){
+            console.log("Humidity:" + message.payloadString);
+            div_hum.innerHTML = message.payloadString;
+        } else {
+            console.log("Don't know this topic " + message.destinationName);
+        }
+    }
+}
+
+// get chart
+function getChart(macid){
+    $.ajax({
+        type: "POST",
+        url: "/weather-chart",
+        data: {id: macid},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+            chartDay = JSON.parse(response);
+            if(chartDay.length > 1){
+                Graph(chartDay);
+                getAvg(macid);
+            }else{
+                noData();
+                console.log("not data")
+            }
+        }
+        } 
+    });
+}
+
+function getChartWeek(macid){
+    $.ajax({
+        type: "POST",
+        url: "/weather-chartWeek",
+        data: {id: macid},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+            chartWeek = JSON.parse(response);
+            if(chartWeek.length > 1){
+                Graph2(chartWeek);
+                getweekAvg(macid);
+            }else{
+                noData();
+                console.log("not data")
+            }
+        }
+        } 
+    });
+}
+
+// no data
+function noData(){
+    let item = document.createElement('h1');
+    item.textContent = "ไม่พบข้อมูล";
+    item.classList.add('no-data');
+    if(chartBox2.style.display == "none"){
+        chart1.innerHTML = "";
+        chart1.appendChild(item);
+    } else if(chartBox1.style.display == "none"){
+        chart2.innerHTML = "";
+        chart2.appendChild(item);
+    }
+}
+
+
+// Chart
+function Graph(chartDay) {
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart(){
+      var data = google.visualization.arrayToDataTable(chartDay);
+      var options = {
+        chartArea: {
+          left: 80,
+          top:40,
+          // bottom:50,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart'));
+      chart.draw(data, options);
+    }
+}
+  function Graph2(chartWeek){
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(chartWeek);
+      var options = {
+        chartArea: {
+          left: 40,
+          top:40,
+          width: '100%'
+        },
+        legend: {
+          position: 'top'
+        },
+        width: '100%',
+        pointSize: 5
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart2'));
+      chart.draw(data, options);
+    }
+  }
+
+$(window).resize(function(){
+  let macid = document.getElementById("local_mac").value;
+  if(chartBox2.style.display == "none"){
+      getChart(macid);
+  } else if(chartBox1.style.display == "none"){
+      getChartWeek(macid);
+  }
+});
+
+// let dataRequest;
+function getPm(macid){
+  $.ajax({
+        type: "POST",
+        url: "/weather-pm24",
+        data: {id: macid},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+          arr = response;
+            if(arr.length > 0){
+              pmAvg(arr);
+            }else{
+              console.log("not data")
+            }
+          }else{
+              console.log("not response")
+          }
+        } 
+    });
+}
+
+function pmRealtime(macid){
+  setInterval(() => {
+    getPm(macid);
+  }, 60 * 1000);
+}
+
+function pmAvg(arr){
+  let pm;
+  arr.map((val,key) => {
+      pm = val.pmavg;
+  })
+  pm = parseFloat(pm).toFixed(0);
+
+  if(isNaN(pm)){
+    pm = 0;
+    setTimeout(() => {
+      alert("กรุณาเลือกสถานที่ใหม่อีกครั้ง ขออภัยในความไม่สะดวก");
+    }, 5000);
+  }
+
+  if(pm != pm_level){
+    pm_level = pm;
+    setDataPM(pm);
+    console.log("New: " + pm + "," + pm_level);
+  }else if(pm == pm_level){
+    console.log("Not update: " + pm + "," + pm_level);
+  }
+}
+
+//  get temp-hum
+function getAvg(macid){
+  $.ajax({
+        type: "POST",
+        url: "/weather-data24",
+        data: {id: macid},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+          arr = response;
+            if(arr.length > 0){
+              setAvg(arr);
+            }else{
+              console.log("not data")
+            }
+          }else{
+              console.log("not response")
+          }
+        } 
+    });
+}
+
+function getweekAvg(macid){
+  $.ajax({
+        type: "POST",
+        url: "/weather-data7",
+        data: {id: macid},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (response) => {
+        if(response){
+          arr = response;
+            if(arr.length > 0){
+              setWAvg(arr);
+            }else{
+              console.log("not data")
+            }
+          }else{
+              console.log("not response")
+          }
+        } 
+    });
+}
+
+function setWAvg(arr){
+  let temp;
+  let hum;
+  let temp_value2 = document.getElementById("value-temp2");
+  let hum_value2 = document.getElementById("value-hum2");
+  arr.map((val,key) => {
+      temp = val.tempavg;
+      hum = val.humavg;
+  })
+  temp = parseFloat(temp).toFixed(0);
+  hum = parseFloat(hum).toFixed(0);
+  temp_value2.innerHTML = `${temp + "&#8451"}`;
+  hum_value2.innerHTML = `${hum + "%"}`;
+}
+
+function setAvg(arr){
+  let temp;
+  let hum;
+  let temp_value = document.getElementById("value-temp");
+  let hum_value = document.getElementById("value-hum");
+  arr.map((val,key) => {
+      temp = val.tempavg;
+      hum = val.humavg;
+  })
+  temp = parseFloat(temp).toFixed(0);
+  hum = parseFloat(hum).toFixed(0);
+  temp_value.innerHTML = `${temp + "&#8451"}`;
+  hum_value.innerHTML = `${hum + "%"}`;
+}
+
+function init() {
+
+  var locationList = <?php echo json_encode($location) ?> ;
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    //   var color;
+    //   if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //   } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //   } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //   } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //   } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //   } else{
+    //     color = "black";
+    //   }
+    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //       {
+    //         title: 'Custom Marker',
+    //         icon: {
+    //           html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //           offset: { x: 18, y: 21 }
+    //           },
+    //         popup: {
+    //           html: '<div style="background: #eeeeff;">popup</div>'
+    //           }
+    //   }));
+    // }
+    
+  }
+
+
+
   function setDataPM(req){
   if(req){
     console.log(req);
@@ -556,43 +781,59 @@ function showTable(){
     arrow.classList.remove("arrow-rotate");
   }
 }
-
+// show graph
 function showChart(){
-  document.getElementById("chart-box2").style.display = "none";
-  document.getElementById("btnChart2").classList.remove("active");
-  document.getElementById("btnChart2").style.color = "#000000";
-  Graph();
-  document.getElementById("chart-box1").style.display = "block";
-  document.getElementById("btnChart").classList.add("active");
-  document.getElementById("btnChart").style.color = "#989be0";
+    let macid = document.getElementById("local_mac").value;
+    chartBox2.style.display = "none";
+    document.getElementById("btnChart2").classList.remove("active");
+    document.getElementById("btnChart2").style.color = "#000000";
+    chartBox1.style.display = "block";
+    document.getElementById("btnChart").classList.add("active");
+    document.getElementById("btnChart").style.color = "#989be0";
+    if(macid != ""){
+        getChart(macid);
+    }else{
+        console.log("data machine is null")
+    }
 }
 function showChart2(){
-  document.getElementById("chart-box1").style.display = "none";
-  document.getElementById("btnChart").classList.remove("active");
-  document.getElementById("btnChart").style.color = "#000000";
-  Graph2();
-  document.getElementById("chart-box2").style.display = "block";
-  document.getElementById("btnChart2").classList.add("active");
-  document.getElementById("btnChart2").style.color = "#989be0";
+    let macid = document.getElementById("local_mac").value;
+    chartBox1.style.display = "none";
+    document.getElementById("btnChart").classList.remove("active");
+    document.getElementById("btnChart").style.color = "#000000";
+    chartBox2.style.display = "block";
+    document.getElementById("btnChart2").classList.add("active");
+    document.getElementById("btnChart2").style.color = "#989be0";
+    if(macid != ""){
+        getChartWeek(macid);
+    }else{
+        console.log("data machine is null")
+    }
 }
+
 
 // Change image
 changeImage()
 function changeImage(){
   let time = new Date().getHours();
   let image = document.getElementById("sesor-realtime");
+  let select = document.getElementById("local_mac");
   if(time >= 6 && time <  9){
     image.style.backgroundImage = "url('/images/morning.jpg')"
     image.style.color = "white";
+    select.style.color = "white";
   } else if(time >= 9 && time < 16 ){
     image.style.backgroundImage = "url('/images/day.jpg')"
     image.style.color = "black";
+    select.style.color = "black";
   } else if(time >= 16 && time < 19){
     image.style.backgroundImage = "url('/images/evening.jpg')"
     image.style.color = "#a5a5a5";
+    select.style.color = "#a5a5a5";
   } else if(time >= 19 || time < 6){
     image.style.backgroundImage = "url('/images/nigth.jpg')"
     image.style.color = "white";
+    select.style.color = "white";
   }
 }
 

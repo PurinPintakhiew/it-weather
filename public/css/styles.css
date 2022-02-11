@@ -292,6 +292,10 @@ a#btnChart2 {
 .chart-temp.col-1 {
     margin-top: 40px;
 }
+.no-data {
+    text-align: center;
+    margin-top: 30px;
+  }
 
 /* details table */
 #details-level {
@@ -422,6 +426,21 @@ div#menuToggle {
 #menuToggle input:checked ~ .s3
 {
   transform: rotate(-45deg) translate(0, -1px);
+}
+
+/* select address */
+select#local_mac {
+    background: transparent;
+    border: 0;
+    color: white;
+    font-weight: 600;
+}
+select#local_mac:focus-visible {
+    outline: none;
+}
+option#option_mac {
+    color: black;
+    font-size: 18px;
 }
 
 /* ------------- media -------------------- */
