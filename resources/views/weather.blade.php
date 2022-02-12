@@ -24,7 +24,7 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -299,6 +299,18 @@
     </div>
   </div>
 
+<!-- dialog allow -->
+<div id="display-allow">
+    <div id="body-allow" class="card col-3">
+        <div class="card-body" stu>
+          <p style="text-align:center">กดอนุญาติเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
+            <div style="display:flex;justify-content: space-evenly;">
+              <button class="btn btn-primary" onclick="notiAllow()">Allow</button>
+              <button class="btn btn-danger"  onclick="clossAllow()">No,Thank</button>
+            </div>
+        </div>
+    </div>
+</div>
 
           </div>
       </div>
@@ -312,6 +324,7 @@ let topic_status;
 let topic_pm;
 let topic_temp;
 let topic_hum;
+let pm;
 let machineList = <?php echo $machine ?>;
 let div_pm = document.getElementById("pm");
 let div_temp = document.getElementById("temp");
@@ -372,12 +385,13 @@ function clearDiv(){
     color_level.style.backgroundColor = "#ccc";
     level_pm24.innerHTML = "กรุณารอสักครู่...";
     details_pm24.innerHTML = "กรุณารอสักครู่...";
+    pm = 0;
 }
 
 // get data from Mqtt
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("10.133.0.103", Number(9001),id);
+    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -576,25 +590,23 @@ function pmRealtime(macid){
 }
 
 function pmAvg(arr){
-  let pm;
+  // let pm;
   arr.map((val,key) => {
       pm = val.pmavg;
   })
-  pm = parseFloat(pm).toFixed(0);
 
-  if(isNaN(pm)){
+  if(!pm){
+    // alert("กรุณาเปลี่ยนสถานที่ใหม่ ขออภัยในความไม่สะดวก");
     pm = 0;
-    setTimeout(() => {
-      alert("กรุณาเลือกสถานที่ใหม่อีกครั้ง ขออภัยในความไม่สะดวก");
-    }, 5000);
-  }
-
-  if(pm != pm_level){
-    pm_level = pm;
-    setDataPM(pm);
-    console.log("New: " + pm + "," + pm_level);
-  }else if(pm == pm_level){
-    console.log("Not update: " + pm + "," + pm_level);
+  }else{
+    pm = parseFloat(pm).toFixed(0);
+    if(pm != pm_level){
+      pm_level = pm;
+      setDataPM(pm);
+      console.log("New: " + pm + "," + pm_level);
+    }else if(pm == pm_level){
+      console.log("Not update: " + pm + "," + pm_level);
+    }
   }
 }
 
@@ -678,40 +690,41 @@ function setAvg(arr){
 function init() {
 
   var locationList = <?php echo json_encode($location) ?> ;
-    // var map = new longdo.Map({
-    //     placeholder: document.getElementById('map')
-    // });
-    // for (var i = 0; i < locationList.length; ++i) {
-    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-    //   var color;
-    //   if(pm25 >= 91){
-    //     color = "rgb(240, 70, 70)";
-    //   } else if (pm25 >= 51 ){
-    //     color = "rgb(255, 162, 0)";
-    //   } else if(pm25 >= 38){
-    //     color = "rgb(255, 255, 0)";
-    //   } else if(pm25 >= 26){
-    //     color = "rgb(146, 208, 80)";
-    //   } else if(pm25 >= 0){
-    //     color = "rgb(59, 204, 255)";
-    //   } else{
-    //     color = "black";
-    //   }
-    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-    //       {
-    //         title: 'Custom Marker',
-    //         icon: {
-    //           html:  `<div class="icon-map-box">
-    //                     <div id="iconmap" style="background-color:${color};"></div>
-    //                     <strong class="mappm">${pm25}</strong>
-    //                 </div>`,
-    //           offset: { x: 18, y: 21 }
-    //           },
-    //         popup: {
-    //           html: '<div style="background: #eeeeff;">popup</div>'
-    //           }
-    //   }));
-    // }
+    var map = new longdo.Map({
+        placeholder: document.getElementById('map')
+    });
+    map.location({ lon:103.1011 , lat:14.9904},true);
+    for (var i = 0; i < locationList.length; ++i) {
+      let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+      var color;
+      if(pm25 >= 91){
+        color = "rgb(240, 70, 70)";
+      } else if (pm25 >= 51 ){
+        color = "rgb(255, 162, 0)";
+      } else if(pm25 >= 38){
+        color = "rgb(255, 255, 0)";
+      } else if(pm25 >= 26){
+        color = "rgb(146, 208, 80)";
+      } else if(pm25 >= 0){
+        color = "rgb(59, 204, 255)";
+      } else{
+        color = "black";
+      }
+      map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+          {
+            title: 'Custom Marker',
+            icon: {
+              html:  `<div class="icon-map-box">
+                        <div id="iconmap" style="background-color:${color};"></div>
+                        <strong class="mappm">${pm25}</strong>
+                    </div>`,
+              offset: { x: 18, y: 21 }
+              },
+            popup: {
+              html: '<div style="background: #eeeeff;">popup</div>'
+              }
+      }));
+    }
     
   }
 
@@ -750,23 +763,44 @@ function init() {
 }
 
 // notify
-function showNotification(req){
-  console.log(Notification.permission);
-    if(Notification.permission === "granted"){
-      const notification = new Notification("New messege from IT Weather",{
-            body:`${req}`,
-            icon: '/images/LogoHead-1.png'
-        });
-    }else if(Notification.permission !== "denied"){
-      Notification.requestPermission().then(permissoin => {
-            if(permission === "granted"){
-                const notification = new Notification("New messege from IT Weather",{
-                  body:`${req}`,
-                  icon: '/images/LogoHead-1.png'
-                });
-            }
-        });
-    }
+const showNotification = (res) => {
+  const notification = new Notification('New messege from IT Weather', {
+    body: res,
+    icon: '/images/LogoHead-1.png'
+  });
+
+  setTimeout(() => {
+    notification.close();
+  }, 60 * 1000);
+
+    notification.addEventListener('click', () => {
+    window.open('/');
+  });
+}
+
+var granted = false;
+if(Notification.permission === 'granted'){
+  document.getElementById("display-allow").style.display = "none";
+}
+const checkAllow = setInterval(() => {
+  if(Notification.permission === 'granted'){
+    document.getElementById("display-allow").style.display = "none";
+    // console.log(granted);
+    clearInterval(checkAllow);
+  }
+}, 1000);
+
+const notiAllow = () => {
+  if (Notification.permission === 'granted') {
+    granted = true;
+  } else if (Notification.permission !== 'denied') {
+    let permission = Notification.requestPermission();
+    granted = permission === 'granted' ? true : false;
+  }
+}
+
+const clossAllow = () => {
+  document.getElementById("display-allow").style.display = "none";
 }
 
 // show-table

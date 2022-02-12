@@ -208,6 +208,9 @@
         <li class="nav-item">
           <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
         </li>
+        <li  class="nav-item">
+            <a class="nav-link" href="/chartData">ข้อมูลย้อนหลัง</a>
+        </li>
       </ul>
       <div id="chart-box1">
         <div class="row">

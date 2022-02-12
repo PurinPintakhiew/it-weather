@@ -120,6 +120,22 @@ img.it-img {
 }
 
 /*--------- right bar ----------*/
+/* allow */
+div#display-allow {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.85);
+    top: 0;  
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 11999;
+}
+div#body-allow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 /* sesor-realtime */
 div#sesor-realtime {
     background-image: url('/images/morning.jpg');
