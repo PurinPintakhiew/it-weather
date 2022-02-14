@@ -107,10 +107,16 @@
     <div id="box-control">
         <div class="row">
             <div class="status-machine col-lg-4">
+
                 <div style="text-align:center">
                     <span>Status Machine</span>
                     <div id="light-status-machine" class="mb-2"></div>
                 </div>
+                <div class="status-mqtt" style="text-align:center">
+                    <span>Status Server</span>
+                    <div id="light-status-mqtt"></div>
+                </div>
+                
                 <div style="border:1px solid #ccc;padding: 5px 20px 10px 20px;">
                     <div style="text-align:center">
                         <span class="mb-2 span-control">Control Panel</span>
@@ -135,7 +141,7 @@
                         <div class="sub-manual">
                             <span>UP</span>
                             <label class="switch">
-                                <input type="checkbox" id="checkbox_updown" disabled>
+                                <input type="checkbox" id="checkbox_updown" onclick="changeMode()" disabled>
                                 <span class="slider round"></span>
                             </label>
                             <span>Down</span>
@@ -261,11 +267,15 @@
                             <input type="text" class="form-control" name="topic_status">
                         </div>
                         <div class="col mb-3">
-                            <label for="" class="form-label">Topic PM</label>
-                            <input type="text" class="form-control" name="topic_pm">
+                            <label for="" class="form-label">Topic Moter Mode</label>
+                            <input type="text" class="form-control" name="topic_mode">
                         </div>
                     </div>
                     <div class="row">
+                    <div class="col mb-3">
+                            <label for="" class="form-label">Topic PM</label>
+                            <input type="text" class="form-control" name="topic_pm">
+                        </div>
                         <div class="col mb-3">
                             <label for="" class="form-label">Topic Temperature</label>
                             <input type="text" class="form-control" name="topic_temp">
@@ -310,6 +320,7 @@ let topic_status;
 let topic_pm;
 let topic_temp;
 let topic_hum;
+let topic_mode;
 let machineList = <?php echo $machines ?>;
 let light_mac = document.getElementById("light-status-machine");
 let light_server = document.getElementById("light-status-mqtt");
@@ -336,6 +347,7 @@ function setAddress(){
                 topic_pm = val.topic_pm;
                 topic_temp = val.topic_temp;
                 topic_hum = val.topic_hum;
+                topic_mode = val.topic_mode;
                 Mqtt();
                 if(chartBox2.style.display == "none"){
                     console.log("c1");
@@ -354,7 +366,7 @@ function setAddress(){
 
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -377,7 +389,7 @@ function Mqtt(){
         if (responseObject.errorCode !== 0) {
             console.log("onConnectionLost:" + responseObject.errorMessage);
             light_server.style.backgroundColor = "#ccc";
-            alert("There was an error with the server, please check")
+            // alert("There was an error with the server, please check")
         } else {
             console.log("connect");
         }
@@ -487,8 +499,15 @@ function changeMode(){
     let updown = document.getElementById("checkbox_updown");
     if(mode == true){
         updown.disabled = false;
+        // console.log(topic_mode)
+        if(updown.checked == true){
+            // console.log("1");
+        }else{
+            // console.log("0");
+        }
     }else{
         updown.disabled = true;
+        updown.checked = false; 
     }
 }
 

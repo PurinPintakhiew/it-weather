@@ -53,7 +53,11 @@
       </div>
       <div class="it-list-box">
         <ul>
-          <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
+          @if (Auth::check())
+            <li onclick="goPath('dashboard')"><i class="icon-home"></i>Dashboard</a></li>
+          @else
+            <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
+          @endif
         </ul>
       </div>
     </div>
@@ -62,12 +66,26 @@
   <div class="chart-rigth col-10">
     <div class="insert-box">
       <h1>ข้อมูลย้อนหลัง</h1>
-      <label for=""  class="form-label" >สถานที่</label>
-      <select id="machine-pm"  class="form-select mb-2">
-        @foreach($machines as $machine)
-          <option value="{{$machine->machine_id}}">{{$machine->address}}</option>
-         @endforeach
-      </select>
+      <div class="row">
+        <div class="col-sm-12 col-lg-10 mb-2">
+          <label for=""  class="form-label" >สถานที่</label>
+          <select id="machine-pm"  class="form-select ">
+            @foreach($machines as $machine)
+              <option value="{{$machine->machine_id}}">{{$machine->address}}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-2 mb-2">
+          <label for=""  class="form-label" >ประเภทข้อมูล</label>
+          <select id="type-data" class="form-select">
+            <option value="pm2_5">PM 2.5</option>
+            <option value="pm10">PM 10</option>
+            <option value="temperature">อุณหภูมิ</option>
+            <option value="humidity">ความชื้น</option>
+          </select>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-4 part1">
           <label for=""  class="form-label" >วันที่เริ่มต้น</label>
@@ -190,6 +208,7 @@ $(window).resize(function(){
 
 const showChart = () => {
   var macid = document.getElementById("machine-pm").value;
+  var typedata = document.getElementById("type-data").value;
   var date1 = document.getElementById("date1").value;
   var date2 = document.getElementById("date2").value;
   var time1 = document.getElementById("time1").value;
@@ -198,7 +217,8 @@ const showChart = () => {
   if(date1 != ""  && date2 != ""){
     date1 = date1 + " " + time1;
     date2 = date2 + " " + time2;
-    dateAll = {macid: macid ,date1: date1 ,date2: date2};
+    console.log(typedata);
+    dateAll = {macid: macid ,typedata: typedata ,date1: date1 ,date2: date2};
 
   $.ajaxSetup({
     headers: {
@@ -207,7 +227,7 @@ const showChart = () => {
   });
 
   $.ajax({
-    type: "post",
+    type: "get",
     url: "/dataSelect",
     data: dateAll,
     success: (response) => {

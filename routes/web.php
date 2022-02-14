@@ -27,7 +27,7 @@ Route::post('/weather-data7',[SensorController::class,'weekAvg']);
 
 Route::get('chartPm',[ChartController::class,'chartData']);
 Route::get('chartData',[ChartController::class,'chartSelect']);
-Route::post('dataSelect',[ChartController::class,'dataSelect'])->name('see');
+Route::get('dataSelect',[ChartController::class,'dataSelect'])->name('see');
 
 Route::get('edit/{id}',[MachineController::class,'showEdit']);
 Route::post('addMachine',[MachineController::class,'addMachine'])->name('saveMac');

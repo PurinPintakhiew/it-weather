@@ -462,9 +462,9 @@ option#option_mac {
 /* ------------- media -------------------- */
 @media only screen and (max-width: 1920px) {
 /* bar */
-.logo-home a img {
+/* .logo-home a img {
     width: 220px;
-}
+} */
 /* sensor realtime */
 .sesor-realtime {
     height: 400px;

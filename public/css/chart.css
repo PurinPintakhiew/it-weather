@@ -45,6 +45,9 @@ div#chart-pm p {
 html,body{
     margin:0;
 }
+option {
+    font-weight: 600;
+}
 /* bar */
 .it-bar-height{
     height: 100vh;

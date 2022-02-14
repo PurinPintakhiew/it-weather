@@ -68,7 +68,7 @@ class ChartController extends Controller
         return $date;
 
       }
-
+// ---------------------- new ----------------------------------
       public function machine(){
         $sql = DB::select("SELECT machine_id,address FROM machine_location");
         return $sql;
@@ -76,13 +76,14 @@ class ChartController extends Controller
 
       public function dataSelect(Request $request){
         $macid = $request->macid;
+        $type = $request->typedata;
         $data1 = $request->date1;
         $data2 = $request->date2;
 
-        $sql = DB::select("SELECT machine_id,datetime,pm2_5 FROM datapm WHERE machine_id = $macid and  datetime BETWEEN '$data1' and '$data2'  ");
-        $dataTime[] = ['Time','Average'];
+        $sql = DB::select("SELECT machine_id,datetime,$type FROM datapm WHERE machine_id = $macid and  datetime BETWEEN '$data1' and '$data2'  ");
+        $dataTime[] = ['Time','Average '.$type];
         foreach($sql as $key => $value){
-          $dataTime[++$key] = [$date = $value->datetime,$value->pm2_5];
+          $dataTime[++$key] = [$value->datetime,$value->$type];
         }
         $dataTime = json_encode($dataTime);
 

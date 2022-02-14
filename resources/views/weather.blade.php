@@ -303,10 +303,10 @@
 <div id="display-allow">
     <div id="body-allow" class="card col-3">
         <div class="card-body" stu>
-          <p style="text-align:center">กดอนุญาติเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
+          <p style="text-align:center;font-weight: 600;">กดอนุญาติเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
             <div style="display:flex;justify-content: space-evenly;">
-              <button class="btn btn-primary" onclick="notiAllow()">Allow</button>
-              <button class="btn btn-danger"  onclick="clossAllow()">No,Thank</button>
+              <button class="btn btn-primary" onclick="notiAllow()">อนุญาติ</button>
+              <button class="btn btn-danger"  onclick="clossAllow()">ไม่อนุญาติ</button>
             </div>
         </div>
     </div>
@@ -391,7 +391,7 @@ function clearDiv(){
 // get data from Mqtt
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -412,7 +412,7 @@ function Mqtt(){
     function onConnectionLost(responseObject) {
         if (responseObject.errorCode !== 0) {
             console.log("onConnectionLost:" + responseObject.errorMessage);
-            alert("There was an error with the server, please check")
+            // alert("There was an error with the server, please check")
         } else {
             console.log("connect");
         }
@@ -695,8 +695,10 @@ function init() {
     });
     map.location({ lon:103.1011 , lat:14.9904},true);
     for (var i = 0; i < locationList.length; ++i) {
-      let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+      let pm25 = locationList[i].macpm;
       var color;
+      pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+
       if(pm25 >= 91){
         color = "rgb(240, 70, 70)";
       } else if (pm25 >= 51 ){

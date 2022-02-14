@@ -16,6 +16,7 @@ class MachineController extends Controller
         $machine->longitude = $request->set_long;
         $machine->address = $request->set_address;
         $machine->topic_status = $request->topic_status;
+        $machine->topic_mode = $request->topic_mode;
         $machine->topic_pm = $request->topic_pm;
         $machine->topic_temp = $request->topic_temp;
         $machine->topic_hum = $request->topic_hum;
@@ -31,6 +32,7 @@ class MachineController extends Controller
         $machine->longitude = $request->set_long;
         $machine->address = $request->set_address;
         $machine->topic_status = $request->topic_status;
+        $machine->topic_mode = $request->topic_mode;
         $machine->topic_pm = $request->topic_pm;
         $machine->topic_temp = $request->topic_temp;
         $machine->topic_hum = $request->topic_hum;

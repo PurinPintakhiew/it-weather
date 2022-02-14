@@ -41,10 +41,14 @@
                                 <input type="text" class="form-control" value="{{$sql->topic_status}}" name="topic_status">
                             </div>
                             <div class="col mb-3">
+                                <label for="" class="form-label">Topic Moter Mode</label>
+                                <input type="text" class="form-control" value="{{$sql->topic_mode}}" name="topic_mode">
+                            </div>
+                        </div>
+                        <div class="col mb-3">
                                 <label for="" class="form-label">Topic PM</label>
                                 <input type="text" class="form-control"  value="{{$sql->topic_pm}}" name="topic_pm">
                             </div>
-                        </div>
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="" class="form-label">Topic Temperature</label>
