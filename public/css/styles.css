@@ -13,7 +13,7 @@ img.temp-img {
     height: 10%;
     padding: 10px;
 }
-p#tamp {
+p#temp {
     padding: 10px;
     font-size: 24px;
     font-weight: 600;
@@ -627,7 +627,7 @@ span.hum-symbol {
     font-size: 12px;
     margin-top: 7px;
 }
-p#tamp {
+p#temp {
     margin-left: 5px;
     padding: 2px;
     font-size: 18px;
@@ -809,7 +809,7 @@ img.temp-img {
     width: 18px;
     padding: 0px;
 }
-p#tamp {
+p#temp {
     margin-left: 5px;
     padding: 2px;
     font-size: 14px;
@@ -959,7 +959,7 @@ div#map {
     font-size: 12px;
     width: 90px;
 }
-p#tamp {
+p#temp {
     font-size: 12px;
 }
 .temp-pm h5 {

@@ -39,8 +39,12 @@
   
   <div id="list-menu" style="display:none">
     <ul>
-      <li style="text-align:center" onclick="goPath('')"><img src="{{url('/images/it-weather2.png')}}" ></li>
-      <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
+      <li style="text-align:center"><img src="{{url('/images/it-weather2.png')}}" ></li>
+      @if (Auth::check())
+        <li onclick="goPath('dashboard')"><i class="icon-home"></i>Dashboard</a></li>
+      @else
+        <li onclick="goPath('')"><i class="icon-home"></i>Home</a></li>
+      @endif
     </ul>
   </div>
 
@@ -257,7 +261,6 @@ function Graph(pmArr) {
       var data = google.visualization.arrayToDataTable(pmArr);
       var options = {
         chartArea: {
-          rigth: 0,
           top:40,
           bottom:80,
           // width: '80%'

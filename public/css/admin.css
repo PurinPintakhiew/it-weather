@@ -44,25 +44,29 @@ ul.link-bar {
   input.input-m {
     border-radius: 15px;
   }
-  .col.pm-box {
+div#realtime {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.pm-box {
     color: white;
     font-weight: 600;
     background-color: #22e389;
-    margin: 10px;
+    padding: 10px;
     border-radius: 5px;
   }
-  .col.temp-box {
+.temp-box {
     color: white;
     font-weight: 600;
     background-color: #aacfff;
-    margin: 10px;
+    padding: 10px;
     border-radius: 5px;
   }
-  .col.hum-box {
+ .hum-box {
     font-weight: 600;
     color: white;
     background-color: #dff2cb;
-    margin: 10px;
+    padding: 10px;
     border-radius: 5px;
   }
   h1#pm {
@@ -74,6 +78,10 @@ ul.link-bar {
   h1#hum {
     font-size: 72px;
   }
+.control-border{
+  border:1px solid #ccc;
+  padding: 5px 20px 10px 20px;
+}
   
   /* ------------------------ box-control ------------------------ */
   #light-status-mqtt {
@@ -332,12 +340,22 @@ h1#temp {
 h1#hum {
   font-size: 50px;
 }
+.sensor-realtime {
+  margin-bottom: 5px;
+}
+div#realtime {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 /* map-local */
 thead.table-h {
   font-size: 12px;
 }
 tbody.table-b {
   font-size: 12px;
+}
+#machine-list {
+  height: 140px;
 }
 
 /* graph */
@@ -350,6 +368,26 @@ tbody.table-b {
 
 }
 
+/* ---------------- IPhone 375 px --------------- */
+@media only screen and (max-width:375px) {
+/* control */
+.status-machine.col-lg-5 {
+  font-size: 14px;
+}
+.control-border {
+  padding: 5px 10px 10px 10px;
+}
+
+}
+
+/* ---------------- samsung 360 px --------------- */
+@media only screen and (max-width:360px) {
+  /* control */
+  .status-machine.col-lg-5 {
+    font-size: 12px;
+  }
+  
+  }
 
 /* ----------------- IPhon 5 320px --------------- */
 @media only screen and (max-width:320px) {
@@ -361,6 +399,11 @@ tbody.table-b {
   font-size: 14px;
   margin-right: 5px;
   padding: 5px;
+}
+
+/* control */
+.sub-manual {
+  margin-left: 12px;
 }
 
 }

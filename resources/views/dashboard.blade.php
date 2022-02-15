@@ -77,27 +77,34 @@
 <!-- dashboard -->
 
 <div class="container">
-
-    <div class="row">
-        <div class="col pm-box">
-            <p>PM 2.5</p>
-            <div class="pm-body d-flex justify-content-center">
-                <h1 id="pm">0.00</h1>
-                <span class="pm-symbol">µg/&#13221</span>
+    <div id="realtime" >
+        <div class="row">
+            <div class="col-xs-12 col-md-4 sensor-realtime">
+                <div class="pm-box">
+                    <p>PM 2.5</p>
+                    <div class="pm-body d-flex justify-content-center">
+                        <h1 id="pm">0.00</h1>
+                        <span class="pm-symbol">µg/&#13221</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col temp-box">
-            <p>Temperature</p>
-            <div class="temp-body d-flex justify-content-center">
-                <h1 id="temp">0.00</h1>
-                <span class="pm-symbol">&#8451</span>
+            <div class="col-xs-12 col-md-4 sensor-realtime">
+                <div class="temp-box">
+                    <p>Temperature</p>
+                    <div class="temp-body d-flex justify-content-center">
+                        <h1 id="temp">0.00</h1>
+                        <span class="pm-symbol">&#8451</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col hum-box">
-            <p>Humidity</p>
-            <div class="hum-body d-flex justify-content-center">
-                <h1 id="hum">0.00</h1>
-                <span class="pm-symbol">%</span>
+            <div class="col-xs-12 col-md-4 sensor-realtime">
+                <div class="hum-box">
+                    <p>Humidity</p>
+                    <div class="hum-body d-flex justify-content-center">
+                        <h1 id="hum">0.00</h1>
+                        <span class="pm-symbol">%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -115,7 +122,7 @@
                         <div id="light-status-machine"></div>
                     </div>
                 </div>
-                <div style="border:1px solid #ccc;padding: 5px 20px 10px 20px;">
+                <div class="control-border">
                     <div style="text-align:center">
                         <span class="mb-2 span-control">Control Panel</span>
                     </div >
@@ -136,7 +143,7 @@
                             <span class="slider round"></span>
                         </label>
                         <span>Manual</span>
-                        <div class="sub-manual">
+                        <div class="sub-manual d-flex align-items-center">
                             <span>UP</span>
                             <label class="switch">
                                 <input type="checkbox" id="checkbox_updown" onclick="changeMode()" disabled>

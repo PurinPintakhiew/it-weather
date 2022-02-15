@@ -83,7 +83,8 @@ class ChartController extends Controller
         $sql = DB::select("SELECT machine_id,datetime,$type FROM datapm WHERE machine_id = $macid and  datetime BETWEEN '$data1' and '$data2'  ");
         $dataTime[] = ['Time','Average '.$type];
         foreach($sql as $key => $value){
-          $dataTime[++$key] = [$value->datetime,$value->$type];
+          $date = date("d/m/Y H:i", strtotime($value->datetime));
+          $dataTime[++$key] = [$date,$value->$type];
         }
         $dataTime = json_encode($dataTime);
 

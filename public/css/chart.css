@@ -178,5 +178,29 @@ div#chart-pm p {
     font-size: 26px;
 }
 
+/* ------------------ 480 px ----------------- */
+@media only screen and (max-width:480px) {
+/* inserbox */
+.insert-box h1 {
+    font-size: 20px;
+}
+.insert-box label {
+    font-size: 14px;
+}
+.insert-box select {
+    font-size: 14px;
+}
+.insert-box input {
+    font-size: 14px;
+}
+
+/* graph */
+div#chart-pm {
+    margin-top: 450px;
+    height: 350px;
+}
+
+}
+
 
 }

@@ -513,7 +513,7 @@ function Graph(chartDay) {
       var data = google.visualization.arrayToDataTable(chartDay);
       var options = {
         chartArea: {
-          left: '10%',
+          left: '12%',
           top:40,
           right:'5%',
           width: '100%'
@@ -525,7 +525,6 @@ function Graph(chartDay) {
         pointSize: 5,
         hAxis : { 
           // textPosition: 'none',
-          format: 'y',
           textStyle:{
             fontSize: 12 
           }
@@ -551,7 +550,8 @@ function Graph(chartDay) {
           position: 'top'
         },
         width: '100%',
-        pointSize: 5
+        pointSize: 5,
+        vAxis: {minValue: 0}
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart2'));
       chart.draw(data, options);
