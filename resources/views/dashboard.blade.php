@@ -51,8 +51,7 @@
         <a class="navbar-brand" href="/">
             <img id="icon-weather" src="{{url('/images/it-weather2.png')}}" >
         </a>
-        <div class="collapss">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="link-bar">
                 <li class="nav-item">
                     <a class="nav-link active"  aria-current="page"  href="/register">เพิ่มผู้ดูแล</a>
                 </li>
@@ -72,7 +71,6 @@
                     </ul>
                 </li>
             </ul>
-        </div>
     </div>
 </nav>
 
@@ -106,17 +104,17 @@
 
     <div id="box-control">
         <div class="row">
-            <div class="status-machine col-lg-4">
-
-                <div style="text-align:center">
-                    <span>Status Machine</span>
-                    <div id="light-status-machine" class="mb-2"></div>
+            <div class="status-machine col-lg-5">
+                <div class="row mb-2">
+                    <div class="status-mqtt col" style="text-align:center">
+                        <span>Status Server</span>
+                        <div id="light-status-mqtt"></div>
+                    </div>
+                    <div class="col" style="text-align:center">
+                        <span>Status Machine</span>
+                        <div id="light-status-machine"></div>
+                    </div>
                 </div>
-                <div class="status-mqtt" style="text-align:center">
-                    <span>Status Server</span>
-                    <div id="light-status-mqtt"></div>
-                </div>
-                
                 <div style="border:1px solid #ccc;padding: 5px 20px 10px 20px;">
                     <div style="text-align:center">
                         <span class="mb-2 span-control">Control Panel</span>
@@ -149,19 +147,15 @@
                     </div>
                 </div>
             </div>
-            <div class="machine col-lg-5">
+            <div class="machine col-lg-7">
                 <label class="label-m">Machine Name</label>
-                <select class="form-select" id="macid"  onchange="setAddress()">
+                <select class="form-select mb-3" id="macid"  onchange="setAddress()">
                     @foreach($machines as $machine)
                     <option value="{{$machine->machine_id}}">{{$machine->machine_name}}</option>
                     @endforeach
                 </select>
                 <label class="label-m">Machine Address</label>
                 <input type="text" class="form-control" id="address" disabled>
-            </div>
-            <div class="status-mqtt col-lg-3" style="text-align:center">
-                <span>Status Server</span>
-                <div id="light-status-mqtt"></div>
             </div>
         </div>
     </div>
@@ -366,7 +360,7 @@ function setAddress(){
 
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
+    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -399,7 +393,7 @@ function Mqtt(){
         if(message.destinationName == topic_status){
             console.log("status machine :" + message.payloadString);
             status_machine = message.payloadString;
-            if(status_machine == "on"){
+            if(status_machine == "1"){
                 light_mac.style.backgroundColor = "rgb(132 255 59)";
             } else {
                 light_mac.style.backgroundColor = "#ccc";
@@ -575,42 +569,45 @@ function getChartWeek(macid){
 // map
 function init() {
 
-let locationList = <?php echo json_encode($map) ?>;
+    let locationList = <?php echo json_encode($map) ?>;
 
-//   var map = new longdo.Map({
-//       placeholder: document.getElementById('map')
-//   });
-//   for (var i = 0; i < locationList.length; ++i) {
-//     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-//     var color;
-//     if(pm25 >= 91){
-//       color = "rgb(240, 70, 70)";
-//     } else if (pm25 >= 51 ){
-//       color = "rgb(255, 162, 0)";
-//     } else if(pm25 >= 38){
-//       color = "rgb(255, 255, 0)";
-//     } else if(pm25 >= 26){
-//       color = "rgb(146, 208, 80)";
-//     } else if(pm25 >= 0){
-//       color = "rgb(59, 204, 255)";
-//     } else{
-//       color = "black";
-//     }
-//     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-//         {
-//           title: 'Custom Marker',
-//           icon: {
-//             html:  `<div class="icon-map-box">
-//                       <div id="iconmap" style="background-color:${color};"></div>
-//                       <strong class="mappm">${pm25}</strong>
-//                   </div>`,
-//             offset: { x: 18, y: 21 }
-//             },
-//           popup: {
-//             html: '<div style="background: #eeeeff;">popup</div>'
-//             }
-//     }));
-//   }
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // map.location({ lon:103.1011 , lat:14.9904},true);
+    // map.Ui.Crosshair.visible(false);
+    // map.zoom(14, true);
+    // for (var i = 0; i < locationList.length; ++i) {
+    //     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    //     var color;
+    //     if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //     } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //     } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //     } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //     } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //     } else{
+    //     color = "black";
+    //     }
+    //     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //         {
+    //         title: locationList[i].machine_name,
+    //         icon: {
+    //             html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //             offset: { x: 18, y: 21 }
+    //             },
+    //             detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+    //             draggable: true,
+    //             weight: longdo.OverlayWeight.Top
+    //     }));
+    // }
 }
 
 // show graph
@@ -652,16 +649,17 @@ function Graph(chartDay) {
       var data = google.visualization.arrayToDataTable(chartDay);
       var options = {
         chartArea: {
-          left: 80,
+          left: '10%',
           top:40,
-          // bottom:50,
+          right:'5%',
           width: '100%'
         },
         legend: {
           position: 'top'
         },
         width: '100%',
-        pointSize: 5
+        pointSize: 5,
+        vAxis: {minValue: 0}
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
@@ -675,8 +673,9 @@ function Graph2(chartWeek){
       var data = google.visualization.arrayToDataTable(chartWeek);
       var options = {
         chartArea: {
-          left: 40,
+          left: '10%',
           top:40,
+          right:'5%',
           width: '100%'
         },
         legend: {

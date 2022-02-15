@@ -4,9 +4,15 @@ body{
 }
 
 /* text-bar */
-.collapss a.nav-link{
+.link-bar a.nav-link{
     color: white;
     font-size: 20px;
+}
+ul.link-bar {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 /* a.nav-link:hover {
     color: rgb(247, 242, 0);
@@ -109,7 +115,7 @@ span.mb-2.span-topic {
 
   /* ---------- table machine ------------ */
 #machine-list {
-    height: 500px;
+    height: 440px;
     overflow-y: auto;
 }
   thead.table-h {
@@ -121,7 +127,9 @@ span.mb-2.span-topic {
     text-align: center;
   }
   .card-machine-body{
-    border: 1px solid;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
   }
   .card-machine-footer {
     border: 1px solid;
@@ -266,3 +274,93 @@ input:checked + .slider:before {
 
 /* end */
 
+/* -------------------- Resposive ------------------------ */
+/* ---------------- IPED PRO 1024px ----------------- */
+@media only screen and (max-width: 1024px) {
+/* map-local */
+#map-location {
+  margin-top: 20px;
+}
+div#map-box {
+  width: 100%;
+}
+#map {
+  height: 350px;
+}
+div#machine-box {
+  width: 100%;
+  margin-top: 15px;
+}
+#machine-list {
+  height: 185px;
+}
+}
+
+/* ---------------- IPED AIR 820 --------------- */
+@media only screen and (max-width:820px) {
+/* control */
+.machine.col-lg-7 {
+  margin-top: 10px;
+}
+
+/* map-local */
+#machine-list {
+  height: 165px;
+}
+
+
+}
+
+/* -------------- 480 ---------- */
+@media only screen and (max-width:480px) {
+/* bar */
+ul.me-auto.mb-2.mb-lg-0 {
+  flex-direction: row;
+}
+.link-bar a.nav-link {
+  font-size: 16px;
+  margin-right: 5px;
+  padding: 5px;
+}
+/* realtime */
+h1#pm {
+  font-size: 50px;
+}
+h1#temp {
+  font-size: 50px;
+}
+h1#hum {
+  font-size: 50px;
+}
+/* map-local */
+thead.table-h {
+  font-size: 12px;
+}
+tbody.table-b {
+  font-size: 12px;
+}
+
+/* graph */
+#chart {
+  height: 350px;
+}
+#chart2 {
+  height: 350px;
+}
+
+}
+
+
+/* ----------------- IPhon 5 320px --------------- */
+@media only screen and (max-width:320px) {
+  /* bar */
+  img#icon-weather {
+    width: 110px;
+}
+.link-bar a.nav-link {
+  font-size: 14px;
+  margin-right: 5px;
+  padding: 5px;
+}
+
+}

@@ -131,6 +131,7 @@ div#display-allow {
     z-index: 11999;
 }
 div#body-allow {
+    width: 25%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -571,6 +572,9 @@ img.chart-icon-temp {
 }
 
 /* it-weather */
+div#body-allow {
+    width: 40%;
+}
 .col-10.it-weather {
     max-width: 100%;
     flex: auto;
@@ -664,7 +668,10 @@ div#chart2 {
     font-size: 20px;
 }
 
-
+/* noti */
+div#body-allow {
+    width: 50%;
+}
 /* pm24 */
 div#pm24-avg-part {
     border-top-left-radius: 5px;
@@ -713,6 +720,10 @@ img.chart-icon-temp {
 
 /*------------ IPad 768px ----------- */
 @media only screen and (max-width: 768px){
+/* noti */
+div#body-allow {
+    width: 55%;
+}
 /* sensor real time */
 div#sesor-realtime {
     height: 290px;
@@ -758,13 +769,18 @@ div#avg-pm {
 }
 
 /* ----------- IPhone 6/7/8 Plus -------- */
-@media only screen and (max-width:414px) {
+@media only screen and (max-width:480px) {
 /* moblie bar */
 #list-menu ul li {
     font-size: 16px;
 }
 #list-menu {
     width: 50vw;
+}
+/* noti */
+div#body-allow {
+    width: 75%;
+    font-size: 14px;
 }
 /* sesor realtime */
 .location-pm {

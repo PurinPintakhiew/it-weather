@@ -46,11 +46,11 @@ class HomeController extends Controller
 
     public function chart(Request $request){
         $id = $request->id;
-        $sql = DB::select("SELECT datetime,pm2_5,machine_id FROM datapm WHERE machine_id = $id AND datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
-        $dataDay[] = ['Time','Average PM 2.5'];
+        $sql = DB::select("SELECT datetime,pm2_5,pm10,temperature,humidity,machine_id FROM datapm WHERE machine_id = $id AND datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
+        $dataDay[] = ['Time','Average PM 2.5','PM 10','Temperature','Humidity'];
         foreach($sql as $key => $value){
-            $time = date("d-m-Y H:i", strtotime($value->datetime));
-            $dataDay[++$key] = [$time,$value->pm2_5];
+            $time = date("D H:i", strtotime($value->datetime));
+            $dataDay[++$key] = [$time,$value->pm2_5,$value->pm10,$value->temperature,$value->humidity];
         }
         $dataDay = json_encode($dataDay);
         return $dataDay;
@@ -58,14 +58,13 @@ class HomeController extends Controller
 
     public function chartWeek(Request $request){
         $id = $request->id;
-        $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) AS avg FROM `datapm`
+        $sql = DB::select("SELECT DATE(datetime) as DateOnly,AVG(pm2_5) as pm25,AVG(pm10) as pm10,AVG(temperature) as temp,AVG(humidity) as hum FROM `datapm`
             WHERE machine_id = $id AND datetime BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() GROUP BY DateOnly ORDER BY DateOnly;");
     
-        $dataWeek[] = ['Time','Average PM 2.5'];
+        $dataWeek[] = ['Time','Average PM 2.5','PM 10','Temperature','Humidity'];
         foreach($sql as $key => $value){
-            $date = $value->DateOnly;
-            // $time = $this->DateThai($date);
-            $dataWeek[++$key] = [$date,$value->avg];
+            $date = date("d/m/Y", strtotime($value->DateOnly));
+            $dataWeek[++$key] = [$date,$value->pm25,$value->pm10,$value->temp,$value->hum];
         }
         $dataWeek = json_encode($dataWeek);
         return $dataWeek;

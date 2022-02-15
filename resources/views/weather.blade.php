@@ -24,7 +24,7 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
+  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -301,7 +301,7 @@
 
 <!-- dialog allow -->
 <div id="display-allow">
-    <div id="body-allow" class="card col-3">
+    <div id="body-allow" class="card">
         <div class="card-body" stu>
           <p style="text-align:center;font-weight: 600;">กดอนุญาติเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
             <div style="display:flex;justify-content: space-evenly;">
@@ -513,16 +513,23 @@ function Graph(chartDay) {
       var data = google.visualization.arrayToDataTable(chartDay);
       var options = {
         chartArea: {
-          left: 80,
+          left: '10%',
           top:40,
-          // bottom:50,
+          right:'5%',
           width: '100%'
         },
         legend: {
           position: 'top'
         },
         width: '100%',
-        pointSize: 5
+        pointSize: 5,
+        hAxis : { 
+          // textPosition: 'none',
+          format: 'y',
+          textStyle:{
+            fontSize: 12 
+          }
+        }
       };
       var chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
@@ -535,8 +542,9 @@ function Graph(chartDay) {
       var data = google.visualization.arrayToDataTable(chartWeek);
       var options = {
         chartArea: {
-          left: 40,
+          left: '10%',
           top:40,
+          right:'5%',
           width: '100%'
         },
         legend: {
@@ -690,43 +698,50 @@ function setAvg(arr){
 function init() {
 
   var locationList = <?php echo json_encode($location) ?> ;
-    var map = new longdo.Map({
-        placeholder: document.getElementById('map')
-    });
-    map.location({ lon:103.1011 , lat:14.9904},true);
-    for (var i = 0; i < locationList.length; ++i) {
-      let pm25 = locationList[i].macpm;
-      var color;
-      pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // map.location({ lon:103.1011 , lat:14.9904},true);
+    // map.Ui.DPad.visible(false);
+    // map.Ui.Zoombar.visible(false);
+    // map.Ui.Geolocation.visible(false);
+    // map.Ui.Toolbar.visible(false);
+    // map.Ui.Fullscreen.visible(false);
+    // map.Ui.Crosshair.visible(false);
+    // map.zoom(14, true);
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   // let pm25 = locationList[i].macpm;
+    //   var color;
+    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
 
-      if(pm25 >= 91){
-        color = "rgb(240, 70, 70)";
-      } else if (pm25 >= 51 ){
-        color = "rgb(255, 162, 0)";
-      } else if(pm25 >= 38){
-        color = "rgb(255, 255, 0)";
-      } else if(pm25 >= 26){
-        color = "rgb(146, 208, 80)";
-      } else if(pm25 >= 0){
-        color = "rgb(59, 204, 255)";
-      } else{
-        color = "black";
-      }
-      map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-          {
-            title: 'Custom Marker',
-            icon: {
-              html:  `<div class="icon-map-box">
-                        <div id="iconmap" style="background-color:${color};"></div>
-                        <strong class="mappm">${pm25}</strong>
-                    </div>`,
-              offset: { x: 18, y: 21 }
-              },
-            popup: {
-              html: '<div style="background: #eeeeff;">popup</div>'
-              }
-      }));
-    }
+    //   if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //   } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //   } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //   } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //   } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //   } else{
+    //     color = "black";
+    //   }
+    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //       {
+    //         title: locationList[i].machine_name,
+    //         icon: {
+    //           html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //           offset: { x: 18, y: 21 }
+    //           },
+    //         detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+    //         draggable: true,
+    //         weight: longdo.OverlayWeight.Top
+    //   }));
+    // }
     
   }
 

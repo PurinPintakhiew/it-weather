@@ -45,3 +45,4 @@ Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard'
 Route::post('/getChart', [HomeController::class, 'chart']);
 Route::post('/getChartWeek', [HomeController::class, 'chartWeek']);
 
+\Request::getRequestUri();

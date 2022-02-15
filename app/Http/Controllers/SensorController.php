@@ -133,7 +133,7 @@ class SensorController extends Controller
         $sql = DB::select("SELECT datetime,pm2_5,machine_id FROM datapm WHERE machine_id = $id AND datetime BETWEEN NOW() - INTERVAL 24 HOUR AND NOW();");
         $dataDay[] = ['Time','Average PM 2.5'];
         foreach($sql as $key => $value){
-            $time = date("d-m-Y H:i", strtotime($value->datetime));
+            $time = date("D H:i", strtotime($value->datetime));
             $dataDay[++$key] = [$time,$value->pm2_5];
         }
         $dataDay = json_encode($dataDay);
@@ -147,8 +147,7 @@ class SensorController extends Controller
     
         $dataWeek[] = ['Time','Average PM 2.5'];
         foreach($sql as $key => $value){
-            $date = $value->DateOnly;
-            // $time = $this->DateThai($date);
+            $date = date("d/m/Y", strtotime($value->DateOnly));
             $dataWeek[++$key] = [$date,$value->avg];
         }
         $dataWeek = json_encode($dataWeek);
