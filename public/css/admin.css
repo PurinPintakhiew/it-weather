@@ -283,6 +283,14 @@ input:checked + .slider:before {
 /* end */
 
 /* -------------------- Resposive ------------------------ */
+/* -------------------- 1200px ---------------------- */
+@media only screen and (max-width:1200px) {
+/* add */
+div#dialog-form {
+  width: 80%;
+}
+  
+}
 /* ---------------- IPED PRO 1024px ----------------- */
 @media only screen and (max-width: 1024px) {
 /* map-local */

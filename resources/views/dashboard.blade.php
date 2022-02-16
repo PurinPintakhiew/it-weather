@@ -236,7 +236,7 @@
 
 <!-- dialog add -->
 <div id="dialog-background">
-    <div id="dialog-form" class="col-5">
+    <div id="dialog-form" class="">
         <div class="card" style="font-weight: 600;">
             <div class="card-header">
                 <h5 style="text-align:center;font-weight: 600;">Add Machine Location</h5>
@@ -249,11 +249,11 @@
                         <input type="text" class="form-control" name="set_name">
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Latitude</label>
                             <input type="text" class="form-control" name="set_lat">
                         </div>
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Longitude</label>
                             <input type="text" class="form-control" name="set_long">
                         </div>
@@ -263,25 +263,25 @@
                         <input type="text" class="form-control" name="set_address">
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Topic Status Machine</label>
                             <input type="text" class="form-control" name="topic_status">
                         </div>
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Topic Moter Mode</label>
                             <input type="text" class="form-control" name="topic_mode">
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Topic PM</label>
                             <input type="text" class="form-control" name="topic_pm">
                         </div>
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Topic Temperature</label>
                             <input type="text" class="form-control" name="topic_temp">
                         </div>
-                        <div class="col mb-3">
+                        <div class="col mb-3 add-div">
                             <label for="" class="form-label">Topic Humidity</label>
                             <input type="text" class="form-control" name="topic_hum">
                         </div>
@@ -367,7 +367,7 @@ function setAddress(){
 
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("192.168.1.29", Number(9001),id);
+    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -502,13 +502,29 @@ function changeMode(){
         updown.disabled = false;
         // console.log(topic_mode)
         if(updown.checked == true){
-            // console.log("1");
+            // down
+            msg = "1";
+            console.log("1");
+            message = new Paho.MQTT.Message(msg);
+            message.destinationName = topic_mode;
+            client.send(message);
         }else{
-            // console.log("0");
+            // up
+            msg = "2";
+            console.log("2");
+            message = new Paho.MQTT.Message(msg);
+            message.destinationName = topic_mode;
+            client.send(message);
         }
     }else{
         updown.disabled = true;
-        updown.checked = false; 
+        updown.checked = false;
+        // up
+        msg = "2";
+        console.log("2");
+        message = new Paho.MQTT.Message(msg);
+        message.destinationName = topic_mode;
+        client.send(message); 
     }
 }
 

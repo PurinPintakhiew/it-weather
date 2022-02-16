@@ -303,7 +303,7 @@
 <div id="display-allow">
     <div id="body-allow" class="card">
         <div class="card-body" stu>
-          <p style="text-align:center;font-weight: 600;">กดอนุญาติเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
+          <p style="text-align:center;font-weight: 600;">กดอนุญาตเพื่อให้แจ้งเตือนค่าฝุ่นละอองในอากาศ PM 2.5</p>
             <div style="display:flex;justify-content: space-evenly;">
               <button class="btn btn-primary" onclick="notiAllow()">อนุญาติ</button>
               <button class="btn btn-danger"  onclick="clossAllow()">ไม่อนุญาติ</button>

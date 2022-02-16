@@ -45,11 +45,11 @@
                                 <input type="text" class="form-control" value="{{$sql->topic_mode}}" name="topic_mode">
                             </div>
                         </div>
-                        <div class="col mb-3">
-                                <label for="" class="form-label">Topic PM</label>
-                                <input type="text" class="form-control"  value="{{$sql->topic_pm}}" name="topic_pm">
-                            </div>
                         <div class="row">
+                            <div class="col mb-3">
+                                    <label for="" class="form-label">Topic PM</label>
+                                    <input type="text" class="form-control"  value="{{$sql->topic_pm}}" name="topic_pm">
+                            </div>
                             <div class="col mb-3">
                                 <label for="" class="form-label">Topic Temperature</label>
                                 <input type="text" class="form-control" value="{{$sql->topic_temp}}" name="topic_temp">
