@@ -40,7 +40,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <!-- Map -->
-    <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
 
 </head>
 <body onload="init()">
@@ -114,54 +114,54 @@
             <div class="status-machine col-lg-5">
                 <div class="row mb-2">
                     <div class="status-mqtt col" style="text-align:center">
-                        <span>Status Server</span>
+                        <span>สถานะเซิร์ฟเวอร์</span>
                         <div id="light-status-mqtt"></div>
                     </div>
                     <div class="col" style="text-align:center">
-                        <span>Status Machine</span>
+                        <span>สถานะเครื่อง</span>
                         <div id="light-status-machine"></div>
                     </div>
                 </div>
                 <div class="control-border">
                     <div style="text-align:center">
-                        <span class="mb-2 span-control">Control Panel</span>
+                        <span class="mb-2 span-control">แผงควบคุม</span>
                     </div >
-                    <span class="mb-2 span-topic">Machine</span>
+                    <span class="mb-2 span-topic">ชุดตรวจวัดฝุ่นละอองในอากาศ</span>
                     <div class="d-flex align-items-center mb-2">
-                        <span>OFF</span>
+                        <span>ปิด</span>
                         <label class="switch">
                             <input type="checkbox" id="checkbox_mac" onclick="controlMachine()">
                             <span class="slider round"></span>
                         </label>
-                        <span>ON</span>
+                        <span>เปิด</span>
                     </div>
-                    <span class="mb-2 span-topic">Motor Mode</span>
+                    <span class="mb-2 span-topic">การทำงานของมอเตอร์</span>
                     <div class="d-flex align-items-center mb-2">
-                        <span>Auto</span>
+                        <span>ออโต้</span>
                         <label class="switch">
                             <input type="checkbox" id="checkbox_mode" onclick="changeMode()">
                             <span class="slider round"></span>
                         </label>
-                        <span>Manual</span>
+                        <span>กำหนดเอง</span>
                         <div class="sub-manual d-flex align-items-center">
-                            <span>UP</span>
+                            <span>ขึ้น</span>
                             <label class="switch">
                                 <input type="checkbox" id="checkbox_updown" onclick="changeMode()" disabled>
                                 <span class="slider round"></span>
                             </label>
-                            <span>Down</span>
+                            <span>ลง</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="machine col-lg-7">
-                <label class="label-m">Machine Name</label>
+                <label class="label-m">ชื่อชุดตรวจวัดฝุ่นละอองในอากาศ</label>
                 <select class="form-select mb-3" id="macid"  onchange="setAddress()">
                     @foreach($machines as $machine)
                     <option value="{{$machine->machine_id}}">{{$machine->machine_name}}</option>
                     @endforeach
                 </select>
-                <label class="label-m">Machine Address</label>
+                <label class="label-m">ที่ตั้ง</label>
                 <input type="text" class="form-control" id="address" disabled>
             </div>
         </div>
@@ -525,6 +525,7 @@ function changeMode(){
         message = new Paho.MQTT.Message(msg);
         message.destinationName = topic_mode;
         client.send(message); 
+
     }
 }
 
@@ -594,43 +595,43 @@ function init() {
 
     let locationList = <?php echo json_encode($map) ?>;
 
-    // var map = new longdo.Map({
-    //     placeholder: document.getElementById('map')
-    // });
-    // map.location({ lon:103.1011 , lat:14.9904},true);
-    // map.Ui.Crosshair.visible(false);
-    // map.zoom(14, true);
-    // for (var i = 0; i < locationList.length; ++i) {
-    //     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-    //     var color;
-    //     if(pm25 >= 91){
-    //     color = "rgb(240, 70, 70)";
-    //     } else if (pm25 >= 51 ){
-    //     color = "rgb(255, 162, 0)";
-    //     } else if(pm25 >= 38){
-    //     color = "rgb(255, 255, 0)";
-    //     } else if(pm25 >= 26){
-    //     color = "rgb(146, 208, 80)";
-    //     } else if(pm25 >= 0){
-    //     color = "rgb(59, 204, 255)";
-    //     } else{
-    //     color = "black";
-    //     }
-    //     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-    //         {
-    //         title: locationList[i].machine_name,
-    //         icon: {
-    //             html:  `<div class="icon-map-box">
-    //                     <div id="iconmap" style="background-color:${color};"></div>
-    //                     <strong class="mappm">${pm25}</strong>
-    //                 </div>`,
-    //             offset: { x: 18, y: 21 }
-    //             },
-    //             detail: `${locationList[i].longitude},${locationList[i].latitude}`,
-    //             draggable: true,
-    //             weight: longdo.OverlayWeight.Top
-    //     }));
-    // }
+    var map = new longdo.Map({
+        placeholder: document.getElementById('map')
+    });
+    map.location({ lon:103.1011 , lat:14.9904},true);
+    map.Ui.Crosshair.visible(false);
+    map.zoom(14, true);
+    for (var i = 0; i < locationList.length; ++i) {
+        let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+        var color;
+        if(pm25 >= 91){
+        color = "rgb(240, 70, 70)";
+        } else if (pm25 >= 51 ){
+        color = "rgb(255, 162, 0)";
+        } else if(pm25 >= 38){
+        color = "rgb(255, 255, 0)";
+        } else if(pm25 >= 26){
+        color = "rgb(146, 208, 80)";
+        } else if(pm25 >= 0){
+        color = "rgb(59, 204, 255)";
+        } else{
+        color = "black";
+        }
+        map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+            {
+            title: locationList[i].machine_name,
+            icon: {
+                html:  `<div class="icon-map-box">
+                        <div id="iconmap" style="background-color:${color};"></div>
+                        <strong class="mappm">${pm25}</strong>
+                    </div>`,
+                offset: { x: 18, y: 21 }
+                },
+                detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+                draggable: true,
+                weight: longdo.OverlayWeight.Top
+        }));
+    }
 }
 
 // show graph
