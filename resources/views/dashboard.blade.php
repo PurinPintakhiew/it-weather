@@ -40,7 +40,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <!-- Map -->
-    <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
+    <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
 
 </head>
 <body onload="init()">
@@ -53,10 +53,10 @@
         </a>
             <ul class="link-bar">
                 <li class="nav-item">
-                    <a class="nav-link active"  aria-current="page"  href="/register">เพิ่มผู้ดูแล</a>
+                    <a class="nav-link active" style="font-weight:600;"  aria-current="page"  href="/register">เพิ่มผู้ดูแล</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="dropdown-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" style="font-weight:600;" id="dropdown-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->name }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdown-list">
@@ -122,12 +122,10 @@
                         <div id="light-status-machine"></div>
                     </div>
                 </div>
-                <div class="control-border">
-                    <div style="text-align:center">
-                        <span class="mb-2 span-control">แผงควบคุม</span>
-                    </div >
-                    <span class="mb-2 span-topic">ชุดตรวจวัดฝุ่นละอองในอากาศ</span>
-                    <div class="d-flex align-items-center mb-2">
+                <div class="control-border" style="text-align:center">
+                    <h2 class="h-control">แผงควบคุม</h2>
+                    <h5 class="h-topic">ชุดตรวจวัดฝุ่นละอองในอากาศ</h5>
+                    <div class="d-flex align-items-center justify-content-center mb-2">
                         <span>ปิด</span>
                         <label class="switch">
                             <input type="checkbox" id="checkbox_mac" onclick="controlMachine()">
@@ -135,8 +133,8 @@
                         </label>
                         <span>เปิด</span>
                     </div>
-                    <span class="mb-2 span-topic">การทำงานของมอเตอร์</span>
-                    <div class="d-flex align-items-center mb-2">
+                    <h5 class="h-topic">โหมดการทำงานของมอเตอร์</h5>
+                    <div class="d-flex align-items-center justify-content-center mb-2">
                         <span>ออโต้</span>
                         <label class="switch">
                             <input type="checkbox" id="checkbox_mode" onclick="changeMode()">
@@ -177,10 +175,10 @@
                     <table class="table">
                         <thead class="table-h">
                             <tr>
-                                <th>Machine Name</th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
-                                <th>Action</th>
+                                <th scope="col" style="vertical-align: middle">ชื่อชุดตรวจวัดฝุ่นละอองในอากาศ</th>
+                                <th scope="col" style="vertical-align: middle">ละติจูด</th>
+                                <th scope="col" style="vertical-align: middle">ลองจิจูด</th>
+                                <th scope="col" style="vertical-align: middle">แก้ไข/ลบ</th>
                             </tr>
                         </thead>
                         <tbody class="table-b">
@@ -199,7 +197,7 @@
                     </table>
                 </div>
                 <div class="card-machine-footer">
-                    <button id="showAdd" type="button" class="btn btn-success" onclick="showAdd()">Add Machine</button>
+                    <button id="showAdd" type="button" class="btn btn-success" onclick="showAdd()">เพิ่มเครื่อง</button>
                 </div>
             </div>
         </div>
@@ -207,16 +205,16 @@
 
     <!-- chart -->
     <div id="graph-pm">
-      <h3>Weather Graph</h3>
+      <h3 style="font-weight:600;">แผนภูมิค่าเฉลี่ยข้อมูล</h3>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a id="btnChart" class="nav-link active" style="color:#989be0" onclick="showChart()">Day</a>
+          <a id="btnChart" style="font-weight:600;" class="nav-link active" style="color:#989be0" onclick="showChart()">รายวัน</a>
         </li>
         <li class="nav-item">
-          <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
+          <a id="btnChart2" style="font-weight:600;" class="nav-link" onclick="showChart2()">รายสัปดาห์</a>
         </li>
         <li  class="nav-item">
-            <a class="nav-link" href="/chartData">ข้อมูลย้อนหลัง</a>
+            <a class="nav-link" style="font-weight:600;" href="/chartData">ข้อมูลย้อนหลัง</a>
         </li>
       </ul>
       <div id="chart-box1">
@@ -239,36 +237,36 @@
     <div id="dialog-form" class="">
         <div class="card" style="font-weight: 600;">
             <div class="card-header">
-                <h5 style="text-align:center;font-weight: 600;">Add Machine Location</h5>
+                <h5 style="text-align:center;font-weight: 600;">เพิ่มข้อมูลชุดตรวจวัดฝุ่นละอองในอากาศ</h5>
             </div>
             <div class="card-body">
                 <form  action="{{route('saveMac')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="mb-3">
-                        <label for="" class="form-label">Machine name</label>
+                        <label for="" class="form-label">ชื่อชุดตรวจวัดฝุ่นละอองในอากาศ</label>
                         <input type="text" class="form-control" name="set_name">
                     </div>
                     <div class="row">
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Latitude</label>
+                            <label for="" class="form-label">ละติจูด</label>
                             <input type="text" class="form-control" name="set_lat">
                         </div>
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Longitude</label>
+                            <label for="" class="form-label">ลองจิจูด</label>
                             <input type="text" class="form-control" name="set_long">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="" class="form-label">Address</label>
+                        <label for="" class="form-label">ที่ตั้ง</label>
                         <input type="text" class="form-control" name="set_address">
                     </div>
                     <div class="row">
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Topic Status Machine</label>
+                            <label for="" class="form-label">Topic สถานะเครื่่อง</label>
                             <input type="text" class="form-control" name="topic_status">
                         </div>
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Topic Moter Mode</label>
+                            <label for="" class="form-label">Topic โหมดการทำงานของมอเตอร์</label>
                             <input type="text" class="form-control" name="topic_mode">
                         </div>
                     </div>
@@ -278,17 +276,17 @@
                             <input type="text" class="form-control" name="topic_pm">
                         </div>
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Topic Temperature</label>
+                            <label for="" class="form-label">Topic อุณหภูมิ</label>
                             <input type="text" class="form-control" name="topic_temp">
                         </div>
                         <div class="col mb-3 add-div">
-                            <label for="" class="form-label">Topic Humidity</label>
+                            <label for="" class="form-label">Topic ความชื้น</label>
                             <input type="text" class="form-control" name="topic_hum">
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="button" class="btn btn-danger" onclick="closs()">Cancle</button>
+                        <button type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
+                        <button type="button" class="btn btn-danger" onclick="closs()">ยกเลิก</button>
                     </div>
                 </form>
             </div>
@@ -301,12 +299,12 @@
     <div id="dialog-form" class="col-md-2 col-sm-5">
         <div class="card"  style="font-weight: 600;">
             <div class="card-header" style="text-align:center">
-               <p style="margin: 0;">You confirm to delete</p>
+               <p style="margin: 0;">คุณยืนยันที่จะลบหรือไม่</p>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-evenly">
-                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">Yes</button>
-                    <button class="btn btn-danger" onclick="closs()">No</button>
+                    <button type="submit" class="btn btn-primary" onclick="deleteMac()">ใช่</button>
+                    <button class="btn btn-danger" onclick="closs()">ไม่</button>
                 </div>
             </div>
         </div>
@@ -367,7 +365,7 @@ function setAddress(){
 
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
+    client = new Paho.MQTT.Client("192.168.56.1", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
@@ -595,43 +593,43 @@ function init() {
 
     let locationList = <?php echo json_encode($map) ?>;
 
-    var map = new longdo.Map({
-        placeholder: document.getElementById('map')
-    });
-    map.location({ lon:103.1011 , lat:14.9904},true);
-    map.Ui.Crosshair.visible(false);
-    map.zoom(14, true);
-    for (var i = 0; i < locationList.length; ++i) {
-        let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-        var color;
-        if(pm25 >= 91){
-        color = "rgb(240, 70, 70)";
-        } else if (pm25 >= 51 ){
-        color = "rgb(255, 162, 0)";
-        } else if(pm25 >= 38){
-        color = "rgb(255, 255, 0)";
-        } else if(pm25 >= 26){
-        color = "rgb(146, 208, 80)";
-        } else if(pm25 >= 0){
-        color = "rgb(59, 204, 255)";
-        } else{
-        color = "black";
-        }
-        map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-            {
-            title: locationList[i].machine_name,
-            icon: {
-                html:  `<div class="icon-map-box">
-                        <div id="iconmap" style="background-color:${color};"></div>
-                        <strong class="mappm">${pm25}</strong>
-                    </div>`,
-                offset: { x: 18, y: 21 }
-                },
-                detail: `${locationList[i].longitude},${locationList[i].latitude}`,
-                draggable: true,
-                weight: longdo.OverlayWeight.Top
-        }));
-    }
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // map.location({ lon:103.1011 , lat:14.9904},true);
+    // map.Ui.Crosshair.visible(false);
+    // map.zoom(14, true);
+    // for (var i = 0; i < locationList.length; ++i) {
+    //     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    //     var color;
+    //     if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //     } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //     } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //     } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //     } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //     } else{
+    //     color = "black";
+    //     }
+    //     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //         {
+    //         title: locationList[i].machine_name,
+    //         icon: {
+    //             html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //             offset: { x: 18, y: 21 }
+    //             },
+    //             detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+    //             draggable: true,
+    //             weight: longdo.OverlayWeight.Top
+    //     }));
+    // }
 }
 
 // show graph

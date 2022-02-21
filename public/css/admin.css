@@ -109,13 +109,12 @@ div#realtime {
   background-color: cadetblue;
   color: white;
 }
-span.mb-2.span-control {
-  font-size: 18px;
+h2.h-control {
   font-weight: bold;
 }
-span.mb-2.span-topic {
-  font-weight: bold;
-  margin-left: 25px;
+h5.h-topic {
+  font-size: 16px;
+  font-weight: 600;
 }
 .sub-manual {
   margin-left: 20px;

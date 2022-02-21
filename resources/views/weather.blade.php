@@ -24,7 +24,7 @@
   <!-- Google Chart -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Map -->
-  <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
+  <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -130,7 +130,7 @@
 
 <!-- pm24 -->
 <div id="avg-pm">
-  <h3>ค่าเฉลี่ยปริมาณฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน ราย 24 ชั่วโมง</h3>
+  <h3 style="font-weight:600;">ค่าเฉลี่ยปริมาณฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน ราย 24 ชั่วโมง</h3>
     <div class="card-pm24 container-fluid">
       <div class="row">
         <div class="col-md-12 col-lg-4" id="pm24-avg-part">
@@ -170,8 +170,8 @@
         <table class="table table-bordered t-1">
           <thead>
             <tr>
-              <th scope="col" style="vertical-align: middle">PM 2.5 (µg/m³)</th>
-              <th scope="col" style="vertical-align: middle">สีที่ใช้</th>
+              <th scope="col" style="vertical-align: middle;width: 12%;">PM2.5 <br> (มคก./ลบ.ม.) </th>
+              <th scope="col" style="vertical-align: middle;width: 6%;">สีที่ใช้</th>
               <th scope="col" style="vertical-align: middle">ความหมาย</th>
               <th scope="col" style="vertical-align: middle">คำอธิบาย</th>
             </tr>
@@ -230,13 +230,13 @@
 
 <!-- chart -->
     <div id="graph-pm">
-      <h3>กราฟคุณภาพอากาศ</h3>
+      <h3 style="font-weight:600;">แผนภูมิค่าเฉลี่ยข้อมูลฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน</h3>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a id="btnChart" class="nav-link active" style="color:#989be0" onclick="showChart()">Day</a>
+          <a id="btnChart" class="nav-link active" style="color:#989be0" onclick="showChart()">รายวัน</a>
         </li>
         <li class="nav-item">
-          <a id="btnChart2" class="nav-link" onclick="showChart2()">Week</a>
+          <a id="btnChart2" class="nav-link" onclick="showChart2()">รายสัปดาห์</a>
         </li>
       </ul>
       <div id="chart-box1">
@@ -274,7 +274,7 @@
 <!-- map -->
   <div id="map-pm">
     <div class="card" id="Machinlocat">
-      <h3 class="card-header">แผนที่แสดงพิกัดชุดตรวจวัดฝุ่นละอองในอากาศ</h3>
+      <h3 style="font-weight:600;" class="card-header">แผนที่แสดงพิกัดชุดตรวจวัดฝุ่นละอองในอากาศ</h3>
       <div class="">
         <div id="map"></div>
       </div>
@@ -698,50 +698,50 @@ function setAvg(arr){
 function init() {
 
   var locationList = <?php echo json_encode($location) ?> ;
-    var map = new longdo.Map({
-        placeholder: document.getElementById('map')
-    });
-    map.location({ lon:103.1011 , lat:14.9904},true);
-    map.Ui.DPad.visible(false);
-    map.Ui.Zoombar.visible(false);
-    map.Ui.Geolocation.visible(false);
-    map.Ui.Toolbar.visible(false);
-    map.Ui.Fullscreen.visible(false);
-    map.Ui.Crosshair.visible(false);
-    map.zoom(14, true);
-    for (var i = 0; i < locationList.length; ++i) {
-      // let pm25 = locationList[i].macpm;
-      var color;
-      let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+    // var map = new longdo.Map({
+    //     placeholder: document.getElementById('map')
+    // });
+    // map.location({ lon:103.1011 , lat:14.9904},true);
+    // map.Ui.DPad.visible(false);
+    // map.Ui.Zoombar.visible(false);
+    // map.Ui.Geolocation.visible(false);
+    // map.Ui.Toolbar.visible(false);
+    // map.Ui.Fullscreen.visible(false);
+    // map.Ui.Crosshair.visible(false);
+    // map.zoom(14, true);
+    // for (var i = 0; i < locationList.length; ++i) {
+    //   // let pm25 = locationList[i].macpm;
+    //   var color;
+    //   let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
 
-      if(pm25 >= 91){
-        color = "rgb(240, 70, 70)";
-      } else if (pm25 >= 51 ){
-        color = "rgb(255, 162, 0)";
-      } else if(pm25 >= 38){
-        color = "rgb(255, 255, 0)";
-      } else if(pm25 >= 26){
-        color = "rgb(146, 208, 80)";
-      } else if(pm25 >= 0){
-        color = "rgb(59, 204, 255)";
-      } else{
-        color = "black";
-      }
-      map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-          {
-            title: locationList[i].machine_name,
-            icon: {
-              html:  `<div class="icon-map-box">
-                        <div id="iconmap" style="background-color:${color};"></div>
-                        <strong class="mappm">${pm25}</strong>
-                    </div>`,
-              offset: { x: 18, y: 21 }
-              },
-            detail: `${locationList[i].longitude},${locationList[i].latitude}`,
-            draggable: true,
-            weight: longdo.OverlayWeight.Top
-      }));
-    }
+    //   if(pm25 >= 91){
+    //     color = "rgb(240, 70, 70)";
+    //   } else if (pm25 >= 51 ){
+    //     color = "rgb(255, 162, 0)";
+    //   } else if(pm25 >= 38){
+    //     color = "rgb(255, 255, 0)";
+    //   } else if(pm25 >= 26){
+    //     color = "rgb(146, 208, 80)";
+    //   } else if(pm25 >= 0){
+    //     color = "rgb(59, 204, 255)";
+    //   } else{
+    //     color = "black";
+    //   }
+    //   map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+    //       {
+    //         title: locationList[i].machine_name,
+    //         icon: {
+    //           html:  `<div class="icon-map-box">
+    //                     <div id="iconmap" style="background-color:${color};"></div>
+    //                     <strong class="mappm">${pm25}</strong>
+    //                 </div>`,
+    //           offset: { x: 18, y: 21 }
+    //           },
+    //         detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+    //         draggable: true,
+    //         weight: longdo.OverlayWeight.Top
+    //   }));
+    // }
     
   }
 

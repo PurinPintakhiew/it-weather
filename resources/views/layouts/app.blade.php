@@ -54,14 +54,13 @@
                             @endif
                         @else
                             <li class="nav-item text-bar">
-                                <a class="nav-link" href="register">เพิ่มผู้ดูแล</a>
+                                <a class="nav-link" style="color:white;font-size:18px;font-weight:600;" href="dashboard">หน้าควบคุม</a>
                             </li>
                             <li class="nav-item dropdown text-bar">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" style="color:white;font-size:18px;font-weight:600;" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
