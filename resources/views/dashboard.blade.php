@@ -59,7 +59,7 @@
                     <a class="nav-link dropdown-toggle" style="font-weight:600;" id="dropdown-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->name }}
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-list">
+                    <ul class="dropdown-menu" style="min-width:0" aria-labelledby="dropdown-list">
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
@@ -90,7 +90,7 @@
             </div>
             <div class="col-xs-12 col-md-4 sensor-realtime">
                 <div class="temp-box">
-                    <p>Temperature</p>
+                    <p>อุณหภูมิ</p>
                     <div class="temp-body d-flex justify-content-center">
                         <h1 id="temp">0.00</h1>
                         <span class="pm-symbol">&#8451</span>
@@ -99,7 +99,7 @@
             </div>
             <div class="col-xs-12 col-md-4 sensor-realtime">
                 <div class="hum-box">
-                    <p>Humidity</p>
+                    <p>ความชื้น</p>
                     <div class="hum-body d-flex justify-content-center">
                         <h1 id="hum">0.00</h1>
                         <span class="pm-symbol">%</span>
@@ -365,7 +365,7 @@ function setAddress(){
 
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("192.168.56.1", Number(9001),id);
+    client = new Paho.MQTT.Client("192.168.0.101", Number(9001),id);
     if(!client){
         console.log("not connect");
     }

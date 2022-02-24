@@ -35,7 +35,7 @@ class HomeController extends Controller
     }
 
     public function map(){
-        $sql = DB::select("SELECT AVG(datapm.pm2_5) as macpm,datapm.machine_id,machine_location.machine_name,machine_location.latitude,machine_location.longitude,machine_location.address FROM datapm INNER JOIN machine_location ON datapm.machine_id=machine_location.machine_id GROUP BY datapm.machine_id;");
+        $sql = DB::select("SELECT AVG(datapm.pm2_5) as macpm,datapm.machine_id,machine_location.machine_name,machine_location.latitude,machine_location.longitude,machine_location.address FROM datapm INNER JOIN machine_location ON datapm.machine_id=machine_location.machine_id WHERE datetime > NOW() - INTERVAL 24 HOUR GROUP BY datapm.machine_id;");
         $result = count($sql);
         if($result > 0){
             return $sql;

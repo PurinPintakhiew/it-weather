@@ -391,7 +391,7 @@ function clearDiv(){
 // get data from Mqtt
 function Mqtt(){
     const id = Math.random().toString(36).substring(2);
-    client = new Paho.MQTT.Client("10.133.0.121", Number(9001),id);
+    client = new Paho.MQTT.Client("192.168.0.101", Number(9001),id);
     if(!client){
         console.log("not connect");
     }
