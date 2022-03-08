@@ -40,7 +40,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <!-- Map -->
-    <!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script> -->
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=42eb94007e1a5d73e5ad3fcba45b5734"></script>
 
 </head>
 <body onload="init()">
@@ -593,43 +593,43 @@ function init() {
 
     let locationList = <?php echo json_encode($map) ?>;
 
-    // var map = new longdo.Map({
-    //     placeholder: document.getElementById('map')
-    // });
-    // map.location({ lon:103.1011 , lat:14.9904},true);
-    // map.Ui.Crosshair.visible(false);
-    // map.zoom(14, true);
-    // for (var i = 0; i < locationList.length; ++i) {
-    //     let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
-    //     var color;
-    //     if(pm25 >= 91){
-    //     color = "rgb(240, 70, 70)";
-    //     } else if (pm25 >= 51 ){
-    //     color = "rgb(255, 162, 0)";
-    //     } else if(pm25 >= 38){
-    //     color = "rgb(255, 255, 0)";
-    //     } else if(pm25 >= 26){
-    //     color = "rgb(146, 208, 80)";
-    //     } else if(pm25 >= 0){
-    //     color = "rgb(59, 204, 255)";
-    //     } else{
-    //     color = "black";
-    //     }
-    //     map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
-    //         {
-    //         title: locationList[i].machine_name,
-    //         icon: {
-    //             html:  `<div class="icon-map-box">
-    //                     <div id="iconmap" style="background-color:${color};"></div>
-    //                     <strong class="mappm">${pm25}</strong>
-    //                 </div>`,
-    //             offset: { x: 18, y: 21 }
-    //             },
-    //             detail: `${locationList[i].longitude},${locationList[i].latitude}`,
-    //             draggable: true,
-    //             weight: longdo.OverlayWeight.Top
-    //     }));
-    // }
+    var map = new longdo.Map({
+        placeholder: document.getElementById('map')
+    });
+    map.location({ lon:103.1011 , lat:14.9904},true);
+    map.Ui.Crosshair.visible(false);
+    map.zoom(14, true);
+    for (var i = 0; i < locationList.length; ++i) {
+        let pm25 = parseFloat(locationList[i].macpm).toFixed(0);
+        var color;
+        if(pm25 >= 91){
+        color = "rgb(240, 70, 70)";
+        } else if (pm25 >= 51 ){
+        color = "rgb(255, 162, 0)";
+        } else if(pm25 >= 38){
+        color = "rgb(255, 255, 0)";
+        } else if(pm25 >= 26){
+        color = "rgb(146, 208, 80)";
+        } else if(pm25 >= 0){
+        color = "rgb(59, 204, 255)";
+        } else{
+        color = "black";
+        }
+        map.Overlays.add(new longdo.Marker({lon: locationList[i].longitude, lat: locationList[i].latitude },
+            {
+            title: locationList[i].machine_name,
+            icon: {
+                html:  `<div class="icon-map-box">
+                        <div id="iconmap" style="background-color:${color};"></div>
+                        <strong class="mappm">${pm25}</strong>
+                    </div>`,
+                offset: { x: 18, y: 21 }
+                },
+                detail: `${locationList[i].longitude},${locationList[i].latitude}`,
+                draggable: true,
+                weight: longdo.OverlayWeight.Top
+        }));
+    }
 }
 
 // show graph
